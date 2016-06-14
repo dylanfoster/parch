@@ -8,4 +8,4 @@ class Application {
   }
 }
 
-module.exports = Application;
+export default Application;
