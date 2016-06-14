@@ -18,4 +18,16 @@ describe("Router", function () {
       });
     });
   });
+
+  describe("#resource", function () {
+    it("maps a resource to a controller's index method");
+
+    it("maps a resource to a controller's show method");
+
+    it("maps a resource to a controller's create method");
+
+    it("maps a resource to a controller's update method");
+
+    it("maps a resource to a controller's destroy method");
+  });
 });
