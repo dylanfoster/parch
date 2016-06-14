@@ -1,7 +1,8 @@
 "use strict";
 
 class Router {
-  constructor(options) {}
+  constructor(options) {
+  }
 
   static map(callback) {
     const router = new Router();
