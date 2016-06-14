@@ -2,16 +2,15 @@
 
 import inflect from "inflect";
 
-import loader from "./loader";
-
 class Router {
   constructor(settings) {
     this.app = settings.app;
     this.controllers = settings.controllers;
+    this.loader = settings.loader;
   }
 
   resource(name) {
-    const controller = loader.get("controller", name);
+    const controller = this.loader.controllers.get(name);
 
     this._bindRoutes(name, controller);
   }
