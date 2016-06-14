@@ -245,6 +245,10 @@ const parch = new parch.Application({
 
 > TODO
 
+## Error handling and responses
+
+> TODO
+
 ## Options
 
   - **server**
