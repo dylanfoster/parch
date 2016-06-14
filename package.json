@@ -4,7 +4,8 @@
   "description": "Restify + Sequelize",
   "main": "index.js",
   "scripts": {
-    "test": "echo testing"
+    "test": "mocha --recursive",
+    "watch": "chokidar 'lib/**' 'test/**' -c 'npm test' --initial"
   },
   "keywords": [
     "restify",
@@ -14,8 +15,11 @@
   "author": "Dylan Foster",
   "license": "MIT",
   "devDependencies": {
+    "chai": "^3.5.0",
+    "chokidar-cli": "^1.2.0",
     "eslint": "^2.12.0",
     "eslint-config-unstandard": "^1.3.2",
+    "jsdoc": "^3.4.0",
     "mocha": "^2.5.3"
   },
   "eslintConfig": {
