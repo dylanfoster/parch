@@ -1,9 +1,8 @@
 "use strict";
 
-const chai = require("chai");
-const expect = chai.expect;
+import { expect } from "chai";
 
-const Application = require("../lib/application");
+import Application from "../lib/application";
 
 describe("Application", function () {
   describe("#map", function () {
