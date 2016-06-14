@@ -2,7 +2,7 @@
 
 import { expect } from "chai";
 
-import Application from "../lib/application";
+import Application from "../src/application";
 
 describe("Application", function () {
   describe("#map", function () {
