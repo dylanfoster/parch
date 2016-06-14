@@ -1,6 +1,6 @@
 "use strict";
 
-const Router = require("./router");
+import Router from "./router";
 
 class Application {
   constructor(options) {
