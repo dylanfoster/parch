@@ -1,22 +1,14 @@
 sudo: false
 language: node_js
 node_js:
-  - "6"
+  - node
   - "5"
   - "4"
+  - "0.12"
+
+before_install:
+  - "npm config set spin false"
 
 os:
   - osx
   - linux
-
-script: npm test
-
-install:
-  - rm -rf ~/.nvm
-  - git clone https://github.com/creationix/nvm.git ~/.nvm
-  - source ~/.nvm/nvm.sh
-  - nvm install $NODE_VERSION
-  - node --version
-  - npm --version
-  - git --version
-  - npm install
