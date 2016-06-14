@@ -1,11 +1,13 @@
-# sequelfy
+# parch
 
 > [Restify](http://restify.com/) + [Sequelize](http://docs.sequelizejs.com/en/latest/)
+
+Parch is....
 
 ## Installation
 
 ```bash
-npm install --save sequelfy
+npm install --save parch
 ```
 
 ## Usage
@@ -15,11 +17,11 @@ npm install --save sequelfy
 For a full list of available options [see below](#options)
 
 ```javascript
-const Sequelfy = require("sequelfy");
-const restify = require("restify");
+const parch = require("parch");
 
-const sequelfy = new Sequelfy({
-  app: {
+// define your app
+const parch = new parch.Application({
+  server: {
     name: "my-app",
     certificate: "/path/to/my.crt",
     key: "/path/to/my.key",
@@ -29,9 +31,12 @@ const sequelfy = new Sequelfy({
       myCustomMiddleware()
     ]
   },
+  authentication: {
+    secretKey: "ssshhh"
+  },
   controllers: {
     dir: path.resolve(__dirname, "controllers"),
-    unauthenticated: ["posts", "users:resetPassword"]
+    unauthenticated: [/\/posts[\s\S]*/, "/users/resetPassword"]
   },
   database: {
     connection: {
@@ -42,14 +47,14 @@ const sequelfy = new Sequelfy({
       dialect: "postgres",
       logging: true
     },
-    associations: {
-      lazyLoad: true,
-      embedded: false
+    models: {
+      dir: path.resolve(__dirname, "models")
     }
   }
 });
 
-sequelfy.map(function () {
+// wire up your routes
+parch.map(function () {
   this.resource("user");
   this.route("user/resetPassword", {
     using: "users:resetPassword", // controller:method
@@ -57,7 +62,7 @@ sequelfy.map(function () {
   });
 });
 
-sequelfy.start().then(() => {
+parch.start(3000).then(() => {
   console.log("App listening.")
 });
 ```
@@ -76,9 +81,9 @@ POST   /users/resetPassword => UserController.resetPassword
 ### Controller
 
 ```javascript
-const sequelfy = require("sequelfy");
+const parch = require("parch");
 
-class UserController extends sequelfy.Controller {
+class UserController extends parch.Controller {
   constructor(options) {
     super(options);
   }
@@ -154,13 +159,13 @@ class UserController extends sequelfy.Controller {
 
 ### Model
 
-Models can be defined following the [sequelize define](http://docs.sequelizejs.com/en/latest/docs/models-definition/),
-pattern, however, you must have a `define` method for each of your models.
+Models are defined following the [sequelize define](http://docs.sequelizejs.com/en/latest/docs/models-definition/),
+pattern.
 
 `lib/models/user.js`
 
 ```javascript
-class UserModel extends sequelfy.Model {
+class UserModel extends parch.Model {
   constructor() {
     super();
   }
@@ -180,23 +185,12 @@ class UserModel extends sequelfy.Model {
 
 ## Associations
 
-By default, sequelfy will lazy load associations of a record as an array of ids.
-Association loading can be disabled by setting `lazyLoad` to false in your `associations`
-options. Additionally, you can change it to allow for embedded associations rather
-than ids, including the entire relationship's record within the source record.
-
-*per controller*
-
-### Controller
+parch loads associations of a record as an array of ids.
 
 ```javascript
-class UserController extends sequelfy.Controller {
-  constructor(options) {
-    options.database.associations = {
-      lazyLoad: true,
-      embedded: true // default: false
-    };
-    super(options);
+class UserController extends parch.Controller {
+  constructor() {
+    super();
   }
 
   show(req, res, next) {
@@ -208,6 +202,7 @@ class UserController extends sequelfy.Controller {
        *      posts: [1, 2, 3]
        *    }
        *  }
+       */
     });
   }
 }
@@ -218,7 +213,7 @@ class UserController extends sequelfy.Controller {
 ### Application
 
 ```javascript
-const sequelfy = new sequelfy({
+const parch = new parch.Application({
   database: {
     associations: {
       lazyLoad: false
@@ -235,7 +230,7 @@ in the future. To disable auth for controllers or their methods, use the
 or a controller's method.
 
 ```javascript
-const sequelfy = new sequelfy({
+const parch = new parch.Application({
   controllers: {
     unauthenticated: ["posts", "users:resetPassword"]
   }
@@ -252,8 +247,8 @@ const sequelfy = new sequelfy({
 
 ## Options
 
-  - **app**
+  - **server**
+  - **authentication**
   - **controllers**
   - **database**
-  - **authentication**
   - **logging**
