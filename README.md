@@ -12,6 +12,8 @@ npm install --save sequelfy
 
 ### Application
 
+For a full list of available options [see below](#options)
+
 ```javascript
 const Sequelfy = require("sequelfy");
 const restify = require("restify");
@@ -247,3 +249,11 @@ const sequelfy = new sequelfy({
 ## Logging
 
 > TODO
+
+## Options
+
+  - **app**
+  - **controllers**
+  - **database**
+  - **authentication**
+  - **logging**
