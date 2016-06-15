@@ -29,7 +29,7 @@ describe("Router", function () {
     });
   });
 
-  describe.only("#resource", function () {
+  describe("#resource", function () {
     let app, client, router;
 
     beforeEach(function () {
