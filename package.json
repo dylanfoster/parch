@@ -1,6 +1,6 @@
 {
   "name": "parch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Restify + Sequelize",
   "main": "index.js",
   "scripts": {
