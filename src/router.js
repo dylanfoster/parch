@@ -2,6 +2,22 @@
 
 import inflect from "inflect";
 
+const restActionMapper = new Map([
+    ["index", "get"],
+    ["show", "get"],
+    ["create", "post"],
+    ["update", "put"],
+    ["destroy", "del"]
+]);
+
+const restPathMapper = new Map([
+    ["index", "/"],
+    ["show", "/:id"],
+    ["create", "/"],
+    ["update", "/:id"],
+    ["destroy", "/:id"]
+]);
+
 class Router {
   constructor(settings) {
     this.app = settings.app;
@@ -13,22 +29,20 @@ class Router {
     const Controller = this.loader.controllers.get(name);
     const controller = new Controller();
 
-    this._bindRoutes(name, controller);
+    for (const [action] of restActionMapper) {
+      this._mapControllerAction(name, controller, action);
+    }
   }
 
-  _bindRoutes(resource, controller) {
+  _mapControllerAction(resource, controller, action) {
+    const controllerAction = controller[action];
+    const method = restActionMapper.get(action);
     const singularResource = inflect.singularize(resource);
     const pluralResource = inflect.pluralize(singularResource);
+    const pathSegment = restPathMapper.get(action);
+    const resourcePath = `/${pluralResource}${pathSegment}`;
 
-    this._bindRoute(`/${pluralResource}`, `get`, controller.index.bind(controller));
-    this._bindRoute(`/${pluralResource}`, `get`, controller.show.bind(controller));
-    this._bindRoute(`/${pluralResource}`, `post`, controller.create.bind(controller));
-    this._bindRoute(`/${pluralResource}`, `put`, controller.update.bind(controller));
-    this._bindRoute(`/${pluralResource}`, `del`, controller.destroy.bind(controller));
-  }
-
-  _bindRoute(endpoint, method, action) {
-    this.app[method](endpoint, action);
+    this.app[method](resourcePath, controllerAction);
   }
 
   static map(settings, callback) {
@@ -38,13 +52,5 @@ class Router {
     return router;
   }
 }
-
-const restActionMapper = new Map([
-    ["index", "get"],
-    ["show", "get"],
-    ["create", "post"],
-    ["update", "put"],
-    ["destroy", "delete"]
-]);
 
 export default Router;
