@@ -8,15 +8,21 @@ class FooController {
     res.send({ foos: [] });
   }
 
-  show() {
+  show(req, res, next) {
+    res.send({ foo: {}});
   }
 
-  create() {
+  create(req, res, next) {
+    res.send(201);
   }
 
-  update() {}
+  update(req, res, next) {
+    res.send(200);
+  }
 
-  destroy() {}
+  destroy(req, res, next) {
+    res.send(204);
+  }
 }
 
 export default FooController;
