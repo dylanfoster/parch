@@ -5,6 +5,8 @@
 Parch is a simple RESTful framework combining the power of restify for routing
 and sequelize ORM for dao access. Stop rewriting your server code and get parched.
 
+**WIP: parch is very much still in beta so use at your own risk**
+
 *If you'd like to contribute, take a look at the [roadmap](https://github.com/dylanfoster/parch/issues/1)*
 
 ## Installation
@@ -14,8 +16,6 @@ npm install --save parch
 ```
 
 ## Usage
-
-**WIP**
 
 ### Application
 
