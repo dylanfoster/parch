@@ -7,6 +7,12 @@ import restify from "restify";
 import supertest from "supertest";
 
 import Router from "../src/router";
+import Loader from "../src/loader";
+
+const controllerLoader = new Loader({
+  type: "controller",
+  path: path.resolve(__dirname, "fixtures/controllers")
+})
 
 describe("Router", function () {
   describe("map", function () {
@@ -23,23 +29,23 @@ describe("Router", function () {
     });
   });
 
-  describe.skip("#resource", function () {
+  describe.only("#resource", function () {
     let app, client, router;
 
     beforeEach(function () {
       app = restify.createServer();
       router = new Router({
         app,
-        controllers: path.resolve(__dirname, "fixtures", "controllers" )
+        loader: { controllers: controllerLoader }
       });
-      router.resource("user");
+      router.resource("foo");
 
       client = supertest(app);
     });
 
     it("maps a resource to a controller's index method", function (done) {
-      client.get("/users")
-        .expect(200, { users: [] })
+      client.get("/foos")
+        .expect(200, { foos: [] })
         .end(done);
     });
 

@@ -10,12 +10,25 @@ class Router {
   }
 
   resource(name) {
-    const controller = this.loader.controllers.get(name);
+    const Controller = this.loader.controllers.get(name);
+    const controller = new Controller();
 
     this._bindRoutes(name, controller);
   }
 
-  _bindRoutes(resource) {
+  _bindRoutes(resource, controller) {
+    const singularResource = inflect.singularize(resource);
+    const pluralResource = inflect.pluralize(singularResource);
+
+    this._bindRoute(`/${pluralResource}`, `get`, controller.index.bind(controller));
+    this._bindRoute(`/${pluralResource}`, `get`, controller.show.bind(controller));
+    this._bindRoute(`/${pluralResource}`, `post`, controller.create.bind(controller));
+    this._bindRoute(`/${pluralResource}`, `put`, controller.update.bind(controller));
+    this._bindRoute(`/${pluralResource}`, `del`, controller.destroy.bind(controller));
+  }
+
+  _bindRoute(endpoint, method, action) {
+    this.app[method](endpoint, action);
   }
 
   static map(settings, callback) {
