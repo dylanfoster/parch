@@ -7,7 +7,7 @@ import Router from "./router";
 
 class Application {
   constructor(options) {
-    const app = restify.createServer();
+    const app = options.app || restify.createServer();
     const routerSettings = {
       app,
       loader: {
@@ -21,6 +21,12 @@ class Application {
 
   getApp() {
     return this.app;
+  }
+
+  start(port = 3000) {
+    return new Promise((resolve, reject) => {
+      this.app.listen(port, function () { resolve(); })
+    });
   }
 }
 
