@@ -11,16 +11,28 @@ describe("loader", function () {
 
   beforeEach(function () {
     loader = new Loader({
-      type: "controllers",
+      type: "controller",
       path: path.resolve(__dirname, "fixtures", "controllers")
     });
   });
 
   describe("#get", function () {
-    it.skip("returns a class by name", function () {
-      const controller = loader.get("controllers", "foo");
+    it("returns a class by name", function () {
+      const controller = loader.get("foo");
 
-      expect(controller.constructor.name).to.eql("foo");
+      expect(controller.name).to.eql("FooController");
+    });
+
+    it("matches classes with hyphens", function () {
+      const controller = loader.get("bar");
+
+      expect(controller.name).to.eql("BarController");
+    });
+
+    it("matches clases with underscores", function () {
+      const controller = loader.get("baz");
+
+      expect(controller.name).to.eql("BazController");
     });
   });
 });
