@@ -29,7 +29,7 @@ describe("loader", function () {
       expect(controller.name).to.eql("BarController");
     });
 
-    it("matches clases with underscores", function () {
+    it("matches clasess with underscores", function () {
       const controller = loader.get("baz");
 
       expect(controller.name).to.eql("BazController");
