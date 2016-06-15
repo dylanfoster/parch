@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src -d lib",
     "changelog": "conventional-changelog -s -p angular -i CHANGELOG.md",
-    "prepublish": "npm run build",
+    "prepublish": "npm test && npm run build",
     "test": "mocha --recursive --compilers js:babel-register",
     "watch": "chokidar 'src/**' 'test/**' -c 'npm test' --initial"
   },

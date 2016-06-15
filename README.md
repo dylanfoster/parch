@@ -2,7 +2,10 @@
 
 > [Restify](http://restify.com/) + [Sequelize](http://docs.sequelizejs.com/en/latest/)
 
-Parch is....
+Parch is a simple RESTful framework combining the power of restify for routing
+and sequelize ORM for dao access. Stop rewriting your server code and get parched.
+
+*If you'd like to contribute, take a look at the [roadmap](https://github.com/dylanfoster/parch/issues/1)*
 
 ## Installation
 
