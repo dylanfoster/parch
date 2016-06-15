@@ -3,6 +3,7 @@
 import path from "path";
 
 import { expect } from "chai";
+import supertest from "supertest";
 
 import Application from "../src/application";
 import Router from "../src/router";
@@ -25,13 +26,13 @@ describe("Application", function () {
       });
     });
 
-    it.skip("maps routes to their controller", function () {
+    it("maps routes to their controller", function (done) {
       application.map(function () {
-        this.resource("user");
+        this.resource("foo");
       });
 
       supertest(application.getApp())
-        .get("/users")
+        .get("/foos")
         .expect(200)
         .end(done);
     });
