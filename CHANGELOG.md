@@ -1,3 +1,13 @@
+<a name="0.0.4"></a>
+## [0.0.4](https://github.com/dylanfoster/parch/compare/0.0.3...v0.0.4) (2016-06-16)
+
+
+### Features
+
+* **application:** add default set of middlewares and merge with optional ([f3d3a2f](https://github.com/dylanfoster/parch/commit/f3d3a2f))
+
+
+
 <a name="0.0.3"></a>
 ## [0.0.3](https://github.com/dylanfoster/parch/compare/0.0.2...v0.0.3) (2016-06-16)
 
