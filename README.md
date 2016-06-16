@@ -5,7 +5,7 @@
 Parch is a simple RESTful framework combining the power of restify for routing
 and sequelize ORM for dao access. Stop rewriting your server code and get parched.
 
-**WIP: parch is very much still in beta so use at your own risk**
+** **WIP: parch is very much still in beta so use at your own risk** **
 
 *If you'd like to contribute, take a look at the [roadmap](https://github.com/dylanfoster/parch/issues/1)*
 
@@ -37,11 +37,11 @@ const parch = new parch.Application({
     ]
   },
   authentication: {
-    secretKey: "ssshhh"
+    secretKey: "ssshhh",
+    unauthenticated: [/\/posts[\s\S]*/, "/users/resetPassword"]
   },
   controllers: {
-    dir: path.resolve(__dirname, "controllers"),
-    unauthenticated: [/\/posts[\s\S]*/, "/users/resetPassword"]
+    dir: path.resolve(__dirname, "controllers")
   },
   database: {
     connection: {
@@ -213,31 +213,17 @@ class UserController extends parch.Controller {
 }
 ```
 
-*globally*
-
-### Application
-
-```javascript
-const parch = new parch.Application({
-  database: {
-    associations: {
-      lazyLoad: false
-    }
-  }
-});
-```
-
 ## Authentication and Authorization
 
-Authentication and authorization is handled using [jwt](), with more options coming
-in the future. To disable auth for controllers or their methods, use the
-`controllers.unauthenticated` array. Empty by default, you can add an entire controller,
+Authentication and authorization is handled using [jwt](https://jwt.io/), with more options coming
+in the future. To disable auth for specific routes, use the
+`authentication.unauthenticated` array. Empty by default, you can add an entire controller,
 or a controller's method.
 
 ```javascript
 const parch = new parch.Application({
-  controllers: {
-    unauthenticated: ["posts", "users:resetPassword"]
+  authentication: {
+    unauthenticated: [/\/posts[\s\S]*/, "/users/resetPassword"]
   }
 });
 ```
