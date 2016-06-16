@@ -2,8 +2,18 @@
 
 import restify from "restify";
 
+import _ from "lodash";
 import Loader from "./loader";
 import Router from "./router";
+
+const DEFAULT_MIDDLEWARES = [
+  restify.gzipResponse(),
+  restify.CORS(),
+  restify.authorizationParser(),
+  restify.bodyParser(),
+  restify.fullResponse(),
+  restify.queryParser()
+];
 
 /**
  * TODO:
@@ -16,7 +26,7 @@ class Application {
     const serverOptions = options.server || {};
 
     // TODO: merge with defaults
-    const middlewares = serverOptions.middlewares || [];
+    const middlewares = _.union(DEFAULT_MIDDLEWARES, serverOptions.middlewares || []);
     const app = options.app || restify.createServer(serverOptions);
     const controllerLoader = new Loader({
       type: "controller",
@@ -29,6 +39,7 @@ class Application {
       }
     };
 
+    app.use(restify.acceptParser(app.acceptable));
     middlewares.forEach(middlware => { app.use(middlware); });
     this.app = app;
     this.map = Router.map.bind(null, routerSettings);

@@ -44,8 +44,10 @@ describe("Application", function () {
 
   describe("#start", function () {
     let mockRestify = {
+      acceptable: ["application/json"],
       createServer() {},
-      listen(port, cb) { cb(); }
+      listen(port, cb) { cb(); },
+      use() {}
     };
 
     beforeEach(function () {
