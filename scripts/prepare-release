@@ -13,14 +13,6 @@ if [ -z $version_type ]; then
   version_type=$DEFAULT_VERSION_TYPE
 fi
 
-debug() {
-  log "\033[1;30m==> $@\033[0m";
-}
-
-error() {
-  log "\033[1;31m✖ $@\033[0m";
-}
-
 info() {
   log "\033[1;32m==> $@\033[0m";
 }
