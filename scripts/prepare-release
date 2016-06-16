@@ -1,0 +1,57 @@
+#!/bin/bash
+set -e
+
+if [ "$DEBUG" = true ]; then
+  set -x
+fi
+
+DEFAULT_VERSION_TYPE="patch"
+current_version=$(cat package.json | grep version | cut -d \: -f 2 | tr -d '"' | tr -d ',')
+version_type=$1
+
+if [ -z $version_type ]; then
+  version_type=$DEFAULT_VERSION_TYPE
+fi
+
+debug() {
+  log "\033[1;30m==> $@\033[0m";
+}
+
+error() {
+  log "\033[1;31m✖ $@\033[0m";
+}
+
+info() {
+  log "\033[1;32m==> $@\033[0m";
+}
+
+log(){
+  echo -e "$1";
+}
+
+generate_changelog() {
+  info "Generating changelog"
+  npm run changelog
+}
+
+add_to_git() {
+  info "Adding changes to git"
+  git add -Av
+}
+
+bump_package_version() {
+  info "Updating package version from$current_version by $version_type"
+  npm version $version_type
+}
+
+commit() {
+  info "Committing changes to git"
+  git commit -m $1
+}
+
+bump_package_version
+add_to_git
+commit "chore(package): bump version"
+generate_changelog
+add_to_git
+commit "docs(CHANGELOG): bump version"
