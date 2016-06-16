@@ -23,24 +23,39 @@ log(){
 
 generate_changelog() {
   info "Generating changelog"
+  if [ "$DRY_RUN" = true ]; then
+    return
+  fi
   npm run changelog
 }
 
 add_to_git() {
   info "Adding changes to git"
+  if [ "$DRY_RUN" = true ]; then
+    return
+  fi
   git add -Av
 }
 
 bump_package_version() {
   info "Updating package version from$current_version by $version_type"
+  if [ "$DRY_RUN" = true ]; then
+    return
+  fi
   npm version $version_type --no-git-tag-version
 }
 
 commit() {
   info "Committing changes to git"
+  if [ "$DRY_RUN" = true ]; then
+    return
+  fi
   git commit -m "$1"
 }
 
+if [ "$DRY_RUN" = true ]; then
+  log "\r\nRunning in dry-run. No changes will be commited\r\n"
+fi
 bump_package_version
 add_to_git
 commit "chore(package): bump version"
