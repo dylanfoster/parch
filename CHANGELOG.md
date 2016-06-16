@@ -1,3 +1,14 @@
+<a name="0.0.3"></a>
+## [0.0.3](https://github.com/dylanfoster/parch/compare/0.0.2...v0.0.3) (2016-06-16)
+
+
+### Features
+
+* **application:** pass through server options to restify ([daf427c](https://github.com/dylanfoster/parch/commit/daf427c))
+* **loader:** ensure modules are always singularized ([ba1cb51](https://github.com/dylanfoster/parch/commit/ba1cb51))
+
+
+
 <a name="0.0.2"></a>
 ## [0.0.2](https://github.com/dylanfoster/parch/compare/0.0.1...v0.0.2) (2016-06-15)
 
