@@ -34,5 +34,11 @@ describe("loader", function () {
 
       expect(controller.name).to.eql("BazController");
     });
+
+    it("loads classes that are plural", function () {
+      const controller = loader.get("user");
+
+      expect(controller.name).to.eql("UsersController");
+    });
   });
 });
