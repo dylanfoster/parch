@@ -26,6 +26,7 @@ class Router {
   }
 
   resource(name) {
+    name = inflect.singularize(name);
     const Controller = this.loader.controllers.get(name);
     const controller = new Controller();
 
