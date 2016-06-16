@@ -46,7 +46,7 @@ bump_package_version() {
 
 commit() {
   info "Committing changes to git"
-  git commit -m $1
+  git commit -m "$1"
 }
 
 bump_package_version
