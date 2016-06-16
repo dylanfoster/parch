@@ -41,7 +41,7 @@ add_to_git() {
 
 bump_package_version() {
   info "Updating package version from$current_version by $version_type"
-  npm version $version_type
+  npm version $version_type --no-git-tag-version
 }
 
 commit() {
