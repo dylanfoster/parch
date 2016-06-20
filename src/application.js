@@ -19,6 +19,9 @@ const DEFAULT_MIDDLEWARES = [
  * TODO:
  *   - add DEFAULT_CONTROLLER_LOOKUP_PATH
  *     - should be <caller location>/contrllers
+ *   - add DEFAULT_MODEL_LOOKUP_PATH
+ *     - should start with .sequelizerc
+ *     - fallback to <caller location>/models
  */
 
 class Application {
@@ -32,10 +35,15 @@ class Application {
       type: "controller",
       path: options.controllers.dir // || DEFAULT_CONTROLLER_LOOKUP_PATH
     });
+    const _internalModels = new Loader({
+      type: "model",
+      path: options.models.dir // || DEFAULT_MODEL_LOOKUP_PATH
+    });
     const routerSettings = {
       app,
       loader: {
-        controllers: controllerLoader
+        controllers: controllerLoader,
+        models: new ModelManager(_internalModels);
       }
     };
 

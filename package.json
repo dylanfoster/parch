@@ -45,6 +45,7 @@
     "include-all": "^0.1.6",
     "inflect": "^0.3.0",
     "lodash": "^4.13.1",
-    "restify": "^4.1.0"
+    "restify": "^4.1.0",
+    "sequelize": "^3.23.3"
   }
 }
