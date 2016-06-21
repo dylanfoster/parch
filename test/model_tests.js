@@ -5,13 +5,15 @@ import { expect } from "chai";
 import Model from "../src/model";
 
 describe("Model", function () {
-  describe("#define", function () {
-    it("is required");
+  let model;
 
-    it("is called with Sequelize DataTypes");
+  beforeEach(function () {
+    model = new Model();
   });
 
-  describe("#associate", function () {
-    it("is called with all imported models");
+  describe("#define", function () {
+    it("is required", function () {
+      expect(model.define).to.throw("Models must supply a 'define' method")
+    });
   });
 });

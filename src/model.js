@@ -7,6 +7,10 @@ class Model {
 
   constructor() {
   }
+
+  define() {
+    throw new Error("Models must supply a 'define' method");
+  }
 }
 
 export default Model;
