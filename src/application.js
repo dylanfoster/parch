@@ -46,7 +46,7 @@ class Application {
     });
 
     Object.keys(modelManager.models).forEach(model => {
-      if (modelManager.models[model].hasOwnProperty("associate")) {
+      if (modelManager.models[model].associate) {
         modelManager.models[model].associate(modelManager.models[model], modelManager.models);
       }
     });
