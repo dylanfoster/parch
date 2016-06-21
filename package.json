@@ -33,6 +33,7 @@
     "mocha": "^2.5.3",
     "sinon": "^1.17.4",
     "sinon-chai": "^2.8.0",
+    "sqlite3": "^3.1.4",
     "supertest": "^1.2.0"
   },
   "eslintConfig": {

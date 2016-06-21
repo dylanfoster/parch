@@ -1,12 +1,22 @@
 "use strict";
 
-import { Model } from "../../../";
+import Model from "../../../src/model";
 
 class UserModel extends Model {
   constructor() {
+    super();
   }
 
-  define() {
+  associate(User, models) {
+    User.hasMany(models.User);
+  }
+
+  define(DataTypes) {
+    return {
+      firstName: {
+        type: DataTypes.STRING
+      }
+    };
   }
 }
 
