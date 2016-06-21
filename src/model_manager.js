@@ -1,6 +1,6 @@
 "use strict";
 
-import Sequelize from "Sequelize";
+import Sequelize from "sequelize";
 
 class ModelManager {
   constructor(settings) {

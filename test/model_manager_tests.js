@@ -3,7 +3,6 @@
 import path from "path";
 
 import { expect } from "chai";
-import Sequelize from "sequelize";
 
 import ModelManager from "../src/model_manager";
 import UserModel from "./fixtures/models/user_model.js";
