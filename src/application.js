@@ -43,10 +43,6 @@ class Application {
     options.server = options.server || {};
     options.server.middlewares = options.server.middlewares || [];
 
-    const _internalModels = new Loader({
-      type: "model",
-      path: options.database.models.dir
-    });
     const app = options.app || restify.createServer(options.server);
     const connection = options.database.connection;
     const controllerLoader = new Loader({
@@ -54,23 +50,20 @@ class Application {
       path: options.controllers.dir
     });
     const middlewares = _.union(DEFAULT_MIDDLEWARES, options.server.middlewares);
-    const modelManager = new ModelManager({ connection });
 
-    Object.keys(_internalModels.modules).forEach(model => {
-      modelManager.addModel(_internalModels.modules[model]);
+    this._internalModels = new Loader({
+      type: "model",
+      path: options.database.models.dir
     });
-
-    Object.keys(modelManager.models).forEach(model => {
-      if (modelManager.models[model].associate) {
-        modelManager.models[model].associate(modelManager.models[model], modelManager.models);
-      }
-    });
+    this.modelManager = new ModelManager({ connection });
+    this._addModels();
+    this._associateModels();
 
     const routerSettings = {
       app,
       loader: {
         controllers: controllerLoader,
-        models: modelManager.models
+        models: this.modelManager.models
       }
     };
 
@@ -78,7 +71,24 @@ class Application {
     middlewares.forEach(middlware => { app.use(middlware); });
     this.app = app;
     this.map = Router.map.bind(null, routerSettings);
-    this.modelManager = modelManager;
+  }
+
+  _addModels() {
+    const _internalModels = this._internalModels;
+
+    Object.keys(_internalModels.modules).forEach(model => {
+      this.modelManager.addModel(_internalModels.modules[model]);
+    });
+  }
+
+  _associateModels() {
+    const modelManager = this.modelManager;
+
+    Object.keys(modelManager.models).forEach(model => {
+      if (modelManager.models[model].associate) {
+        modelManager.models[model].associate(modelManager.models[model], modelManager.models);
+      }
+    });
   }
 
   getApp() {
