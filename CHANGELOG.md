@@ -4,6 +4,7 @@
 
 ### Features
 
+* Add Sequelize support
 * **application:** add default lookup paths for controllers and models and clean up constructor ([cbb5985](https://github.com/dylanfoster/parch/commit/cbb5985))
 * **application:** clean up constructor some more ([3432f07](https://github.com/dylanfoster/parch/commit/3432f07))
 * **models:** add base model class and pending tests ([2957baf](https://github.com/dylanfoster/parch/commit/2957baf))
