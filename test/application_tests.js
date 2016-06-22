@@ -10,6 +10,7 @@ import supertest from "supertest";
 chai.use(sinonChai);
 
 import Application from "../src/application";
+import { connection } from "./fixtures";
 import Router from "../src/router";
 
 describe("Application", function () {
@@ -20,7 +21,8 @@ describe("Application", function () {
       application = new Application({
         controllers: {
           dir: path.resolve(__dirname, "fixtures", "controllers")
-        }
+        },
+        database: { connection , models: { dir: path.resolve(__dirname, "fixtures/models") }}
       });
     });
 
@@ -56,7 +58,8 @@ describe("Application", function () {
         app: mockRestify,
         controllers: {
           dir: path.resolve(__dirname, "fixtures", "controllers")
-        }
+        },
+        database: { connection , models: { dir: path.resolve(__dirname, "fixtures/models") }}
       });
     });
 

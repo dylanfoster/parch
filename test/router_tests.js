@@ -7,12 +7,7 @@ import restify from "restify";
 import supertest from "supertest";
 
 import Router from "../src/router";
-import Loader from "../src/loader";
-
-const controllerLoader = new Loader({
-  type: "controller",
-  path: path.resolve(__dirname, "fixtures/controllers")
-})
+import { loader } from "./fixtures";
 
 describe("Router", function () {
   describe("map", function () {
@@ -36,7 +31,7 @@ describe("Router", function () {
       app = restify.createServer();
       router = new Router({
         app,
-        loader: { controllers: controllerLoader }
+        loader
       });
       router.resource("foo");
 

@@ -27,8 +27,9 @@ class Router {
 
   resource(name) {
     name = inflect.singularize(name);
-    const Controller = this.loader.controllers.get(name);
-    const controller = new Controller();
+    const loader = this.loader;
+    const Controller = loader.controllers.get(name);
+    const controller = new Controller({ loader });
 
     for (const [action] of restActionMapper) {
       this._mapControllerAction(name, controller, action);
@@ -43,7 +44,7 @@ class Router {
     const pathSegment = restPathMapper.get(action);
     const resourcePath = `/${pluralResource}${pathSegment}`;
 
-    this.app[method](resourcePath, controllerAction);
+    this.app[method](resourcePath, controllerAction.bind(controller));
   }
 
   static map(settings, callback) {

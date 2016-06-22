@@ -33,6 +33,7 @@
     "mocha": "^2.5.3",
     "sinon": "^1.17.4",
     "sinon-chai": "^2.8.0",
+    "sqlite3": "^3.1.4",
     "supertest": "^1.2.0"
   },
   "eslintConfig": {
@@ -45,6 +46,7 @@
     "include-all": "^0.1.6",
     "inflect": "^0.3.0",
     "lodash": "^4.13.1",
-    "restify": "^4.1.0"
+    "restify": "^4.1.0",
+    "sequelize": "^3.23.3"
   }
 }
