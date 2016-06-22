@@ -73,6 +73,16 @@ class Application {
     this.map = Router.map.bind(null, routerSettings);
   }
 
+  getApp() {
+    return this.app;
+  }
+
+  start(port = 3000) {
+    return new Promise((resolve, reject) => {
+      this.app.listen(port, function () { resolve(); })
+    });
+  }
+
   _addModels() {
     const _internalModels = this._internalModels;
 
@@ -88,16 +98,6 @@ class Application {
       if (modelManager.models[model].associate) {
         modelManager.models[model].associate(modelManager.models[model], modelManager.models);
       }
-    });
-  }
-
-  getApp() {
-    return this.app;
-  }
-
-  start(port = 3000) {
-    return new Promise((resolve, reject) => {
-      this.app.listen(port, function () { resolve(); })
     });
   }
 }
