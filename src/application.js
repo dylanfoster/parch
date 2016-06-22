@@ -10,21 +10,25 @@ import Loader from "./loader";
 import ModelManager from "./model_manager";
 import Router from "./router";
 
-const DEFAULT_MIDDLEWARES = [
-  restify.gzipResponse(),
-  restify.CORS(),
-  restify.authorizationParser(),
-  restify.bodyParser(),
-  restify.fullResponse(),
-  restify.queryParser()
-];
-
 const DEFAULT_CONNECTION_SETTINGS = {
   dialect: "sqlite",
   database: "test",
   username: "test",
   password: "test"
 };
+const DEFAULT_LISTEN_PORT = 3000;
+const DEFAULT_MIDDLEWARES = [
+  restify.gzipResponse(),
+
+  /* eslint-disable new-cap */
+  restify.CORS(),
+
+  /* eslint-enable new-cap */
+  restify.authorizationParser(),
+  restify.bodyParser(),
+  restify.fullResponse(),
+  restify.queryParser()
+];
 
 class Application {
   constructor(options = {}) {
@@ -77,9 +81,9 @@ class Application {
     return this.app;
   }
 
-  start(port = 3000) {
+  start(port = DEFAULT_LISTEN_PORT) {
     return new Promise((resolve, reject) => {
-      this.app.listen(port, function () { resolve(); })
+      this.app.listen(port, () => { resolve(); });
     });
   }
 
