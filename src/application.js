@@ -63,6 +63,7 @@ class Application {
     middlewares.forEach(middlware => { app.use(middlware); });
     this.app = app;
     this.map = Router.map.bind(null, routerSettings);
+    this.modelManager = modelManager;
   }
 
   getApp() {
