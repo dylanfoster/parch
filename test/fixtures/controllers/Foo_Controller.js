@@ -1,7 +1,10 @@
 "use strict";
 
-class FooController {
-  constructor() {
+import Controller from "../../../src/controller";
+
+class FooController extends Controller {
+  constructor(settings) {
+    super(settings);
   }
 
   index(req, res, next) {

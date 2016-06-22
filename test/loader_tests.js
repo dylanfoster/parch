@@ -6,7 +6,7 @@ import { expect } from "chai";
 
 import Loader from "../src/loader";
 
-describe("loader", function () {
+describe("Loader", function () {
   let loader;
 
   beforeEach(function () {
