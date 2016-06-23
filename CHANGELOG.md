@@ -1,3 +1,13 @@
+<a name="0.0.6"></a>
+## [0.0.6](https://github.com/dylanfoster/parch/compare/0.0.5...v0.0.6) (2016-06-23)
+
+
+### Features
+
+* **router:** add route method to bind static route acitons ([88ace6f](https://github.com/dylanfoster/parch/commit/88ace6f))
+
+
+
 <a name="0.0.5"></a>
 ## [0.0.5](https://github.com/dylanfoster/parch/compare/0.0.4...v0.0.5) (2016-06-22)
 
