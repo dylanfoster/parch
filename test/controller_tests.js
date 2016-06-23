@@ -72,9 +72,21 @@ describe("Controller", function () {
     });
 
     describe("#findOne", function () {
-      it("finds a single record by id");
+      it("finds a single record by id", function () {
+        return modelManager.models.User.create({ firstName: "john" })
+          .then(john => controller.findOne(john.id))
+          .then(john => {
+            expect(john.firstName).to.eql("john");
+          })
+      });
 
-      it("throws NotFoundError if no record is found");
+      it("throws NotFoundError if no record is found", function (done) {
+        controller.findOne(1).catch(err => {
+          expect(err.code).to.eql("NotFound");
+          expect(err.message).to.eql("User with id '1' does not exist");
+          done();
+        })
+      });
     });
 
     describe("#createRecord", function () {
