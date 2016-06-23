@@ -14,6 +14,11 @@ class Controller {
 
     this.model = model;
   }
+
+  findAll() {
+    console.log(this.model);
+    return this.model.findAll();
+  }
 }
 
 export default Controller;
