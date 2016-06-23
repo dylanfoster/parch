@@ -98,7 +98,6 @@ describe("Controller", function () {
 
       it("throws BadRequestError for invalid body", function (done) {
         controller.createRecord().catch(err => {
-          console.log(err);
           expect(err.code).to.eql("BadRequest");
           expect(err.message).to.eql("Missing or invalid POST body");
           done();
@@ -115,11 +114,40 @@ describe("Controller", function () {
     });
 
     describe("#updateRecord", function () {
-      it("updates an existing record by id");
+      let user;
+      beforeEach(function () {
+        return modelManager.models.User.create({ firstName: "john" })
+          .then(john => {
+            user = john;
+          });
+      })
 
-      it("throws NotFoundError if record is not found");
+      afterEach(function () {
+        return modelManager.sequelize.drop();
+      })
 
-      it("throws UnprocessableEntityError for validation failures");
+      it("updates an existing record by id", function () {
+        return controller.updateRecord(user.id, { firstName: "bob" }).then(bob => {
+          expect(bob.firstName).to.eql("bob");
+        })
+      });
+
+      it("throws NotFoundError if record is not found", function (done) {
+        user.destroy().then(() => {
+          controller.updateRecord(1, { firstName: "bob" }).catch(err => {
+            expect(err.code).to.eql("NotFound");
+            done();
+          })
+        }).catch(done);
+      });
+
+      it("throws UnprocessableEntityError for validation failures", function (done) {
+        controller.updateRecord(user.id, { firstName: 1 }).catch(err => {
+          expect(err.code).to.eql("UnprocessableEntity");
+          expect(err.message).to.eql("firstName must be a valid string");
+          done();
+        })
+      });
     });
   });
 });

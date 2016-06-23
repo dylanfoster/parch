@@ -59,6 +59,23 @@ class Controller {
       return record;
     });
   }
+
+  updateRecord(id, data) {
+    return this.findOne(id).then(record => record.update(data)).catch(err => {
+      if (err.name === "SequelizeValidationError") {
+        const { errors: [validationError] } = err;
+        const error = this.errors.UnprocessableEntityError;
+        const message = validationError.message;
+
+        /* eslint-disable new-cap */
+        throw new error(message);
+
+        /* eslint-enable new-cap */
+      } else {
+        throw err;
+      }
+    });
+  }
 }
 
 export default Controller;
