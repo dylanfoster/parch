@@ -17,6 +17,35 @@ class Controller {
     this.model = model;
   }
 
+  createRecord(data) {
+    if (!data) {
+      const error = this.errors.BadRequestError;
+      const message = "Missing or invalid POST body";
+
+      /* eslint-disable new-cap */
+      return Promise.reject(new error(message).body);
+
+      /* eslint-enable new-cap */
+    }
+
+    const record = this.model.build(data);
+
+    return record.validate().then(error => {
+      if (error && error.errors.length) {
+        const { errors: [validationError] } = error;
+        const err = this.errors.UnprocessableEntityError;
+        const message = validationError.message;
+
+        /* eslint-disable new-cap */
+        throw new err(message);
+
+        /* eslint-enable new-cap */
+      }
+
+      return record.save();
+    });
+  }
+
   findAll() {
     return this.model.findAll();
   }

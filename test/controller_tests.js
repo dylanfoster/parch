@@ -90,11 +90,28 @@ describe("Controller", function () {
     });
 
     describe("#createRecord", function () {
-      it("creates a new record");
+      it("creates a new record", function () {
+        return controller.createRecord({ firstName: "john" }).then(user => {
+          expect(user.firstName).to.eql("john");
+        });
+      });
 
-      it("throws BadRequestError for invalid body");
+      it("throws BadRequestError for invalid body", function (done) {
+        controller.createRecord().catch(err => {
+          console.log(err);
+          expect(err.code).to.eql("BadRequest");
+          expect(err.message).to.eql("Missing or invalid POST body");
+          done();
+        });
+      });
 
-      it("throws UnprocessableEntityError for validation failures");
+      it("throws UnprocessableEntityError for validation failures", function (done) {
+        controller.createRecord({ firstName: 1 }).catch(err => {
+          expect(err.code).to.eql("UnprocessableEntity");
+          expect(err.message).to.eql("firstName must be a valid string");
+          done();
+        })
+      });
     });
 
     describe("#updateRecord", function () {
