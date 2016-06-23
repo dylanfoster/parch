@@ -141,6 +141,8 @@ describe("Controller", function () {
         }).catch(done);
       });
 
+      it("throw BadRequestError for invalid or missing data");
+
       it("throws UnprocessableEntityError for validation failures", function (done) {
         controller.updateRecord(user.id, { firstName: 1 }).catch(err => {
           expect(err.code).to.eql("UnprocessableEntity");
@@ -148,6 +150,12 @@ describe("Controller", function () {
           done();
         })
       });
+    });
+
+    describe("#destroyRecord", function () {
+      it("destroys a record by id");
+
+      it("throws NotFoundError if record doesn't exist");
     });
   });
 });
