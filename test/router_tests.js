@@ -12,13 +12,13 @@ import { loader } from "./fixtures";
 describe("Router", function () {
   describe("map", function () {
     it("returns an instance of Router", function () {
-      const router = Router.map({}, function () {});
+      const router = Router.map({ loader }, function () {});
 
       expect(router).to.be.an.instanceof(Router);
     });
 
     it("calls callback with an instance of Router", function () {
-      Router.map({}, function () {
+      Router.map({ loader }, function () {
         expect(this).to.be.an.instanceof(Router);
       });
     });
@@ -67,6 +67,28 @@ describe("Router", function () {
     it("maps a resource to a controller's destroy method", function (done) {
       client.del("/foos/1")
         .expect(204)
+        .end(done);
+    });
+  });
+
+  describe("#route", function () {
+    let app, client, router;
+
+    beforeEach(function () {
+      app = restify.createServer();
+      router = new Router({
+        app,
+        loader
+      });
+
+      client = supertest(app);
+    });
+
+    it("maps a static route to a controller action", function (done) {
+      router.route("/foo/bar", { using: "foo:bar", method: "get" });
+
+      client.get("/foo/bar")
+        .expect(200)
         .end(done);
     });
   });

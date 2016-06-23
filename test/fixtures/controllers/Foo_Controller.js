@@ -26,6 +26,10 @@ class FooController extends Controller {
   destroy(req, res, next) {
     res.send(204);
   }
+
+  bar(req, res, next) {
+    res.send(200);
+  }
 }
 
 export default FooController;
