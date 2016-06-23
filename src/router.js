@@ -21,19 +21,36 @@ const restPathMapper = new Map([
 class Router {
   constructor(settings) {
     this.app = settings.app;
-    this.controllers = settings.controllers;
+    this.controllers = new Map();
     this.loader = settings.loader;
+
+    this._loadControllers();
   }
 
   resource(name) {
     name = inflect.singularize(name);
-    const loader = this.loader;
-    const Controller = loader.controllers.get(name);
-    const controller = new Controller({ loader });
+    const controller = this.controllers.get(name);
 
     for (const [action] of restActionMapper) {
       this._mapControllerAction(name, controller, action);
     }
+  }
+
+  route(path, options) {
+    const [controllerName, actionName] = options.using.split(":");
+    const controller = this.controllers.get(controllerName);
+    const method = options.method;
+
+    this.app[method](path, controller[actionName].bind(controller));
+  }
+
+  _loadControllers() {
+    const controllers = this.loader.controllers.modules;
+    const loader = this.loader;
+
+    Object.keys(controllers).forEach(controller => {
+      this.controllers.set(controller, new controllers[controller]({ loader }))
+    });
   }
 
   _mapControllerAction(resource, controller, action) {
