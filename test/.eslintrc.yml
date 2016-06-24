@@ -1,0 +1,4 @@
+---
+extends: unstandard/test
+rules:
+  no-unused-expressions: 0

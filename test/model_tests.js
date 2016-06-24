@@ -13,7 +13,7 @@ describe("Model", function () {
 
   describe("#define", function () {
     it("is required", function () {
-      expect(model.define).to.throw("Models must supply a 'define' method")
+      expect(model.define).to.throw("Models must supply a 'define' method");
     });
   });
 });

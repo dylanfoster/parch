@@ -7,7 +7,6 @@ class Loader {
   constructor(settings) {
     this.type = settings.type;
     this.loadPath = settings.path;
-
     this.modules = this._loadModules();
   }
 
@@ -24,7 +23,8 @@ class Loader {
     });
 
     Object.keys(modules).forEach(module => {
-      const key = inflect.singularize(module.toLowerCase().replace("_", "").replace("-", ""));
+      const moduleName = module.toLowerCase().replace("_", "").replace("-", "");
+      const key = inflect.singularize(moduleName);
 
       if (modules[module].hasOwnProperty("default")) {
         modules[key] = modules[module].default;
