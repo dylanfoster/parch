@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src -d lib",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- --compilers js:babel-register",
     "changelog": "conventional-changelog -s -p angular -i CHANGELOG.md",
     "prepare-release": "./scripts/prepare-release",
     "prepublish": "npm test && npm run build",
     "test": "mocha --recursive --compilers js:babel-register",
+    "test:cover": "npm run coverage",
     "watch": "chokidar 'src/**' 'test/**' -c 'npm test' --initial"
   },
   "keywords": [
@@ -27,8 +29,10 @@
     "chai": "^3.5.0",
     "chokidar-cli": "^1.2.0",
     "conventional-changelog-cli": "^1.2.0",
+    "coveralls": "^2.11.9",
     "eslint": "^2.12.0",
     "eslint-config-unstandard": "^1.3.2",
+    "istanbul": "^1.0.0-alpha.2",
     "jsdoc": "^3.4.0",
     "mocha": "^2.5.3",
     "sinon": "^1.17.4",
