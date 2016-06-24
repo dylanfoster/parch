@@ -124,7 +124,7 @@ describe("Controller", function () {
 
       afterEach(function () {
         return modelManager.sequelize.drop();
-      })
+      });
 
       it("updates an existing record by id", function () {
         return controller.updateRecord(user.id, { firstName: "bob" }).then(bob => {
@@ -159,9 +159,32 @@ describe("Controller", function () {
     });
 
     describe("#destroyRecord", function () {
-      it("destroys a record by id");
+      let user;
+      beforeEach(function () {
+        return modelManager.models.User.create({ firstName: "john" })
+          .then(john => { user = john; }); })
 
-      it("throws NotFoundError if record doesn't exist");
+      afterEach(function () {
+        return modelManager.sequelize.drop();
+      });
+
+      it("destroys a record by id", function () {
+        return controller.destroyRecord(user.id).then(() => {
+          return modelManager.models.User.findById(user.id);
+        }).then(user => {
+          expect(user).to.be.null;
+        });
+      });
+
+      it("throws NotFoundError if record doesn't exist", function (done) {
+        user.destroy().then(() => {
+          controller.destroyRecord(user.id).catch(err => {
+            expect(err.code).to.eql("NotFound");
+            expect(err.message).to.eql("User with id '1' does not exist");
+            done();
+          });
+        }).catch(done);
+      });
     });
   });
 });

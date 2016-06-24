@@ -46,6 +46,10 @@ class Controller {
     });
   }
 
+  destroyRecord(id) {
+    return this.findOne(id).then(record => record.destroy());
+  }
+
   findAll() {
     return this.model.findAll();
   }
@@ -65,7 +69,10 @@ class Controller {
       const error = this.errors.BadRequestError;
       const message = "Missing or invalid PUT body";
 
+      /* eslint-disable new-cap */
       return Promise.reject(new error(message));
+
+      /* eslint-enable new-cap */
     }
 
     return this.findOne(id).then(record => record.update(data)).catch(err => {
