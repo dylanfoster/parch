@@ -1,3 +1,19 @@
+<a name="0.0.7"></a>
+## [0.0.7](https://github.com/dylanfoster/parch/compare/0.0.6...v0.0.7) (2016-06-24)
+
+
+### Features
+
+* **controller:** add ability to query with findAll ([92c8123](https://github.com/dylanfoster/parch/commit/92c8123))
+* **controller:** add bad request error for updateRecord ([12dd740](https://github.com/dylanfoster/parch/commit/12dd740))
+* **controller:** add createRecord method ([fccf424](https://github.com/dylanfoster/parch/commit/fccf424))
+* **controller:** add destroyRecord method ([59f2fd8](https://github.com/dylanfoster/parch/commit/59f2fd8))
+* **controller:** add findAll finder ([1d038c7](https://github.com/dylanfoster/parch/commit/1d038c7))
+* **controller:** add findOne finder ([fab5c56](https://github.com/dylanfoster/parch/commit/fab5c56))
+* **controller:** add updateRecord method ([d373618](https://github.com/dylanfoster/parch/commit/d373618))
+
+
+
 <a name="0.0.6"></a>
 ## [0.0.6](https://github.com/dylanfoster/parch/compare/0.0.5...v0.0.6) (2016-06-23)
 

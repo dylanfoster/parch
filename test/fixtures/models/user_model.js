@@ -14,7 +14,13 @@ class UserModel extends Model {
   define(DataTypes) {
     return {
       firstName: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        validate: {
+          is: {
+            args: ["^[a-z]+$",'i'],
+            msg: "firstName must be a valid string"
+          }
+        }
       }
     };
   }

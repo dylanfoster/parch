@@ -9,7 +9,6 @@ const restActionMapper = new Map([
     ["update", "put"],
     ["destroy", "del"]
 ]);
-
 const restPathMapper = new Map([
     ["index", "/"],
     ["show", "/:id"],
@@ -23,7 +22,6 @@ class Router {
     this.app = settings.app;
     this.controllers = new Map();
     this.loader = settings.loader;
-
     this._loadControllers();
   }
 
@@ -49,7 +47,7 @@ class Router {
     const loader = this.loader;
 
     Object.keys(controllers).forEach(controller => {
-      this.controllers.set(controller, new controllers[controller]({ loader }))
+      this.controllers.set(controller, new controllers[controller]({ loader }));
     });
   }
 

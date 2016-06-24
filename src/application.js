@@ -19,11 +19,7 @@ const DEFAULT_CONNECTION_SETTINGS = {
 const DEFAULT_LISTEN_PORT = 3000;
 const DEFAULT_MIDDLEWARES = [
   restify.gzipResponse(),
-
-  /* eslint-disable new-cap */
   restify.CORS(),
-
-  /* eslint-enable new-cap */
   restify.authorizationParser(),
   restify.bodyParser(),
   restify.fullResponse(),
@@ -31,6 +27,7 @@ const DEFAULT_MIDDLEWARES = [
 ];
 
 class Application {
+  /* eslint-disable complexity */
   constructor(options = {}) {
     // who are you
     const caller = callsite()[1].getFileName();

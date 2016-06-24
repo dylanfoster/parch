@@ -8,7 +8,12 @@ class ModelManager {
 
     this._models = {};
     this.Sequelize = Sequelize;
-    this.sequelize = new Sequelize(connection.database, connection.username, connection.password, connection);
+    this.sequelize = new Sequelize(
+      connection.database,
+      connection.username,
+      connection.password,
+      connection
+    );
   }
 
   addModel(Model) {
