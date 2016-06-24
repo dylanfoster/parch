@@ -57,7 +57,13 @@ class Controller {
   findOne(id) {
     return this.model.findById(id).then(record => {
       if (!record) {
-        throw new this.errors.NotFoundError(`${this.model.name} with id '${id}' does not exist`)
+        const error = this.errors.NotFoundError;
+        const message = `${this.model.name} with id '${id}' does not exist`;
+
+        /* eslint-disable new-cap */
+        throw new error(message);
+
+        /* eslint-enable new-cap */
       }
 
       return record;

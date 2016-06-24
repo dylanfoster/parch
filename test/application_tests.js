@@ -22,7 +22,7 @@ describe("Application", function () {
         controllers: {
           dir: path.resolve(__dirname, "fixtures", "controllers")
         },
-        database: { connection , models: { dir: path.resolve(__dirname, "fixtures/models") }}
+        database: { connection, models: { dir: path.resolve(__dirname, "fixtures/models") }}
       });
     });
 
@@ -45,7 +45,7 @@ describe("Application", function () {
   });
 
   describe("#start", function () {
-    let mockRestify = {
+    const mockRestify = {
       acceptable: ["application/json"],
       createServer() {},
       listen(port, cb) { cb(); },
@@ -59,7 +59,7 @@ describe("Application", function () {
         controllers: {
           dir: path.resolve(__dirname, "fixtures", "controllers")
         },
-        database: { connection , models: { dir: path.resolve(__dirname, "fixtures/models") }}
+        database: { connection, models: { dir: path.resolve(__dirname, "fixtures/models") }}
       });
     });
 

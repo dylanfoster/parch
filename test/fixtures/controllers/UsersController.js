@@ -1,7 +1,7 @@
 "use strict";
 
 class UsersController {
-  constructor(){}
+  constructor() {}
 }
 
 export default UsersController;

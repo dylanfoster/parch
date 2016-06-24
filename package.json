@@ -40,6 +40,11 @@
     "extends": "unstandard",
     "parserOptions": {
       "sourceType": "module"
+    },
+    "rules": {
+      "max-len": [1, { "code": 100 }],
+      "new-cap": [2, { "properties": false }],
+      "no-magic-numbers": [2, { "ignoreArrayIndexes": true }]
     }
   },
   "dependencies": {

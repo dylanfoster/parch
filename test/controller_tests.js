@@ -17,7 +17,7 @@ describe("Controller", function () {
       }
     }
 
-    const controller = new UserController({ loader });
+    controller = new UserController({ loader });
     expect(controller.name).to.eql("user");
   });
 
@@ -28,7 +28,7 @@ describe("Controller", function () {
       }
     }
 
-    const controller = new UserController({ loader });
+    controller = new UserController({ loader });
     expect(controller.model.name).to.eql("User");
   });
 
@@ -39,13 +39,11 @@ describe("Controller", function () {
       }
     }
 
-    const controller = new UserController({ loader, model: "foo" });
+    controller = new UserController({ loader, model: "foo" });
     expect(controller.model.name).to.eql("Foo");
   });
 
-  describe.only("finders", function () {
-    let controller;
-
+  describe("finders", function () {
     beforeEach(function () {
       class UserController extends Controller {
         constructor(settings) {
@@ -74,16 +72,15 @@ describe("Controller", function () {
 
       it("allows for querying", function () {
         let user1, user2;
+
         return modelManager.models.User.create({ firstName: "john" }).then(john => {
           user1 = john;
           return modelManager.models.User.create({ firstName: "joe" }).then(joe => {
             user2 = joe;
           });
-        }).then(() => {
-          return controller.findAll({ firstName: "john" });
-        }).then(users => {
+        }).then(() => controller.findAll({ firstName: "john" })).then(users => {
           expect(users.length).to.eql(1);
-        })
+        });
       });
 
       it("supports pagination");
@@ -95,7 +92,7 @@ describe("Controller", function () {
           .then(john => controller.findOne(john.id))
           .then(john => {
             expect(john.firstName).to.eql("john");
-          })
+          });
       });
 
       it("throws NotFoundError if no record is found", function (done) {
@@ -103,7 +100,7 @@ describe("Controller", function () {
           expect(err.code).to.eql("NotFound");
           expect(err.message).to.eql("User with id '1' does not exist");
           done();
-        })
+        });
       });
     });
 
@@ -127,18 +124,19 @@ describe("Controller", function () {
           expect(err.code).to.eql("UnprocessableEntity");
           expect(err.message).to.eql("firstName must be a valid string");
           done();
-        })
+        });
       });
     });
 
     describe("#updateRecord", function () {
       let user;
+
       beforeEach(function () {
         return modelManager.models.User.create({ firstName: "john" })
           .then(john => {
             user = john;
           });
-      })
+      });
 
       afterEach(function () {
         return modelManager.sequelize.drop();
@@ -147,7 +145,7 @@ describe("Controller", function () {
       it("updates an existing record by id", function () {
         return controller.updateRecord(user.id, { firstName: "bob" }).then(bob => {
           expect(bob.firstName).to.eql("bob");
-        })
+        });
       });
 
       it("throws NotFoundError if record is not found", function (done) {
@@ -155,7 +153,7 @@ describe("Controller", function () {
           controller.updateRecord(1, { firstName: "bob" }).catch(err => {
             expect(err.code).to.eql("NotFound");
             done();
-          })
+          });
         }).catch(done);
       });
 
@@ -172,25 +170,26 @@ describe("Controller", function () {
           expect(err.code).to.eql("UnprocessableEntity");
           expect(err.message).to.eql("firstName must be a valid string");
           done();
-        })
+        });
       });
     });
 
     describe("#destroyRecord", function () {
       let user;
+
       beforeEach(function () {
         return modelManager.models.User.create({ firstName: "john" })
-          .then(john => { user = john; }); })
+          .then(john => { user = john; }); });
 
       afterEach(function () {
         return modelManager.sequelize.drop();
       });
 
       it("destroys a record by id", function () {
-        return controller.destroyRecord(user.id).then(() => {
-          return modelManager.models.User.findById(user.id);
-        }).then(user => {
-          expect(user).to.be.null;
+        return controller.destroyRecord(user.id).then(() =>
+            modelManager.models.User.findById(user.id)
+        ).then(found => {
+          expect(found).to.be.null;
         });
       });
 
