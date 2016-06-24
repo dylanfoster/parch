@@ -1,5 +1,8 @@
 # parch
 
+[![Build Status](https://travis-ci.org/dylanfoster/parch.svg?branch=master)](https://travis-ci.org/dylanfoster/parch)
+[![Coverage Status](https://coveralls.io/repos/github/dylanfoster/parch/badge.svg?branch=develop)](https://coveralls.io/github/dylanfoster/parch?branch=develop)
+
 > [Restify](http://restify.com/) + [Sequelize](http://docs.sequelizejs.com/en/latest/)
 
 Parch is a simple RESTful framework combining the power of restify for routing
