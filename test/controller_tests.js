@@ -56,6 +56,10 @@ describe("Controller", function () {
       return modelManager.sequelize.sync({ force: true });
     });
 
+    afterEach(function () {
+      return modelManager.sequelize.drop();
+    });
+
     describe("#findAll", function () {
       it("returns all records of a model", function () {
         return controller.findAll().then(users => {
@@ -68,7 +72,21 @@ describe("Controller", function () {
         });
       });
 
-      it("allows for querying");
+      it("allows for querying", function () {
+        let user1, user2;
+        return modelManager.models.User.create({ firstName: "john" }).then(john => {
+          user1 = john;
+          return modelManager.models.User.create({ firstName: "joe" }).then(joe => {
+            user2 = joe;
+          });
+        }).then(() => {
+          return controller.findAll({ firstName: "john" });
+        }).then(users => {
+          expect(users.length).to.eql(1);
+        })
+      });
+
+      it("supports pagination");
     });
 
     describe("#findOne", function () {

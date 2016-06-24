@@ -18,7 +18,8 @@ const connection = {
   database: "test",
   username: "luke",
   password: "skywalker",
-  dialect: "sqlite"
+  dialect: "sqlite",
+  logging: false
 };
 const modelManager = new ModelManager({ connection });
 

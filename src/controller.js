@@ -50,8 +50,8 @@ class Controller {
     return this.findOne(id).then(record => record.destroy());
   }
 
-  findAll() {
-    return this.model.findAll();
+  findAll(where) {
+    return this.model.findAll({ where });
   }
 
   findOne(id) {
