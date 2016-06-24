@@ -22,7 +22,6 @@ class Router {
     this.app = settings.app;
     this.controllers = new Map();
     this.loader = settings.loader;
-
     this._loadControllers();
   }
 
