@@ -61,6 +61,13 @@ class Controller {
   }
 
   updateRecord(id, data) {
+    if (!data) {
+      const error = this.errors.BadRequestError;
+      const message = "Missing or invalid PUT body";
+
+      return Promise.reject(new error(message));
+    }
+
     return this.findOne(id).then(record => record.update(data)).catch(err => {
       if (err.name === "SequelizeValidationError") {
         const { errors: [validationError] } = err;

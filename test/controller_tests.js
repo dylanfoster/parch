@@ -141,7 +141,13 @@ describe("Controller", function () {
         }).catch(done);
       });
 
-      it("throw BadRequestError for invalid or missing data");
+      it("throw BadRequestError for invalid or missing data", function (done) {
+        controller.updateRecord(user.id).catch(err => {
+          expect(err.code).to.eql("BadRequest");
+          expect(err.message).to.eql("Missing or invalid PUT body");
+          done();
+        });
+      });
 
       it("throws UnprocessableEntityError for validation failures", function (done) {
         controller.updateRecord(user.id, { firstName: 1 }).catch(err => {
