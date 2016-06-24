@@ -12,9 +12,7 @@ class Controller {
     this.loader = settings.loader;
     this.models = this.loader.models;
     this.modelName = settings.model || this.name;
-    const model = this.models[this.modelName] || this.models[inflect.capitalize(this.modelName)];
-
-    this.model = model;
+    this.model = this.models[this.modelName] || this.models[inflect.capitalize(this.modelName)];
   }
 
   createRecord(data) {
@@ -22,24 +20,18 @@ class Controller {
       const error = this.errors.BadRequestError;
       const message = "Missing or invalid POST body";
 
-      /* eslint-disable new-cap */
       return Promise.reject(new error(message).body);
-
-      /* eslint-enable new-cap */
     }
 
     const record = this.model.build(data);
 
-    return record.validate().then(error => {
-      if (error && error.errors.length) {
-        const { errors: [validationError] } = error;
-        const err = this.errors.UnprocessableEntityError;
+    return record.validate().then(err => {
+      if (err && err.errors && err.errors.length) {
+        const { errors: [validationError] } = err;
+        const error = this.errors.UnprocessableEntityError;
         const message = validationError.message;
 
-        /* eslint-disable new-cap */
-        throw new err(message);
-
-        /* eslint-enable new-cap */
+        throw new error(message);
       }
 
       return record.save();
@@ -60,10 +52,7 @@ class Controller {
         const error = this.errors.NotFoundError;
         const message = `${this.model.name} with id '${id}' does not exist`;
 
-        /* eslint-disable new-cap */
         throw new error(message);
-
-        /* eslint-enable new-cap */
       }
 
       return record;
@@ -75,10 +64,7 @@ class Controller {
       const error = this.errors.BadRequestError;
       const message = "Missing or invalid PUT body";
 
-      /* eslint-disable new-cap */
       return Promise.reject(new error(message));
-
-      /* eslint-enable new-cap */
     }
 
     return this.findOne(id).then(record => record.update(data)).catch(err => {
@@ -87,10 +73,7 @@ class Controller {
         const error = this.errors.UnprocessableEntityError;
         const message = validationError.message;
 
-        /* eslint-disable new-cap */
         throw new error(message);
-
-        /* eslint-enable new-cap */
       } else {
         throw err;
       }
