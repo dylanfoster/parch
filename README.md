@@ -6,7 +6,7 @@
 
 > [Restify](http://restify.com/) + [Sequelize](http://docs.sequelizejs.com/en/latest/)
 
-Parch is a simple RESTful framework combining the power of restify for routing
+parch is a simple RESTful framework combining the power of restify for routing
 and sequelize ORM for dao access. Stop rewriting your server code and get parched.
 
 ** **WIP: parch is very much still in beta so use at your own risk** **
@@ -34,6 +34,7 @@ const parch = new parch.Application({
     name: "my-app",
     certificate: "/path/to/my.crt",
     key: "/path/to/my.key",
+    log: Bunyan.create
     middlewares: [
       restify.bodyParser(),
       restify.queryParser(),
@@ -54,7 +55,7 @@ const parch = new parch.Application({
       database: "postgres",
       host:  "localhost",
       dialect: "postgres",
-      logging: true
+      logging: false
     },
     models: {
       dir: path.resolve(__dirname, "models")
@@ -219,10 +220,10 @@ class UserController extends parch.Controller {
 
 ## Authentication and Authorization
 
-Authentication and authorization is handled using [jwt](https://jwt.io/), with more options coming
-in the future. To disable auth for specific routes, use the
-`authentication.unauthenticated` array. Empty by default, you can add an entire controller,
-or a controller's method.
+Authentication and authorization is handled using [jwt](https://jwt.io/), with more
+options coming in the future. To disable auth for specific routes, use the
+`authentication.unauthenticated` array. Empty by default, you can give a string
+or regex expression to skip your unauthenticated routes
 
 ```javascript
 const parch = new parch.Application({
@@ -242,12 +243,47 @@ const parch = new parch.Application({
 
 ## Error handling and responses
 
-> TODO
+Error handling is done using [restify-errors](https://github.com/restify/errors).
+When using controller helpers (`findAll`, `findOne`, etc) errors are handle automatically
+for you. Just catch your Promise with `next` and parch will handle the rest.
+
+```javascript
+show(req, res, next) {
+  this.findOne(req.params.id).then(user => {
+  }).catch(next);
+}
+
+/**
+ * { code: "NotFound", message: "User with id '1' does not exist" }
+ */
+```
+
+Errors handled by parch:
+
+ - `findOne`:
+   - `NotFound`: The record does not exist
+ - `createRecord`:
+   - `BadRequest`: Request body was missing or invalid
+   - `UnprocessableEntity`: Model validations failed
+ - `updateRecord`:
+   - `BadRequest`: Request body was missing or invalid
+   - `UnprocessableEntity`: Model validations failed
+ - `destroyRecord`:
+   - `NotFound`: The record does not exist
+
+Need to handle your own errors? `controller.errors` contains all of [restify-errors](https://github.com/restify/errors)' errors
 
 ## Options
 
-  - **server**
+  - **server** All options (*with the exception of `middlewares`*) are passed directly to [restify](http://restify.com/#creating-a-server)
+    - `log`: defaults to parch's [bunyan instance](https://github.com/dylanfoster/parch/blob/master/src/logger.js) but can be overridden
+    - `middlewares(Array)`: merged with parch's [default middlwares](https://github.com/dylanfoster/parch/blob/master/src/application.js#L21-L26)
   - **authentication**
+    - `secretKey(String)`: A secret string used to sign JWT tokens
+    - `unauthenticated(Array)`: an array of strings or regex patterns to skip authentication.
   - **controllers**
+    - `dir(String)`: The path to your controllers directory. **Default**: `_dirname/controllers`
   - **database**
-  - **logging**
+    - `connection(Object)` [Sequelize connection options](http://docs.sequelizejs.com/en/latest/docs/getting-started/)
+    - `models`
+      - `dir(String)`: The path to your models directory. **Default**: `__dirname/models`
