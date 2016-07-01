@@ -7,6 +7,7 @@ import callsite from "callsite";
 import restify from "restify";
 
 import Loader from "./loader";
+import Logger from "./logger";
 import ModelManager from "./model_manager";
 import Router from "./router";
 
@@ -42,6 +43,7 @@ class Application {
     options.database.models = options.database.models || {};
     options.database.models.dir = options.database.models.dir || DEFAULT_MODEL_LOOKUP_PATH;
     options.server = options.server || {};
+    options.server.log = options.server.log || Logger.create();
     options.server.middlewares = options.server.middlewares || [];
 
     const app = options.app || restify.createServer(options.server);
@@ -56,6 +58,7 @@ class Application {
       type: "model",
       path: options.database.models.dir
     });
+    this.logger = options.server.log;
     this.modelManager = new ModelManager({ connection });
     this._addModels();
     this._associateModels();
@@ -69,6 +72,14 @@ class Application {
     };
 
     app.use(restify.acceptParser(app.acceptable));
+    app.use((req, res, next) => {
+      this.logger.child({ reqID: req.getId() }).info({ req, res });
+      req.log = this.logger.child({ reqID: req.getId() });
+      next();
+    });
+    app.on("after", (req, res, route, err) => {
+      req.log.info({ req, res, err });
+    });
     middlewares.forEach(middlware => { app.use(middlware); });
     this.app = app;
     this.map = Router.map.bind(null, routerSettings);

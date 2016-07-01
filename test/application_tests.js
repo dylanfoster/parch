@@ -3,6 +3,7 @@
 import path from "path";
 
 import chai, { expect } from "chai";
+import restify from "restify";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import supertest from "supertest";
@@ -45,12 +46,7 @@ describe("Application", function () {
   });
 
   describe("#start", function () {
-    const mockRestify = {
-      acceptable: ["application/json"],
-      createServer() {},
-      listen(port, cb) { cb(); },
-      use() {}
-    };
+    const mockRestify = restify.createServer();
 
     beforeEach(function () {
       sinon.spy(mockRestify, "listen");
