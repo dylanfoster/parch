@@ -1,3 +1,14 @@
+<a name="0.0.8"></a>
+## [0.0.8](https://github.com/dylanfoster/parch/compare/0.0.7...v0.0.8) (2016-07-01)
+
+
+### Features
+
+* **logger:** add logger class ([d88b1d2](https://github.com/dylanfoster/parch/commit/d88b1d2))
+* **logger:** add logger to app ([b3435ba](https://github.com/dylanfoster/parch/commit/b3435ba))
+
+
+
 <a name="0.0.7"></a>
 ## [0.0.7](https://github.com/dylanfoster/parch/compare/0.0.6...v0.0.7) (2016-06-24)
 
