@@ -1,4 +1,4 @@
-# parch
+# parch [WIP]
 
 [![Build Status](https://travis-ci.org/dylanfoster/parch.svg?branch=master)](https://travis-ci.org/dylanfoster/parch)
 [![Coverage Status](https://coveralls.io/repos/github/dylanfoster/parch/badge.svg?branch=develop)](https://coveralls.io/github/dylanfoster/parch?branch=develop)
@@ -8,8 +8,6 @@
 
 parch is a simple RESTful framework combining the power of restify for routing
 and sequelize ORM for dao access. Stop rewriting your server code and get parched.
-
-** **WIP: parch is very much still in beta so use at your own risk** **
 
 *If you'd like to contribute, take a look at the [roadmap](https://github.com/dylanfoster/parch/issues/1)*
 
@@ -34,14 +32,14 @@ const parch = new parch.Application({
     name: "my-app",
     certificate: "/path/to/my.crt",
     key: "/path/to/my.key",
-    log: Bunyan.create
+    log: Bunyan.createLogger(),
     middlewares: [
       restify.bodyParser(),
       restify.queryParser(),
       myCustomMiddleware()
     ]
   },
-  authentication: {
+  authentication: { // [WIP]
     secretKey: "ssshhh",
     unauthenticated: [/\/posts[\s\S]*/, "/users/resetPassword"]
   },
@@ -180,6 +178,11 @@ class UserModel extends parch.Model {
     super();
   }
 
+  associate(User, models) {
+    User.hasMany(models.Posts);
+    User.hasMany(models.User, { as: "Parent" });
+  }
+
   define(DataTypes) {
     const user = {
       email: {
@@ -193,7 +196,7 @@ class UserModel extends parch.Model {
 }
 ```
 
-## Associations
+## Associations [WIP]
 
 parch loads associations of a record as an array of ids.
 
@@ -218,7 +221,7 @@ class UserController extends parch.Controller {
 }
 ```
 
-## Authentication and Authorization
+## Authentication and Authorization [WIP]
 
 Authentication and authorization is handled using [jwt](https://jwt.io/), with more
 options coming in the future. To disable auth for specific routes, use the
@@ -239,7 +242,8 @@ const parch = new parch.Application({
 
 ## Logging
 
-> TODO
+Logging is handled automatically for you. All requests and responses will be logged
+using a custom [Bunyan instance](https://github.com/dylanfoster/parch/blob/master/src/logger.js).
 
 ## Error handling and responses
 
