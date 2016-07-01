@@ -43,6 +43,8 @@ class Application {
     options.database.models = options.database.models || {};
     options.database.models.dir = options.database.models.dir || DEFAULT_MODEL_LOOKUP_PATH;
     options.server = options.server || {};
+
+    // TODO: add logger options
     options.server.log = options.server.log || Logger.create();
     options.server.middlewares = options.server.middlewares || [];
 
@@ -58,6 +60,8 @@ class Application {
       type: "model",
       path: options.database.models.dir
     });
+
+    // TODO: this should be separate from log once we have logger options
     this.logger = options.server.log;
     this.modelManager = new ModelManager({ connection });
     this._addModels();
@@ -71,7 +75,10 @@ class Application {
       }
     };
 
+    // TODO: move this DEFAULT_MIDDLEWARES
     app.use(restify.acceptParser(app.acceptable));
+
+    // TODO: move these to an internal middleware
     app.use((req, res, next) => {
       this.logger.child({ reqID: req.getId() }).info({ req, res });
       req.log = this.logger.child({ reqID: req.getId() });

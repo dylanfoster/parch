@@ -11,6 +11,7 @@ class Controller {
     this.errors = errors;
     this.loader = settings.loader;
     this.models = this.loader.models;
+
     this.modelName = settings.model || this.name;
     this.model = this.models[this.modelName] || this.models[inflect.capitalize(this.modelName)];
   }
@@ -68,6 +69,10 @@ class Controller {
     }
 
     return this.findOne(id).then(record => record.update(data)).catch(err => {
+      /**
+       * HACK: if this is a sequelize validation error, we transform it, otherwise
+       * we can't be totally sure so just throw it up the stack
+       */
       if (err.name === "SequelizeValidationError") {
         const { errors: [validationError] } = err;
         const error = this.errors.UnprocessableEntityError;

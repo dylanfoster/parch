@@ -19,6 +19,8 @@ class Loader {
     const typeRegex = new RegExp(typeRegexString, "i");
     const modules = includeAll({
       dirname: this.loadPath,
+
+      // TODO: make this configurable
       filter: typeRegex
     });
 
@@ -27,6 +29,10 @@ class Loader {
       const key = inflect.singularize(moduleName);
 
       if (modules[module].hasOwnProperty("default")) {
+        /**
+         * HACK: Babel no longer exports [default], though I'm pretty sure I have
+         * that transform installed so....¯\_(ツ)_/¯
+         */
         modules[key] = modules[module].default;
       } else {
         modules[key] = modules[module];

@@ -7,6 +7,7 @@ import Bunyan from "bunyan";
 const LOG_ENV = process.env.NODE_ENV || "development";
 
 class Logger {
+  /* eslint-disable complexity */
   constructor(name, options = {}) {
     name = name || "api";
 
@@ -27,6 +28,7 @@ class Logger {
       });
     }
 
+    // TODO: this should probably just be a setting
     if (process.env.NODE_ENV !== "test") {
       streams.push({
         level: "info",
