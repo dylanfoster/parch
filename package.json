@@ -9,7 +9,7 @@
     "changelog": "conventional-changelog -s -p angular -i CHANGELOG.md",
     "prepare-release": "./scripts/prepare-release",
     "prepublish": "npm test && npm run build",
-    "test": "mocha --recursive --compilers js:babel-register",
+    "test": "NODE_ENV=test mocha --recursive --compilers js:babel-register",
     "test:cover": "npm run coverage",
     "watch": "chokidar 'src/**' 'test/**/*.js' -c 'npm test' --initial"
   },
