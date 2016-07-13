@@ -111,5 +111,25 @@ describe("Application", function () {
         .expect(200)
         .end(done);
     });
+
+    it("disables auth if not set by the user", function (done) {
+      application = new Application({
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        }
+      });
+      application.map(function () {
+        this.resource("user");
+      });
+
+      supertest(application.getApp())
+        .get("/users")
+        .expect(200)
+        .end(done);
+    });
   });
 });
