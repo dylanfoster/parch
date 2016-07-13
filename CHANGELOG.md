@@ -1,3 +1,13 @@
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/dylanfoster/parch/compare/v0.0.9...v0.1.0) (2016-07-13)
+
+
+### Features
+
+* **authentication:** add authentication to application ([44c7c33](https://github.com/dylanfoster/parch/commit/44c7c33))
+
+
+
 <a name="0.0.8"></a>
 ## [0.0.8](https://github.com/dylanfoster/parch/compare/0.0.7...v0.0.8) (2016-07-01)
 

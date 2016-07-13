@@ -5,6 +5,7 @@ import path from "path";
 import _ from "lodash";
 import callsite from "callsite";
 import restify from "restify";
+import jwt from "restify-jwt";
 
 import Loader from "./loader";
 import Logger from "./logger";
@@ -17,6 +18,7 @@ const DEFAULT_CONNECTION_SETTINGS = {
   username: "test",
   password: "test"
 };
+const DEFAULT_JWT_SECRET = "secret";
 const DEFAULT_LISTEN_PORT = 3000;
 const DEFAULT_MIDDLEWARES = [
   restify.gzipResponse(),
@@ -77,6 +79,20 @@ class Application {
 
     // TODO: move this DEFAULT_MIDDLEWARES
     app.use(restify.acceptParser(app.acceptable));
+
+    if (options.authentication) {
+      let secret, unless;
+
+      if (_.isObject(options.authentication)) {
+        secret = options.authentication.secretKey || DEFAULT_JWT_SECRET;
+        unless = options.authentication.unauthenticated || null;
+      } else {
+        secret = DEFAULT_JWT_SECRET;
+        unless = [];
+      }
+
+      app.use(jwt({ secret }).unless({ path: unless }));
+    }
 
     // TODO: move these to an internal middleware
     app.use((req, res, next) => {
