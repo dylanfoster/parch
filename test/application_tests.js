@@ -3,6 +3,7 @@
 import path from "path";
 
 import chai, { expect } from "chai";
+import jwt from "jsonwebtoken";
 import restify from "restify";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
@@ -23,7 +24,10 @@ describe("Application", function () {
         controllers: {
           dir: path.resolve(__dirname, "fixtures", "controllers")
         },
-        database: { connection, models: { dir: path.resolve(__dirname, "fixtures/models") }}
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        }
       });
     });
 
@@ -67,6 +71,65 @@ describe("Application", function () {
       return application.start().then(() => {
         expect(mockRestify.listen).to.have.been.calledWith(3000);
       });
+    });
+  });
+
+  describe("authentication", function () {
+    beforeEach(function () {
+      application = new Application({
+        authentication: {
+          unauthenticated: [/\/resetPassword/]
+        },
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        }
+      });
+
+      application.map(function () {
+        this.resource("user");
+        this.route("/users/resetPassword", { using: "user:resetPassword", method: "post" });
+      });
+    });
+
+    it("authenticates users via jwt", function (done) {
+      const token = jwt.sign({ foo: "bar" }, "secret");
+
+      supertest(application.getApp())
+        .get("/users")
+        .set("Authorization", `Bearer ${token}`)
+        .expect(200)
+        .end(done);
+    });
+
+    it("skips 'unauthenticated' routes", function (done) {
+      supertest(application.getApp())
+        .post("/users/resetPassword")
+        .expect(200)
+        .end(done);
+    });
+
+    it("disables auth if not set by the user", function (done) {
+      application = new Application({
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        }
+      });
+      application.map(function () {
+        this.resource("user");
+      });
+
+      supertest(application.getApp())
+        .get("/users")
+        .expect(200)
+        .end(done);
     });
   });
 });
