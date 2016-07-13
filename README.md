@@ -223,7 +223,7 @@ class UserController extends parch.Controller {
 
 ## Authentication and Authorization [WIP]
 
-Authentication and authorization is handled using [jwt](https://jwt.io/), with more
+Authorization is handled using [jwt](https://jwt.io/), with more
 options coming in the future. To disable auth for specific routes, use the
 `authentication.unauthenticated` array. Empty by default, you can give a string
 or regex expression to skip your unauthenticated routes
@@ -234,6 +234,25 @@ const parch = new parch.Application({
     unauthenticated: [/\/posts[\s\S]*/, "/users/resetPassword"]
   }
 });
+```
+
+In order to authenticate a user, create and sign a JWT token to send back to the
+client. The authorization middleware will then look for this token in the
+`Authorization` header. [see jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
+
+```javascript
+const jwt = require("jsonwebtoken");
+const app = require("express")();
+
+app.post("/login", function (req, res, next) {
+  const token = jwt.sign({ userId: 1 }, "secret");
+
+  res.send({ token });
+});
+```
+
+```bash
+curl http://my-server.com/protectedRoute -H 'Authorization: Bearer <token>'
 ```
 
 ## Static content
