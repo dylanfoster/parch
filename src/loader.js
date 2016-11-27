@@ -6,6 +6,7 @@ import inflect from "inflect";
 class Loader {
   constructor(settings) {
     this.type = settings.type;
+    this.filter = settings.filter || this._getDefaultFilter();
     this.loadPath = settings.path;
     this.modules = this._loadModules();
   }
@@ -14,14 +15,24 @@ class Loader {
     return this.modules[name];
   }
 
+  _getFilter(filter) {
+    filter = filter || this._getDefaultFilterString();
+
+    return new RegExp(filter, "i");
+  }
+
+  _getDefaultFilterString() {
+    return `(.+)${this.type}\\.js$`;
+  }
+
+  _getDefaultFilter() {
+    return this._getFilter();
+  }
+
   _loadModules() {
-    const typeRegexString = `(.+)${this.type}\\.js$`;
-    const typeRegex = new RegExp(typeRegexString, "i");
     const modules = includeAll({
       dirname: this.loadPath,
-
-      // TODO: make this configurable
-      filter: typeRegex
+      filter: this.filter
     });
 
     Object.keys(modules).forEach(module => {

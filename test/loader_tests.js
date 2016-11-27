@@ -16,6 +16,20 @@ describe("Loader", function () {
     });
   });
 
+  describe("filter", function () {
+    it("is configurable", function () {
+      loader = new Loader({
+        filter: /(.+)-controller\.js$/i,
+        type: "controller",
+        path: path.resolve(__dirname, "fixtures", "controllers")
+      });
+
+      const controller = loader.get("bar");
+
+      expect(controller.name).to.eql("BarController");
+    });
+  });
+
   describe("#get", function () {
     it("returns a class by name", function () {
       const controller = loader.get("foo");
