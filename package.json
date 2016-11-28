@@ -68,7 +68,7 @@
   "dependencies": {
     "bunyan": "^1.8.1",
     "callsite": "^1.0.0",
-    "include-all": "^0.1.6",
+    "include-all": "^2.0.0",
     "inflect": "^0.3.0",
     "lodash": "^4.13.1",
     "restify": "^4.1.0",
