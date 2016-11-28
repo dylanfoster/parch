@@ -131,5 +131,25 @@ describe("Application", function () {
         .expect(200)
         .end(done);
     });
+
+    it("can be enabled by setting to true", function (done) {
+      application = new Application({
+        authentication: true,
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        }
+      });
+      application.map(function () {
+        this.resource("user");
+      });
+      supertest(application.getApp())
+        .get("/users")
+        .expect(401)
+        .end(done);
+    });
   });
 });
