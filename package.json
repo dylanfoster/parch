@@ -42,7 +42,7 @@
     "sinon-chai": "^2.8.0",
     "sqlite3": "^3.1.4",
     "stream": "0.0.2",
-    "supertest": "^1.2.0"
+    "supertest": "^2.0.1"
   },
   "eslintConfig": {
     "extends": "unstandard",
