@@ -1,3 +1,14 @@
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/dylanfoster/parch/compare/0.1.0...v0.2.0) (2016-11-28)
+
+
+### Features
+
+* **app:** move logging to a middleware ([fde7ae8](https://github.com/dylanfoster/parch/commit/fde7ae8))
+* **loader:** allow filter to be configurable ([61a750b](https://github.com/dylanfoster/parch/commit/61a750b))
+
+
+
 <a name="0.1.0"></a>
 # [0.1.0](https://github.com/dylanfoster/parch/compare/v0.0.9...v0.1.0) (2016-07-13)
 
