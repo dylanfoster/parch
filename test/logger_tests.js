@@ -116,7 +116,7 @@ describe("Logger", function () {
     it("logs allowed properties only", function () {
       logger.info({
         res: {
-          body: {  },
+          body: { },
           statusCode: 200,
           headers: {
             "Content-Type": "application/json"
