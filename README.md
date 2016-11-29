@@ -1,4 +1,4 @@
-# parch [WIP]
+# parch
 
 [![Build Status](https://travis-ci.org/dylanfoster/parch.svg?branch=master)](https://travis-ci.org/dylanfoster/parch)
 [![Coverage Status](https://coveralls.io/repos/github/dylanfoster/parch/badge.svg?branch=develop)](https://coveralls.io/github/dylanfoster/parch?branch=develop)
@@ -39,7 +39,7 @@ const parch = new parch.Application({
       myCustomMiddleware()
     ]
   },
-  authentication: { // [WIP]
+  authentication: {
     secretKey: "ssshhh",
     unauthenticated: [/\/posts[\s\S]*/, "/users/resetPassword"]
   },
@@ -221,7 +221,7 @@ class UserController extends parch.Controller {
 }
 ```
 
-## Authentication and Authorization [WIP]
+## Authentication and Authorization
 
 Authorization is handled using [jwt](https://jwt.io/), with more
 options coming in the future. To disable auth for specific routes, use the
