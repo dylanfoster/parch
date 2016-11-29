@@ -179,7 +179,8 @@ describe("Controller", function () {
 
       beforeEach(function () {
         return modelManager.models.User.create({ firstName: "john" })
-          .then(john => { user = john; }); });
+          .then(john => { user = john; });
+      });
 
       afterEach(function () {
         return modelManager.sequelize.drop();

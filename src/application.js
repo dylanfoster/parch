@@ -11,6 +11,7 @@ import Loader from "./loader";
 import Logger from "./logger";
 import ModelManager from "./model_manager";
 import Router from "./router";
+import logger from "./middleware/logger";
 
 const DEFAULT_CONNECTION_SETTINGS = {
   dialect: "sqlite",
@@ -94,12 +95,7 @@ class Application {
       app.use(jwt({ secret }).unless({ path: unless }));
     }
 
-    // TODO: move these to an internal middleware
-    app.use((req, res, next) => {
-      this.logger.child({ reqID: req.getId() }).info({ req, res });
-      req.log = this.logger.child({ reqID: req.getId() });
-      next();
-    });
+    app.use(logger({ log: this.logger }));
     app.on("after", (req, res, route, err) => {
       req.log.info({ req, res, err });
     });

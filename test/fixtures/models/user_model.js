@@ -17,7 +17,7 @@ class UserModel extends Model {
         type: DataTypes.STRING,
         validate: {
           is: {
-            args: ["^[a-z]+$",'i'],
+            args: ["^[a-z]+$", "i"],
             msg: "firstName must be a valid string"
           }
         }
