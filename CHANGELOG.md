@@ -4,7 +4,7 @@
 
 ### Features
 
-* **application:** add ability to overried logging directory and serializers ([d824fe9](https://github.com/dylanfoster/parch/commit/d824fe9))
+* **application:** add ability to override logging directory and serializers ([d824fe9](https://github.com/dylanfoster/parch/commit/d824fe9))
 
 
 
