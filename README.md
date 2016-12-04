@@ -57,6 +57,21 @@ const parch = new parch.Application({
     },
     models: {
       dir: path.resolve(__dirname, "models")
+    },
+    logging: {
+      dir: path.resolve(__dirname, 'logs'),
+      serializers: {
+        req(req) {
+          return {
+            url: req.url
+          }
+        },
+        res(res) {
+          return {
+            statusCode: res.statusCode
+          }
+        }
+      }
     }
   }
 });
@@ -310,3 +325,8 @@ Need to handle your own errors? `controller.errors` contains all of [restify-err
     - `connection(Object)` [Sequelize connection options](http://docs.sequelizejs.com/en/latest/docs/getting-started/)
     - `models`
       - `dir(String)`: The path to your models directory. **Default**: `__dirname/models`
+  - **logging**
+    - `dir(String)`: Path where logs should be saved
+    - `serializers(Object)`:
+      - `req(Function)`: your request serializer. takes the request as its only argument
+      - `res(Function)`: your response serializer. takes the response as its only argument

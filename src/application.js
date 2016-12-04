@@ -45,10 +45,11 @@ class Application {
     options.database.connection = options.database.connection || DEFAULT_CONNECTION_SETTINGS;
     options.database.models = options.database.models || {};
     options.database.models.dir = options.database.models.dir || DEFAULT_MODEL_LOOKUP_PATH;
+    options.logging = options.logging || {};
     options.server = options.server || {};
 
     // TODO: add logger options
-    options.server.log = options.server.log || Logger.create();
+    options.server.log = options.server.log || Logger.create(null, options.logging);
     options.server.middlewares = options.server.middlewares || [];
 
     const app = options.app || restify.createServer(options.server);
@@ -64,7 +65,6 @@ class Application {
       path: options.database.models.dir
     });
 
-    // TODO: this should be separate from log once we have logger options
     this.logger = options.server.log;
     this.modelManager = new ModelManager({ connection });
     this._addModels();

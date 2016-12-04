@@ -1,12 +1,15 @@
 "use strict";
 
+import fs from "fs";
 import path from "path";
 
 import chai, { expect } from "chai";
+import del from "del";
 import jwt from "jsonwebtoken";
 import restify from "restify";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
+import stream from "stream";
 import supertest from "supertest";
 
 chai.use(sinonChai);
@@ -150,6 +153,127 @@ describe("Application", function () {
         .get("/users")
         .expect(401)
         .end(done);
+    });
+  });
+
+  describe("logging", function () {
+    let loggingDir, messages, writable;
+
+    beforeEach(function () {
+      loggingDir = path.resolve(__dirname, "fixtures/custom-logs");
+      messages = [];
+      stream.write = message => {
+        messages.push(JSON.parse(message));
+      };
+    });
+
+    afterEach(function () {
+      return del([`${loggingDir}/**/*.log`, `!${loggingDir}`]);
+    });
+
+    it("allows for a custom directory", function (done) {
+      application = new Application({
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        logging: { dir: loggingDir }
+      });
+      application.map(function () {
+        this.resource("user");
+      });
+      supertest(application.getApp())
+        .get("/users")
+        .end(function (err, res) {
+          if (err) { return done(err); }
+
+          fs.readdir(loggingDir, (err2, files) => {
+            if (err2) { return done(err2); }
+
+            const log = JSON.parse(
+              fs.readFileSync(path.join(loggingDir, files.filter(file => file.match(/\.log/))[0])).toString()
+            );
+
+            expect(log.res.statusCode).to.eql(200);
+
+            done();
+          });
+        });
+    });
+
+    it("allows for custom request serializer", function (done) {
+      application = new Application({
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        logging: {
+          serializers: {
+            req(req) {
+              return { url: req.url }
+            }
+          }
+        }
+      });
+
+      application.logger.addStream({
+        type: "stream",
+        stream
+      });
+      application.map(function () {
+        this.resource("user");
+      });
+      supertest(application.getApp())
+        .get("/users")
+        .end(function (err, res) {
+          if (err) { return done(err); }
+
+          expect(messages[0].req.url).to.eql("/users");
+          expect(messages[0].req).to.not.have.any.keys("httpVersion", "method");
+          done();
+        });
+    });
+
+    it("allows for custom response serializer", function (done) {
+      application = new Application({
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        logging: {
+          serializers: {
+            res(res) {
+              return { statusCode: res.statusCode}
+            }
+          }
+        }
+      });
+
+      application.logger.addStream({
+        type: "stream",
+        stream
+      });
+      application.map(function () {
+        this.resource("user");
+      });
+      supertest(application.getApp())
+        .get("/users")
+        .end(function (err, res) {
+          if (err) { return done(err); }
+
+          expect(messages[0].res.statusCode).to.eql(200);
+          expect(messages[0].req).to.not.have.any.keys("headers");
+          done();
+        });
     });
   });
 });
