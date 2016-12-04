@@ -57,19 +57,19 @@ const parch = new parch.Application({
     },
     models: {
       dir: path.resolve(__dirname, "models")
-    },
-    logging: {
-      dir: path.resolve(__dirname, 'logs'),
-      serializers: {
-        req(req) {
-          return {
-            url: req.url
-          }
-        },
-        res(res) {
-          return {
-            statusCode: res.statusCode
-          }
+    }
+  },
+  logging: {
+    dir: path.resolve(__dirname, 'logs'),
+    serializers: {
+      req(req) {
+        return {
+          url: req.url
+        }
+      },
+      res(res) {
+        return {
+          statusCode: res.statusCode
         }
       }
     }
