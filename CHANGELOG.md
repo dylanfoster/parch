@@ -1,3 +1,13 @@
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/dylanfoster/parch/compare/0.2.0...v0.3.0) (2016-12-04)
+
+
+### Features
+
+* **application:** add ability to override logging directory and serializers ([d824fe9](https://github.com/dylanfoster/parch/commit/d824fe9))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/dylanfoster/parch/compare/0.1.0...v0.2.0) (2016-11-28)
 
