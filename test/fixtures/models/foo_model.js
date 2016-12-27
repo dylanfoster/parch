@@ -4,7 +4,18 @@ import Model from "../../../src/model";
 
 class FooModel extends Model {
   constructor() {
-    super();
+    super({
+      classMethods: {
+        getBaz() {
+          return { name: "class" };
+        }
+      },
+      instanceMethods: {
+        getBaz() {
+          return { name: "instance" };
+        }
+      }
+    });
   }
 
   define(DataTypes) {

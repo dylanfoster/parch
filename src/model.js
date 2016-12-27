@@ -10,7 +10,8 @@ class Model {
     return this.constructor.name.split(/model/i)[0];
   }
 
-  constructor() {
+  constructor(options = {}) {
+    this.options = options;
   }
 
   define() {

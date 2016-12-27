@@ -19,7 +19,11 @@ class ModelManager {
   addModel(Model) {
     const _model = new Model();
     const modelAttributes = _model.define(this.Sequelize);
-    const model = this.sequelize.define(_model.name, modelAttributes);
+    const model = this.sequelize.define(
+      _model.name,
+      modelAttributes,
+      _model.options
+    );
 
     model.associate = _model.associate;
     this.models[model.name] = model;

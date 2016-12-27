@@ -103,6 +103,8 @@ POST   /users/resetPassword => UserController.resetPassword
 
 ### Controller
 
+`lib/controllers/user_controller.js`
+
 ```javascript
 const parch = require("parch");
 
@@ -182,15 +184,27 @@ class UserController extends parch.Controller {
 
 ### Model
 
-Models are defined following the [sequelize define](http://docs.sequelizejs.com/en/latest/docs/models-definition/),
-pattern.
+Models are defined following the [sequelize define](http://docs.sequelizejs.com/en/latest/docs/models-definition/)
+pattern. [Options](http://docs.sequelizejs.com/en/v3/docs/models-definition/#expansion-of-models) for the model definition can be passed to the constructor's `super` call
 
 `lib/models/user.js`
 
 ```javascript
 class UserModel extends parch.Model {
   constructor() {
-    super();
+    super({
+      classMethods: {
+      },
+
+      getterMethods: {
+      },
+
+      hooks: {
+      },
+
+      instanceMethods: {
+      }
+    });
   }
 
   associate(User, models) {
@@ -270,10 +284,6 @@ app.post("/login", function (req, res, next) {
 curl http://my-server.com/protectedRoute -H 'Authorization: Bearer <token>'
 ```
 
-## Static content
-
-> TODO
-
 ## Logging
 
 Logging is handled automatically for you. All requests and responses will be logged
@@ -282,7 +292,7 @@ using a custom [Bunyan instance](https://github.com/dylanfoster/parch/blob/maste
 ## Error handling and responses
 
 Error handling is done using [restify-errors](https://github.com/restify/errors).
-When using controller helpers (`findAll`, `findOne`, etc) errors are handle automatically
+When using controller helpers (`findAll`, `findOne`, etc) errors are handled automatically
 for you. Just catch your Promise with `next` and parch will handle the rest.
 
 ```javascript
@@ -315,7 +325,7 @@ Need to handle your own errors? `controller.errors` contains all of [restify-err
 
   - **server** All options (*with the exception of `middlewares`*) are passed directly to [restify](http://restify.com/#creating-a-server)
     - `log`: defaults to parch's [bunyan instance](https://github.com/dylanfoster/parch/blob/master/src/logger.js) but can be overridden
-    - `middlewares(Array)`: merged with parch's [default middlwares](https://github.com/dylanfoster/parch/blob/master/src/application.js#L21-L26)
+    - `middlewares(Array)`: merged with parch's [default middlwares](https://github.com/dylanfoster/parch/blob/master/src/application.js#L24-L31)
   - **authentication**
     - `secretKey(String)`: A secret string used to sign JWT tokens
     - `unauthenticated(Array)`: an array of strings or regex patterns to skip authentication.
