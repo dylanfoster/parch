@@ -1,3 +1,13 @@
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/dylanfoster/parch/compare/0.3.1...v0.4.0) (2016-12-27)
+
+
+### Features
+
+* **models:** add ability to pass sequelize model options ([5557116](https://github.com/dylanfoster/parch/commit/5557116))
+
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://github.com/dylanfoster/parch/compare/0.3.0...v0.3.1) (2016-12-04)
 
