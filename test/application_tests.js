@@ -216,7 +216,7 @@ describe("Application", function () {
         logging: {
           serializers: {
             req(req) {
-              return { url: req.url }
+              return { url: req.url };
             }
           }
         }
@@ -252,7 +252,7 @@ describe("Application", function () {
         logging: {
           serializers: {
             res(res) {
-              return { statusCode: res.statusCode}
+              return { statusCode: res.statusCode };
             }
           }
         }
