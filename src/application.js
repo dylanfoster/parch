@@ -104,16 +104,31 @@ class Application {
     this.map = Router.map.bind(null, routerSettings);
   }
 
+  /**
+   * getApp
+   *
+   * @returns {Object} restify application instance
+   */
   getApp() {
     return this.app;
   }
 
+  /**
+   * start starts listening on the defined port
+   *
+   * @param {Number} port the port to listen on. Default: 3000
+   * @returns {Promise<undefined, Error>}
+   */
   start(port = DEFAULT_LISTEN_PORT) {
     return new Promise((resolve, reject) => {
       this.app.listen(port, () => { resolve(); });
     });
   }
 
+  /**
+   * _addModels loads the models into the model manager
+   * @private
+   */
   _addModels() {
     const _internalModels = this._internalModels;
 
@@ -122,6 +137,10 @@ class Application {
     });
   }
 
+  /**
+   * _associateModels runs associations for each model
+   * @private
+   */
   _associateModels() {
     const modelManager = this.modelManager;
 
