@@ -19,6 +19,16 @@ npm install --save parch
 
 ## Usage
 
+- [Application](#application)
+- [Controller](#controller)
+  - [hooks](#controller-hooks)
+- [Model](#model)
+- [Associations](#associations-wip)
+- [Authentication](#authentication-and-authorization)
+- [Logging](#logging)
+- [Error handling](#error-handling-and-responses)
+
+
 ### Application
 
 For a full list of available options [see below](#options)
