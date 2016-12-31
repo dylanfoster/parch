@@ -52,14 +52,34 @@ class Router {
   }
 
   _mapControllerAction(resource, controller, action) {
-    const controllerAction = controller[action];
     const method = restActionMapper.get(action);
     const singularResource = inflect.singularize(resource);
     const pluralResource = inflect.pluralize(singularResource);
     const pathSegment = restPathMapper.get(action);
     const resourcePath = `/${pluralResource}${pathSegment}`;
+    const handlers = this._generateControllerHandlers(controller, action);
 
-    this.app[method](resourcePath, controllerAction.bind(controller));
+    this.app[method](resourcePath, handlers);
+  }
+
+  _generateControllerHandlers(controller, action) {
+    const controllerAction = controller[action];
+    const { hooks } = controller;
+    const handlers = [controllerAction.bind(controller)];
+
+    if (hooks) {
+      const actionHooks = hooks[action];
+
+      if (actionHooks && actionHooks.before) {
+        handlers.unshift(actionHooks.before.bind(controller));
+      }
+
+      if (actionHooks && actionHooks.after) {
+        handlers.push(actionHooks.after.bind(controller));
+      }
+    }
+
+    return handlers;
   }
 
   static map(settings, callback) {
