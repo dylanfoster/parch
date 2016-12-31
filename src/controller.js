@@ -7,6 +7,12 @@ class Controller {
   get name() {
     return this.constructor.name.split(/controller/i)[0].toLowerCase();
   }
+  /**
+   * constructor
+   *
+   * @param settings
+   * @returns {undefined}
+   */
   constructor(settings) {
     this.errors = errors;
     this.loader = settings.loader;
@@ -16,6 +22,12 @@ class Controller {
     this.model = this.models[this.modelName] || this.models[inflect.capitalize(this.modelName)];
   }
 
+  /**
+   * createRecord Builds, validates and saves a model instance.
+   *
+   * @param {Object} data the model data to create the instance with
+   * @returns {Promise<Model, Error>} the model instance
+   */
   createRecord(data) {
     if (!data) {
       const error = this.errors.BadRequestError;
@@ -39,14 +51,34 @@ class Controller {
     });
   }
 
+  /**
+   * destroyRecord destroy a model instance and remove it from the db
+   *
+   * @param {Number} id the id of the resource to destroy
+   * @returns {Promise<undefined, Error}
+   */
   destroyRecord(id) {
     return this.findOne(id).then(record => record.destroy());
   }
 
+  /**
+   * findAll find all records. optionally pass a where clause to filter data
+   *
+   * @param {Object} where sequelize where clause
+   * @see http://docs.sequelizejs.com/en/v3/docs/querying/#where
+   *
+   * @returns {Promise<Model[], Error} an array of model instance
+   */
   findAll(where) {
     return this.model.findAll({ where });
   }
 
+  /**
+   * findOne find a single instance by id
+   *
+   * @param {Number} id the id of the instance to search for
+   * @returns {Promise<Model, Error>}
+   */
   findOne(id) {
     return this.model.findById(id).then(record => {
       if (!record) {
@@ -60,6 +92,13 @@ class Controller {
     });
   }
 
+  /**
+   * updateRecord update a single record
+   *
+   * @param {Number} id the id of the record to update
+   * @param {Object} data the data to update on the record
+   * @returns {Promise<Model, Error>}
+   */
   updateRecord(id, data) {
     if (!data) {
       const error = this.errors.BadRequestError;
