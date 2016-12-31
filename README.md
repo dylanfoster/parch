@@ -182,6 +182,37 @@ class UserController extends parch.Controller {
 }
 ```
 
+### Controller Hooks
+
+Controller hooks allowing for pre and post processing of requests. Both before and after hooks are supported as well as any additional methods added when using `Controller#route`. When using the `after` hook, make sure to call next after sending your response.
+
+```javascript
+class UserController extends parch.Controller {
+  constructor(options) {
+    super(options);
+
+    this.hooks = {
+      // The hook name must match the method
+      index: {
+        before(req, res, next) {
+          return checkPermissions().then(() => {
+            next();
+          }).catch(next);
+        },
+        after(req, res, next) {
+          req.log.child().info("post processing");
+        }
+      }
+    };
+  }
+
+  index(req, res, next) {
+    res.send(200);
+    next();
+  }
+}
+```
+
 ### Model
 
 Models are defined following the [sequelize define](http://docs.sequelizejs.com/en/latest/docs/models-definition/)
