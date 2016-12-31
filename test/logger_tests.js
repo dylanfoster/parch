@@ -31,7 +31,9 @@ describe("Logger", function () {
       expect(files).to.have.length(2);
 
       const log = JSON.parse(
-        fs.readFileSync(path.join(LOGS_DIR, files.filter(file => file.match(/\.log/))[0])).toString()
+        fs.readFileSync(path.join(LOGS_DIR, files.filter(file =>
+          file.match(/\.log/)
+        )[0])).toString()
       );
 
       expect(log.msg).to.eql("foo");
