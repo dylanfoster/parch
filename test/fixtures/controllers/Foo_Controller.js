@@ -56,6 +56,16 @@ class FooController extends Controller {
           this.hooks.destroy.after.called = true;
           next();
         }
+      },
+      bar: {
+        before(req, res, next) {
+          this.hooks.bar.before.called = true;
+          next();
+        },
+        after(req, res, next) {
+          this.hooks.bar.after.called = true;
+          next();
+        }
       }
     };
   }

@@ -38,28 +38,9 @@ class Router {
     const [controllerName, actionName] = options.using.split(":");
     const controller = this.controllers.get(controllerName);
     const method = options.method;
+    const handlers = this._generateControllerHandlers(controller, actionName);
 
-    this.app[method](path, controller[actionName].bind(controller));
-  }
-
-  _loadControllers() {
-    const controllers = this.loader.controllers.modules;
-    const loader = this.loader;
-
-    Object.keys(controllers).forEach(controller => {
-      this.controllers.set(controller, new controllers[controller]({ loader }));
-    });
-  }
-
-  _mapControllerAction(resource, controller, action) {
-    const method = restActionMapper.get(action);
-    const singularResource = inflect.singularize(resource);
-    const pluralResource = inflect.pluralize(singularResource);
-    const pathSegment = restPathMapper.get(action);
-    const resourcePath = `/${pluralResource}${pathSegment}`;
-    const handlers = this._generateControllerHandlers(controller, action);
-
-    this.app[method](resourcePath, handlers);
+    this.app[method](path, handlers);
   }
 
   _generateControllerHandlers(controller, action) {
@@ -80,6 +61,26 @@ class Router {
     }
 
     return handlers;
+  }
+
+  _loadControllers() {
+    const controllers = this.loader.controllers.modules;
+    const loader = this.loader;
+
+    Object.keys(controllers).forEach(controller => {
+      this.controllers.set(controller, new controllers[controller]({ loader }));
+    });
+  }
+
+  _mapControllerAction(resource, controller, action) {
+    const method = restActionMapper.get(action);
+    const singularResource = inflect.singularize(resource);
+    const pluralResource = inflect.pluralize(singularResource);
+    const pathSegment = restPathMapper.get(action);
+    const resourcePath = `/${pluralResource}${pathSegment}`;
+    const handlers = this._generateControllerHandlers(controller, action);
+
+    this.app[method](resourcePath, handlers);
   }
 
   static map(settings, callback) {

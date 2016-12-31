@@ -13,7 +13,7 @@ import { loader } from "./fixtures";
 
 chai.use(sinonChai);
 
-describe.only("Router", function () {
+describe("Router", function () {
   describe("map", function () {
     it("returns an instance of Router", function () {
       const router = Router.map({ loader }, function () {});
@@ -144,7 +144,7 @@ describe.only("Router", function () {
   });
 
   describe("#route", function () {
-    let app, client, router;
+    let app, client, controller, router;
 
     beforeEach(function () {
       app = restify.createServer();
@@ -154,6 +154,7 @@ describe.only("Router", function () {
       });
 
       client = supertest(app);
+      controller = router.controllers.get("foo");
     });
 
     it("maps a static route to a controller action", function (done) {
@@ -162,6 +163,20 @@ describe.only("Router", function () {
       client.get("/foo/bar")
         .expect(200)
         .end(done);
+    });
+
+    it("binds before and after hooks", function (done) {
+      router.route("/foo/bar", { using: "foo:bar", method: "get" });
+
+      client.get("/foo/bar")
+        .expect(200)
+        .end(function (err, res) {
+          if (err) { return done(err); }
+
+          expect(controller.hooks.bar.before.called).to.be.true;
+          expect(controller.hooks.bar.after.called).to.be.true;
+          done();
+        });
     });
   });
 });
