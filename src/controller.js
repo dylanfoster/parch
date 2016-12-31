@@ -7,11 +7,12 @@ class Controller {
   get name() {
     return this.constructor.name.split(/controller/i)[0].toLowerCase();
   }
+
   /**
    * constructor
    *
-   * @param settings
-   * @returns {undefined}
+   * @param {Object} settings controller settings
+   * @param {Object} settings.loader loader for controllers and models
    */
   constructor(settings) {
     this.errors = errors;
