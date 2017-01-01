@@ -1,12 +1,18 @@
 "use strict";
 
+/**
+ * Base model
+ *
+ * @module parch
+ * @class Model
+ */
 class Model {
   get name() {
     return this.constructor.name.split(/model/i)[0];
   }
 
   /**
-   * constructor
+   * @constructor
    *
    * @param {Object} options sequelize model options
    * @see http://docs.sequelizejs.com/en/v3/docs/models-definition/#configuration
@@ -16,7 +22,20 @@ class Model {
   }
 
   /**
-   * define
+   * Model definition
+   *
+   *     define(DataTypes) {
+   *       const user = {
+   *         username: {
+   *           allowNull: false
+   *           type: DataTypes.STRING
+   *         }
+   *       };
+   *
+   *       return user;
+   *     }
+   *
+   * @method define
    * @param {Object} DataTypes sequelize DataTypes Object
    * @see http://docs.sequelizejs.com/en/v3/docs/models-definition/#data-types
    */

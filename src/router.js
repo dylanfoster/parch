@@ -17,10 +17,16 @@ const restPathMapper = new Map([
     ["destroy", "/:id"]
 ]);
 
+/**
+ * Manages routing
+ *
+ * @class Router
+ */
 class Router {
   /**
    * constructor
    *
+   * @constructor
    * @param settings
    * @param settings.app restify app instance
    * @param settings.loader module loader
@@ -33,8 +39,13 @@ class Router {
   }
 
   /**
-   * resource register a resource and wire up restful endpoints
+   * register a resource and wire up restful endpoints
    *
+   *     Router.map(function () {
+   *       this.resource("user");
+   *     });
+   *
+   * @method resource
    * @param {String} name the resource name in singular form
    */
   resource(name) {
@@ -47,8 +58,13 @@ class Router {
   }
 
   /**
-   * route register a single route
+   * register a single route
    *
+   *     Router.map(function () {
+   *       this.route("/user/foo", { using: "users:foo", method: "get" });
+   *     });
+   *
+   * @method route
    * @param {String} path the route path (e.g. /foo/bar)
    * @param {Object} options
    * @param {String} options.using colon delimited controller method identifier
@@ -64,8 +80,10 @@ class Router {
   }
 
   /**
-   * _generateControllerHandlers generates main route handler plus pre and post hooks
+   * generates main route handler plus pre and post hooks
    *
+   * @private
+   * @method _generateControllerHandlers
    * @param {Object} controller
    * @param {String} action controller method
    * @returns {Array} handlers
@@ -91,7 +109,10 @@ class Router {
   }
 
   /**
-   * _loadControllers loads controllers from the loader
+   * loads controllers from the loader
+   *
+   * @private
+   * @method _loadControllers
    */
   _loadControllers() {
     const controllers = this.loader.controllers.modules;
@@ -103,8 +124,10 @@ class Router {
   }
 
   /**
-   * _mapControllerAction maps a resource controller action and route
+   * maps a resource controller action and route
    *
+   * @private
+   * @method _mapControllerAction
    * @param {String} resource the resource name
    * @param {Object} controller the resource controller
    * @param {String} action the controller method
@@ -121,7 +144,7 @@ class Router {
   }
 
   /**
-   * map configures router resources
+   * configures router resources
    *
    * @static
    * @param {Object} settings
