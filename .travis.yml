@@ -1,19 +1,27 @@
 sudo: false
 language: node_js
 node_js:
-- '6'
-- '5'
-- '4'
+  - '6'
+  - '5'
+  - '4'
+os:
+  - osx
+  - linux
+
 cache:
   directories:
-  - node_modules
+    - node_modules
+
+branches:
+  only:
+    - develop
+    - master
+
 before_install:
-- npm config set spin false
-os:
-- osx
-- linux
+  - npm config set spin false
 script: npm run test:cover
 after_script: cat coverage/lcov.info | node_modules/coveralls/bin/coveralls.js
+
 deploy:
   provider: npm
   email: dylan947@gmail.com

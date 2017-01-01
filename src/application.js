@@ -30,8 +30,21 @@ const DEFAULT_MIDDLEWARES = [
   restify.queryParser()
 ];
 
+/**
+ * Base application
+ *
+ * @module parch
+ * @class Application
+ */
 class Application {
   /* eslint-disable complexity */
+
+  /**
+   * @constructor
+   *
+   * @param options = {}
+   * @returns {undefined}
+   */
   constructor(options = {}) {
     // who are you
     const caller = callsite()[1].getFileName();
@@ -104,16 +117,36 @@ class Application {
     this.map = Router.map.bind(null, routerSettings);
   }
 
+  /**
+   * Get the restify application instance
+   *
+   * @method getApp
+   *
+   * @returns {Object} restify application instance
+   */
   getApp() {
     return this.app;
   }
 
+  /**
+   * starts listening on the defined port
+   *
+   * @method start
+   * @param {Number} port the port to listen on. Default: 3000
+   * @returns {Promise<undefined, Error>}
+   */
   start(port = DEFAULT_LISTEN_PORT) {
     return new Promise((resolve, reject) => {
       this.app.listen(port, () => { resolve(); });
     });
   }
 
+  /**
+   * loads the models into the model manager
+   *
+   * @private
+   * @method _addModels
+   */
   _addModels() {
     const _internalModels = this._internalModels;
 
@@ -122,6 +155,12 @@ class Application {
     });
   }
 
+  /**
+   * runs associations for each model
+   *
+   * @private
+   * @method _associateModels
+   */
   _associateModels() {
     const modelManager = this.modelManager;
 

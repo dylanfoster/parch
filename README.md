@@ -19,6 +19,16 @@ npm install --save parch
 
 ## Usage
 
+- [Application](#application)
+- [Controller](#controller)
+  - [hooks](#controller-hooks)
+- [Model](#model)
+- [Associations](#associations-wip)
+- [Authentication](#authentication-and-authorization)
+- [Logging](#logging)
+- [Error handling](#error-handling-and-responses)
+
+
 ### Application
 
 For a full list of available options [see below](#options)
@@ -178,6 +188,37 @@ class UserController extends parch.Controller {
     }).then(record => {
       res.send(this.statusCodes.SUCCESS);
     }).catch(next);
+  }
+}
+```
+
+### Controller Hooks
+
+Controller hooks allowing for pre and post processing of requests. Both before and after hooks are supported as well as any additional methods added when using `Controller#route`. When using the `after` hook, make sure to call next after sending your response.
+
+```javascript
+class UserController extends parch.Controller {
+  constructor(options) {
+    super(options);
+
+    this.hooks = {
+      // The hook name must match the method
+      index: {
+        before(req, res, next) {
+          return checkPermissions().then(() => {
+            next();
+          }).catch(next);
+        },
+        after(req, res, next) {
+          req.log.child().info("post processing");
+        }
+      }
+    };
+  }
+
+  index(req, res, next) {
+    res.send(200);
+    next();
   }
 }
 ```

@@ -1,3 +1,13 @@
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/dylanfoster/parch/compare/0.4.0...v0.5.0) (2017-01-01)
+
+
+### Features
+
+* **router:** add support for before and after controller hooks ([13d5f7a](https://github.com/dylanfoster/parch/commit/13d5f7a))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/dylanfoster/parch/compare/0.3.1...v0.4.0) (2016-12-27)
 

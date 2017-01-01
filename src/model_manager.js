@@ -2,7 +2,18 @@
 
 import Sequelize from "sequelize";
 
+/**
+ * Manages all models
+ *
+ * @class ModelManager
+ */
 class ModelManager {
+  /**
+   * @constructor
+   *
+   * @param {Object} settings
+   * @param {Object} settings.connection
+   */
   constructor(settings) {
     const connection = settings.connection;
 
@@ -16,6 +27,27 @@ class ModelManager {
     );
   }
 
+  /**
+   * Adds a model to internal cache
+   *
+   *     class FooModel extends parch.Model {
+   *       constructor(options) {
+   *         super(options);
+   *       }
+   *
+   *       associate(Foo, models) {
+   *       }
+   *
+   *       define(DataTypes) {
+   *       }
+   *     }
+   *
+   *     modelManager.addModel(Model);
+   *
+   * @method addModel
+   * @param {Object} Model parch model class
+   * @todo: check for existence before adding (i.e. caching)
+   */
   addModel(Model) {
     const _model = new Model();
     const modelAttributes = _model.define(this.Sequelize);
