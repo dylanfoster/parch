@@ -18,6 +18,13 @@ const restPathMapper = new Map([
 ]);
 
 class Router {
+  /**
+   * constructor
+   *
+   * @param settings
+   * @param settings.app restify app instance
+   * @param settings.loader module loader
+   */
   constructor(settings) {
     this.app = settings.app;
     this.controllers = new Map();
@@ -25,6 +32,11 @@ class Router {
     this._loadControllers();
   }
 
+  /**
+   * resource register a resource and wire up restful endpoints
+   *
+   * @param {String} name the resource name in singular form
+   */
   resource(name) {
     name = inflect.singularize(name);
     const controller = this.controllers.get(name);
@@ -34,6 +46,14 @@ class Router {
     }
   }
 
+  /**
+   * route register a single route
+   *
+   * @param {String} path the route path (e.g. /foo/bar)
+   * @param {Object} options
+   * @param {String} options.using colon delimited controller method identifier
+   * @param {String} options.method http method
+   */
   route(path, options) {
     const [controllerName, actionName] = options.using.split(":");
     const controller = this.controllers.get(controllerName);
@@ -43,6 +63,13 @@ class Router {
     this.app[method](path, handlers);
   }
 
+  /**
+   * _generateControllerHandlers generates main route handler plus pre and post hooks
+   *
+   * @param {Object} controller
+   * @param {String} action controller method
+   * @returns {Array} handlers
+   */
   _generateControllerHandlers(controller, action) {
     const controllerAction = controller[action];
     const { hooks } = controller;
@@ -63,6 +90,9 @@ class Router {
     return handlers;
   }
 
+  /**
+   * _loadControllers loads controllers from the loader
+   */
   _loadControllers() {
     const controllers = this.loader.controllers.modules;
     const loader = this.loader;
@@ -72,6 +102,13 @@ class Router {
     });
   }
 
+  /**
+   * _mapControllerAction maps a resource controller action and route
+   *
+   * @param {String} resource the resource name
+   * @param {Object} controller the resource controller
+   * @param {String} action the controller method
+   */
   _mapControllerAction(resource, controller, action) {
     const method = restActionMapper.get(action);
     const singularResource = inflect.singularize(resource);
@@ -83,6 +120,14 @@ class Router {
     this.app[method](resourcePath, handlers);
   }
 
+  /**
+   * map configures router resources
+   *
+   * @static
+   * @param {Object} settings
+   * @param {Function} callback called with the router instance
+   * @returns {undefined}
+   */
   static map(settings, callback) {
     const router = new Router(settings);
 

@@ -3,6 +3,12 @@
 import Sequelize from "sequelize";
 
 class ModelManager {
+  /**
+   * constructor
+   *
+   * @param {Object} settings
+   * @param {Object} settings.connection
+   */
   constructor(settings) {
     const connection = settings.connection;
 
@@ -16,6 +22,12 @@ class ModelManager {
     );
   }
 
+  /**
+   * addModel adds a model to internal cache
+   * @todo: check for existence before adding (i.e. caching)
+   *
+   * @param {Object} Model parch model class
+   */
   addModel(Model) {
     const _model = new Model();
     const modelAttributes = _model.define(this.Sequelize);
