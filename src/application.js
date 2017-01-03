@@ -11,6 +11,7 @@ import Loader from "./loader";
 import Logger from "./logger";
 import ModelManager from "./model_manager";
 import Router from "./router";
+import context from "./middleware/context";
 import logger from "./middleware/logger";
 
 const DEFAULT_CONNECTION_SETTINGS = {
@@ -113,6 +114,7 @@ class Application {
       req.log.info({ req, res, err });
     });
     middlewares.forEach(middlware => { app.use(middlware); });
+    app.use(context(this));
     this.app = app;
     this.map = Router.map.bind(null, routerSettings);
   }
