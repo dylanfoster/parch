@@ -75,6 +75,8 @@
     "include-all": "^2.0.0",
     "inflect": "^0.3.0",
     "lodash": "^4.13.1",
+    "pg": "^6.1.2",
+    "pg-hstore": "^2.3.2",
     "restify": "^4.1.0",
     "restify-errors": "^4.2.3",
     "restify-jwt": "^0.4.0",
