@@ -6,7 +6,7 @@ import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import supertest from "supertest";
 
-import contextMiddlware from "../../lib/middleware/context";
+import contextMiddlware from "../../src/middleware/context";
 
 chai.use(sinonChai);
 
