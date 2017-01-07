@@ -3,6 +3,8 @@
 import errors from "restify-errors";
 import inflect from "inflect";
 
+import STATUS_CODES from "./utils/status_codes";
+
 /**
  * Base controller
  *
@@ -27,6 +29,7 @@ class Controller {
 
     this.modelName = settings.model || this.name;
     this.model = this.models[this.modelName] || this.models[inflect.capitalize(this.modelName)];
+    this.STATUS_CODES = STATUS_CODES;
   }
 
   /**
