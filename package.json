@@ -54,19 +54,9 @@
       "sourceType": "module"
     },
     "rules": {
-      "max-len": [
-        1,
-        {
-          "code": 100
-        }
-      ],
+      "max-len": [1, { "code": 100 }],
       "new-cap": 0,
-      "no-magic-numbers": [
-        2,
-        {
-          "ignoreArrayIndexes": true
-        }
-      ]
+      "no-magic-numbers": [2, { "ignore": [-1, 0, 1], "ignoreArrayIndexes": true }]
     }
   },
   "dependencies": {
