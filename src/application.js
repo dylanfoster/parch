@@ -91,7 +91,6 @@ class Application {
       }
     };
 
-    // TODO: move this DEFAULT_MIDDLEWARES
     app.use(restify.acceptParser(app.acceptable));
 
     if (options.authentication) {
