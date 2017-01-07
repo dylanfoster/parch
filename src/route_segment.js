@@ -15,17 +15,17 @@ class RouteSegment {
   }
 
   _buildPath() {
-    if (this.hasLeadingSlash() && this.hasTrailingSlash()) {
-      return this.segment.slice(0, -1);
-    } else if (this.hasLeadingSlash()) {
-      return this.segment;
+    let segment = this.segment;
+
+    if (!this.hasLeadingSlash()) {
+      segment = `/${segment}`;
     }
 
-    return this._getSegment();
-  }
+    if (this.hasTrailingSlash()) {
+      segment = segment.slice(0, -1);
+    }
 
-  _getSegment() {
-    return `/${this.segment}`;
+    return segment;
   }
 }
 

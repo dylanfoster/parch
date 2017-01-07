@@ -84,4 +84,10 @@ describe("RouteSegment", function () {
 
     expect(segment.path).to.eql("/foo");
   });
+
+  it("builds path with a trailing slash", function () {
+    segment = new RouteSegment("foo/");
+
+    expect(segment.path).to.eql("/foo");
+  });
 });
