@@ -62,7 +62,6 @@ class Application {
     options.logging = options.logging || {};
     options.server = options.server || {};
 
-    // TODO: add logger options
     options.server.log = options.server.log || Logger.create(null, options.logging);
     options.server.middlewares = options.server.middlewares || [];
 
@@ -92,7 +91,6 @@ class Application {
       }
     };
 
-    // TODO: move this DEFAULT_MIDDLEWARES
     app.use(restify.acceptParser(app.acceptable));
 
     if (options.authentication) {

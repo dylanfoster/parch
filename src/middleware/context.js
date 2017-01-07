@@ -1,8 +1,8 @@
 "use strict";
 
-module.exports = function (app) {
-  return function (req, res, next) {
+module.exports = function context(app) {
+  return function setContext(req, res, next) {
     req.app = app;
     next();
-  }
+  };
 };
