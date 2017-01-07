@@ -105,6 +105,15 @@ class Router {
     this.app[method](path, handlers);
   }
 
+  /**
+   * Consistently builds a route from a set of path segments
+   *
+   *     router._buildRoute("foo", "/bar" "baz/");
+   *
+   * @method _buildRoute
+   * @private
+   * @returns {Object} route object with path property
+   */
   _buildRoute() {
     return new Route(...arguments);
   }
