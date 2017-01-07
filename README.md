@@ -27,6 +27,8 @@ npm install --save parch
 - [Authentication](#authentication-and-authorization)
 - [Logging](#logging)
 - [Error handling](#error-handling-and-responses)
+  - [Error Codes](#errors)
+  - [Responses](#responses)
 
 
 ### Application
@@ -132,7 +134,7 @@ class UserController extends parch.Controller {
        *   }]
        * }
        */
-       res.send(this.statusCodes.SUCCESS, records);
+       res.send(this.STATUS_CODES.SUCCESS, records);
     }).catch(next);
   }
 
@@ -145,7 +147,7 @@ class UserController extends parch.Controller {
        *   }
        * }
        */
-       res.send(this.statusCodes.SUCCESS, record);
+       res.send(this.STATUS_CODES.SUCCESS, record);
     }).catch(next);
   }
 
@@ -158,7 +160,7 @@ class UserController extends parch.Controller {
        *   }
        * }
        */
-       res.send(this.statusCodes.CREATED, record);
+       res.send(this.STATUS_CODES.CREATED, record);
     }).catch(next);
   }
 
@@ -171,13 +173,13 @@ class UserController extends parch.Controller {
        *   }
        * }
        */
-       res.send(this.statusCodes.SUCCESS, record);
+       res.send(this.STATUS_CODES.SUCCESS, record);
     }).catch(next);
   }
 
   destroy(req, res, next) {
     this.destroyRecord(req.params.id).then(() => {
-      res.send(this.statusCodes.NO_CONTENT);
+      res.send(this.STATUS_CODES.NO_CONTENT);
     }).catch(next);
   }
 
@@ -186,7 +188,7 @@ class UserController extends parch.Controller {
       record.password = req.body.password;
       return record.save();
     }).then(record => {
-      res.send(this.statusCodes.SUCCESS);
+      res.send(this.STATUS_CODES.SUCCESS);
     }).catch(next);
   }
 }
@@ -332,6 +334,8 @@ using a custom [Bunyan instance](https://github.com/dylanfoster/parch/blob/maste
 
 ## Error handling and responses
 
+### Errors
+
 Error handling is done using [restify-errors](https://github.com/restify/errors).
 When using controller helpers (`findAll`, `findOne`, etc) errors are handled automatically
 for you. Just catch your Promise with `next` and parch will handle the rest.
@@ -361,6 +365,16 @@ Errors handled by parch:
    - `NotFound`: The record does not exist
 
 Need to handle your own errors? `controller.errors` contains all of [restify-errors](https://github.com/restify/errors)' errors
+
+### Responses
+
+Parch also helps you standardize on your response statuses. Using [controller.STATUS_CODES](https://github.com/dylanfoster/parch/blob/develop/src/utils/status_codes.js) you'll never have to worry about which status to send.
+
+```javascript
+show(req, res, next) {
+  res.send(this.STATUS_CODES.SUCCESS) // 200
+}
+```
 
 ## Options
 
