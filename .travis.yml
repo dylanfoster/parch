@@ -12,11 +12,6 @@ cache:
   directories:
     - node_modules
 
-branches:
-  only:
-    - develop
-    - master
-
 before_install:
   - npm config set spin false
 script: npm run test:cover
