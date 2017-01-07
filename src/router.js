@@ -2,7 +2,7 @@
 
 import inflect from "inflect";
 
-import RouteSegment from "./route_segment";
+import Route from "./route";
 
 const restActionMapper = new Map([
     ["index", "get"],
@@ -106,10 +106,7 @@ class Router {
   }
 
   _buildRoute() {
-    const segments = Array.from(arguments);
-    const routeParts = segments.map(segment => new RouteSegment(segment));
-
-    return routeParts.map(part => part.path).join("");
+    return new Route(...arguments);
   }
 
   /**
