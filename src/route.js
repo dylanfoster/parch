@@ -5,6 +5,8 @@ import RouteSegment from "./route_segment";
 /**
  * Builds a consistent route path from a set of path segments
  *
+ *     new Route("foo", "/bar", "baz/");
+ *
  * @class Route
  */
 class Route {
