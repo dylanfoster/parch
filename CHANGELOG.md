@@ -1,3 +1,13 @@
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/dylanfoster/parch/compare/0.6.0...v0.7.0) (2017-01-07)
+
+
+### Features
+
+* **utils:** add status code constants to controller ([b82d830](https://github.com/dylanfoster/parch/commit/b82d830))
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/dylanfoster/parch/compare/0.5.0...v0.6.0) (2017-01-03)
 
