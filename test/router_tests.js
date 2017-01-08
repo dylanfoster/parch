@@ -14,6 +14,57 @@ import { loader } from "./fixtures";
 chai.use(sinonChai);
 
 describe("Router", function () {
+  describe("namespace", function () {
+    let app, client, router;
+
+    beforeEach(function () {
+      app = restify.createServer();
+      router = new Router({
+        app,
+        loader
+      });
+      client = supertest(app);
+    });
+
+    it("maps a set of routes to a namespace", function () {
+      router.namespace("/foos/:fooId", [
+        { path: "/setBaz", using: "foo:baz", method: "post" },
+        { path: "/getQux", using: "foo:qux", method: "get" }
+      ]);
+
+      return client
+        .post("/foos/1/setBaz")
+        .then(res => {
+          expect(res.statusCode).to.eql(200);
+          expect(res.body.baz).to.eql("qux");
+        })
+        .then(() => client.get("/foos/1/getQux"))
+        .then(res => {
+          expect(res.statusCode).to.eql(200);
+          expect(res.body.qux).to.eql("quux");
+        });
+    });
+
+    it("properly maps routes if slashes are left out", function () {
+      router.namespace("/foos/:fooId", [
+        { path: "setBaz", using: "foo:baz", method: "post" },
+        { path: "getQux", using: "foo:qux", method: "get" }
+      ]);
+
+      return client
+        .post("/foos/1/setBaz")
+        .then(res => {
+          expect(res.statusCode).to.eql(200);
+          expect(res.body.baz).to.eql("qux");
+        })
+        .then(() => client.get("/foos/1/getQux"))
+        .then(res => {
+          expect(res.statusCode).to.eql(200);
+          expect(res.body.qux).to.eql("quux");
+        });
+    });
+  });
+
   describe("map", function () {
     it("returns an instance of Router", function () {
       const router = Router.map({ loader }, function () {});
@@ -38,7 +89,6 @@ describe("Router", function () {
         loader
       });
       router.resource("foo");
-
       client = supertest(app);
     });
 

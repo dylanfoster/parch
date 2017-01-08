@@ -99,6 +99,16 @@ class FooController extends Controller {
     res.send(200);
     next();
   }
+
+  baz(req, res, next) {
+    res.send(200, { baz: "qux" });
+    next();
+  }
+
+  qux(req, res, next) {
+    res.send(200, { qux: "quux" });
+    next();
+  }
 }
 
 export default FooController;
