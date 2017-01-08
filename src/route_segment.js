@@ -4,16 +4,16 @@
  * Represents a single route segment, providing a consistent output segment
  * regardless of trailing/leading slashes
  *
+ *     new RouteSegment("/foo");
+ *     new RouteSegment("foo");
+ *     new RouteSegment("foo/");
+ *     new RouteSegment("/foo/");
+ *
  * @class RouteSegment
  */
 class RouteSegment {
   /**
    * constructor
-   *
-   *     new RouteSegment("/foo");
-   *     new RouteSegment("foo");
-   *     new RouteSegment("foo/");
-   *     new RouteSegment("/foo/");
    *
    * @param {String} segment A single route segment
    */
