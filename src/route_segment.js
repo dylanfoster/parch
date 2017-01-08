@@ -25,6 +25,11 @@ class RouteSegment {
   /**
    * Determines if a path segment contains a leading slash /
    *
+   *     new RouteSegment("foo").hasLeadingSlash(); => false
+   *     new RouteSegment("foo/").hasLeadingSlash(); => false
+   *     new RouteSegment("/foo/").hasLeadingSlash(); => true
+   *     new RouteSegment("/foo").hasLeadingSlash(); => true
+   *
    * @method hasLeadingSlash
    * @returns {Boolean}
    */
@@ -34,6 +39,11 @@ class RouteSegment {
 
   /**
    * Determines if a path segment contains a trailing slash /
+   *
+   *     new RouteSegment("foo").hasTrailingSlash(); => false
+   *     new RouteSegment("/foo").hasTrailingSlash(); => false
+   *     new RouteSegment("/foo/").hasTrailingSlash(); => true
+   *     new RouteSegment("foo/").hasTrailingSlash(); => true
    *
    * @method hasTrailingSlash
    * @returns {Boolean}
