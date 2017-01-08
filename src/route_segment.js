@@ -4,10 +4,10 @@
  * Represents a single route segment, providing a consistent output segment
  * regardless of trailing/leading slashes
  *
- *     new RouteSegment("/foo"); => /foo
- *     new RouteSegment("foo"); => /foo
- *     new RouteSegment("foo/"); => /foo
- *     new RouteSegment("/foo/"); => /foo
+ *     new RouteSegment("/foo"); => { path: "/foo", segment: "/foo" }
+ *     new RouteSegment("foo"); => { path: "/foo", segment: "foo" }
+ *     new RouteSegment("/foo/"); => { path: "/foo", segment: "/foo/" }
+ *     new RouteSegment("foo/"); => { path: "/foo", segment: "foo/" }
  *
  * @class RouteSegment
  */
