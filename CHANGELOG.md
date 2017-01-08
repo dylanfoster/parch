@@ -1,3 +1,13 @@
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/dylanfoster/parch/compare/0.7.1...v0.8.0) (2017-01-08)
+
+
+### Features
+
+* **router:** add namespace support ([2065ee7](https://github.com/dylanfoster/parch/commit/2065ee7))
+
+
+
 <a name="0.7.1"></a>
 ## [0.7.1](https://github.com/dylanfoster/parch/compare/0.7.0...v0.7.1) (2017-01-07)
 
