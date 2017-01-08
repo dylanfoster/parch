@@ -1,7 +1,7 @@
 {
   "name": "Parch",
   "url": "https://github.com/dylanfoster/parch",
-  "version": "0.4.0",
+  "version": "0.7.1",
   "options": {
     "outdir": "docs",
     "themedir": "node_modules/yuidoc-ember-cli-theme",

@@ -2,6 +2,8 @@
 
 import inflect from "inflect";
 
+import Route from "./route";
+
 const restActionMapper = new Map([
     ["index", "get"],
     ["show", "get"],
@@ -36,6 +38,30 @@ class Router {
     this.controllers = new Map();
     this.loader = settings.loader;
     this._loadControllers();
+  }
+
+  /**
+   * Bind a set of routes to a namespace
+   *
+   *     Router.map(function () {
+   *       this.namespace("/users/:userId", [
+   *         { path: "/setProfileImage", using: "user:setImage", method: "post" }
+   *       ])
+   *     });
+   *
+   * @method namespace
+   * @param {String} namespace the namespace to bind to, with or without leading slash
+   * @param {Array[Object]} routes array of routes to bind to the namespace
+   */
+  namespace(namespace, routes) {
+    for (const route of routes) {
+      const fullPath = this._buildRoute(namespace, route.path);
+
+      this.route(fullPath, {
+        using: route.using,
+        method: route.method
+      });
+    }
   }
 
   /**
@@ -77,6 +103,19 @@ class Router {
     const handlers = this._generateControllerHandlers(controller, actionName);
 
     this.app[method](path, handlers);
+  }
+
+  /**
+   * Consistently builds a route from a set of path segments
+   *
+   *     router._buildRoute("foo", "/bar" "baz/");
+   *
+   * @method _buildRoute
+   * @private
+   * @returns {Object} route object with path property
+   */
+  _buildRoute() {
+    return new Route(...arguments);
   }
 
   /**
@@ -137,7 +176,7 @@ class Router {
     const singularResource = inflect.singularize(resource);
     const pluralResource = inflect.pluralize(singularResource);
     const pathSegment = restPathMapper.get(action);
-    const resourcePath = `/${pluralResource}${pathSegment}`;
+    const resourcePath = this._buildRoute(pluralResource, pathSegment);
     const handlers = this._generateControllerHandlers(controller, action);
 
     this.app[method](resourcePath, handlers);

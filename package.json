@@ -1,6 +1,6 @@
 {
   "name": "parch",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Restify + Sequelize",
   "main": "index.js",
   "scripts": {
@@ -64,6 +64,11 @@
       "no-magic-numbers": [
         2,
         {
+          "ignore": [
+            -1,
+            0,
+            1
+          ],
           "ignoreArrayIndexes": true
         }
       ]
