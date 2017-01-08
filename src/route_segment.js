@@ -6,7 +6,7 @@
  *
  *     new RouteSegment("/foo"); => /foo
  *     new RouteSegment("foo"); => /foo
- j*     new RouteSegment("foo/"); => /foo
+ *     new RouteSegment("foo/"); => /foo
  *     new RouteSegment("/foo/"); => /foo
  *
  * @class RouteSegment
