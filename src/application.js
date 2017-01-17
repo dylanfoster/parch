@@ -44,7 +44,7 @@ class Application {
    * @constructor
    *
    * @param options = {}
-   * @returns {undefined}
+   * @return {undefined}
    */
   constructor(options = {}) {
     // who are you
@@ -88,7 +88,8 @@ class Application {
       loader: {
         controllers: controllerLoader,
         models: this.modelManager.models
-      }
+      },
+      namespace: options.namespace
     };
 
     app.use(restify.acceptParser(app.acceptable));
@@ -122,7 +123,7 @@ class Application {
    *
    * @method getApp
    *
-   * @returns {Object} restify application instance
+   * @return {Object} restify application instance
    */
   getApp() {
     return this.app;
@@ -133,7 +134,7 @@ class Application {
    *
    * @method start
    * @param {Number} port the port to listen on. Default: 3000
-   * @returns {Promise<undefined, Error>}
+   * @return {Promise<undefined, Error>}
    */
   start(port = DEFAULT_LISTEN_PORT) {
     return new Promise((resolve, reject) => {
@@ -142,7 +143,8 @@ class Application {
   }
 
   /**
-   * loads the models into the model manager
+   * Loads the models into the model manager using
+   * {{#crossLink "ModelManager/addModel:method"}}ModelManager#addModel{{/crossLink}}
    *
    * @private
    * @method _addModels

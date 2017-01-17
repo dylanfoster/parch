@@ -37,11 +37,14 @@ class Router {
     this.app = settings.app;
     this.controllers = new Map();
     this.loader = settings.loader;
+    this.namespacePrefix = settings.namespace || "";
     this._loadControllers();
   }
 
   /**
-   * Bind a set of routes to a namespace
+   * Bind a set of routes to a namespace.
+   * Uses {{#crossLink "Router/_buildRoute:method"}}_buildRoute{{/crossLink}} to
+   * normalize the path
    *
    *     Router.map(function () {
    *       this.namespace("/users/:userId", [
@@ -52,10 +55,11 @@ class Router {
    * @method namespace
    * @param {String} namespace the namespace to bind to, with or without leading slash
    * @param {Array[Object]} routes array of routes to bind to the namespace
+   * @since 0.9.0
    */
   namespace(namespace, routes) {
     for (const route of routes) {
-      const fullPath = this._buildRoute(namespace, route.path);
+      const fullPath = this._buildRoute(this.namespacePrefix, namespace, route.path);
 
       this.route(fullPath, {
         using: route.using,
@@ -65,7 +69,9 @@ class Router {
   }
 
   /**
-   * register a resource and wire up restful endpoints
+   * Register a resource and wire up restful endpoints.
+   * Uses {{#crossLink "Router/_buildRoute:method"}}_buildRoute{{/crossLink}} to
+   * normalize the path
    *
    *     Router.map(function () {
    *       this.resource("user");
@@ -84,7 +90,9 @@ class Router {
   }
 
   /**
-   * register a single route
+   * Register a single route.
+   * Uses {{#crossLink "Router/_buildRoute:method"}}_buildRoute{{/crossLink}} to
+   * normalize the path
    *
    *     Router.map(function () {
    *       this.route("/user/foo", { using: "users:foo", method: "get" });
@@ -106,13 +114,14 @@ class Router {
   }
 
   /**
-   * Consistently builds a route from a set of path segments
+   * Consistently builds a route from a set of path segments using
+   * {{#crossLink "Route"}}Route{{/crossLink}}
    *
    *     router._buildRoute("foo", "/bar" "baz/");
    *
    * @method _buildRoute
    * @private
-   * @returns {Object} route object with path property
+   * @return {Object} route object with path property
    */
   _buildRoute() {
     return new Route(...arguments);
@@ -125,7 +134,7 @@ class Router {
    * @method _generateControllerHandlers
    * @param {Object} controller
    * @param {String} action controller method
-   * @returns {Array} handlers
+   * @return {Array} handlers
    */
   _generateControllerHandlers(controller, action) {
     const controllerAction = controller[action];
@@ -176,7 +185,11 @@ class Router {
     const singularResource = inflect.singularize(resource);
     const pluralResource = inflect.pluralize(singularResource);
     const pathSegment = restPathMapper.get(action);
-    const resourcePath = this._buildRoute(pluralResource, pathSegment);
+    const resourcePath = this._buildRoute(
+      this.namespacePrefix,
+      pluralResource,
+      pathSegment
+    );
     const handlers = this._generateControllerHandlers(controller, action);
 
     this.app[method](resourcePath, handlers);
@@ -188,7 +201,7 @@ class Router {
    * @static
    * @param {Object} settings
    * @param {Function} callback called with the router instance
-   * @returns {undefined}
+   * @return {undefined}
    */
   static map(settings, callback) {
     const router = new Router(settings);

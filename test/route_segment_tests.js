@@ -90,4 +90,10 @@ describe("RouteSegment", function () {
 
     expect(segment.path).to.eql("/foo");
   });
+
+  it("builds path with empty string", function () {
+    segment = new RouteSegment("");
+
+    expect(segment.path).to.eql("");
+  });
 });
