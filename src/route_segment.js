@@ -31,7 +31,7 @@ class RouteSegment {
    *     new RouteSegment("/foo").hasLeadingSlash(); => true
    *
    * @method hasLeadingSlash
-   * @returns {Boolean}
+   * @return {Boolean}
    */
   hasLeadingSlash() {
     return this.segment.indexOf("/") === 0;
@@ -46,7 +46,7 @@ class RouteSegment {
    *     new RouteSegment("foo/").hasTrailingSlash(); => true
    *
    * @method hasTrailingSlash
-   * @returns {Boolean}
+   * @return {Boolean}
    */
   hasTrailingSlash() {
     return this.segment.charAt(this.segment.length - 1) === "/";
@@ -56,10 +56,12 @@ class RouteSegment {
    * Builds a consistent path segment, regardless of slashes
    *
    * @method _buildSegment
-   * @returns {String} path segment
+   * @return {String} path segment
    */
   _buildSegment() {
     let segment = this.segment;
+
+    if (!segment) { return ""; }
 
     if (!this.hasLeadingSlash()) {
       segment = `/${segment}`;

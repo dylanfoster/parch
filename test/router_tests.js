@@ -14,18 +14,31 @@ import { loader } from "./fixtures";
 chai.use(sinonChai);
 
 describe("Router", function () {
-  describe("namespace", function () {
-    let app, client, router;
+  let app, client, router;
 
-    beforeEach(function () {
-      app = restify.createServer();
-      router = new Router({
-        app,
-        loader
-      });
-      client = supertest(app);
+  beforeEach(function () {
+    app = restify.createServer();
+    router = new Router({
+      app,
+      loader
     });
+    client = supertest(app);
+  });
 
+  it("uses a namespace", function () {
+    router = new Router({
+      app,
+      loader,
+      namespace: "api"
+    });
+    router.resource("foo");
+    client = supertest(app);
+
+    return client.get("/api/foos")
+      .expect(200);
+  });
+
+  describe("namespace", function () {
     it("maps a set of routes to a namespace", function () {
       router.namespace("/foos/:fooId", [
         { path: "/setBaz", using: "foo:baz", method: "post" },
@@ -67,7 +80,7 @@ describe("Router", function () {
 
   describe("map", function () {
     it("returns an instance of Router", function () {
-      const router = Router.map({ loader }, function () {});
+      router = Router.map({ loader }, function () {});
 
       expect(router).to.be.an.instanceof(Router);
     });
@@ -80,14 +93,7 @@ describe("Router", function () {
   });
 
   describe("#resource", function () {
-    let app, client, router;
-
     beforeEach(function () {
-      app = restify.createServer();
-      router = new Router({
-        app,
-        loader
-      });
       router.resource("foo");
       client = supertest(app);
     });
@@ -194,16 +200,9 @@ describe("Router", function () {
   });
 
   describe("#route", function () {
-    let app, client, controller, router;
+    let controller;
 
     beforeEach(function () {
-      app = restify.createServer();
-      router = new Router({
-        app,
-        loader
-      });
-
-      client = supertest(app);
       controller = router.controllers.get("foo");
     });
 

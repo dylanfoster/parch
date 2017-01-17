@@ -3,8 +3,11 @@
   "url": "https://github.com/dylanfoster/parch",
   "version": "0.7.1",
   "options": {
+    "exclude": "lib",
+    "helpers": ["node_modules/yuidoc-parch-theme/helpers/helpers.js"],
+    "linkNatives": "true",
     "outdir": "docs",
-    "themedir": "node_modules/yuidoc-ember-cli-theme",
-    "helpers": ["node_modules/yuidoc-ember-cli-theme/helpers.js"]
+    "paths": ["./src"],
+    "themedir": "node_modules/yuidoc-parch-theme"
   }
 }

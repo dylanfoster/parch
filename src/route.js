@@ -16,7 +16,7 @@ class Route {
    *
    * @constructor
    * @param {String} ...segment
-   * @returns {Object} path object
+   * @return {Object} path object
    */
   constructor() {
     const segments = Array.from(arguments);

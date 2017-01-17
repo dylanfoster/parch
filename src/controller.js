@@ -41,7 +41,7 @@ class Controller {
    *
    * @method createRecord
    * @param {Object} data the model data to create the instance with
-   * @returns {Promise<Model, Error>} the model instance
+   * @return {Promise<Model, Error>} the model instance
    */
   createRecord(data) {
     if (!data) {
@@ -75,7 +75,7 @@ class Controller {
    *
    * @method destroyRecord
    * @param {Number} id the id of the resource to destroy
-   * @returns {Promise<undefined, Error}
+   * @return {Promise<undefined, Error}
    */
   destroyRecord(id) {
     return this.findOne(id).then(record => record.destroy());
@@ -99,7 +99,7 @@ class Controller {
    * @see http://docs.sequelizejs.com/en/v3/docs/querying/#where
    * @todo: add support for other find options (attributes, order, limit, etc)
    *
-   * @returns {Promise<Model[], Error} an array of model instance
+   * @return {Promise<Model[], Error} an array of model instance
    */
   findAll(where) {
     return this.model.findAll({ where });
@@ -114,7 +114,7 @@ class Controller {
    *
    * @method findOne
    * @param {Number} id the id of the instance to search for
-   * @returns {Promise<Model, Error>}
+   * @return {Promise<Model, Error>}
    */
   findOne(id) {
     return this.model.findById(id).then(record => {
@@ -139,7 +139,7 @@ class Controller {
    * @method updateRecord
    * @param {Number} id the id of the record to update
    * @param {Object} data the data to update on the record
-   * @returns {Promise<Model, Error>}
+   * @return {Promise<Model, Error>}
    */
   updateRecord(id, data) {
     if (!data) {

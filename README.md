@@ -20,6 +20,10 @@ npm install --save parch
 ## Usage
 
 - [Application](#application)
+- [Router](#router)
+  - [#resource](#resource)
+  - [#route](#route)
+  - [#namespace](#namespace)
 - [Controller](#controller)
   - [hooks](#controller-hooks)
 - [Model](#model)
@@ -40,17 +44,6 @@ const parch = require("parch");
 
 // define your app
 const parch = new parch.Application({
-  server: {
-    name: "my-app",
-    certificate: "/path/to/my.crt",
-    key: "/path/to/my.key",
-    log: Bunyan.createLogger(),
-    middlewares: [
-      restify.bodyParser(),
-      restify.queryParser(),
-      myCustomMiddleware()
-    ]
-  },
   authentication: {
     secretKey: "ssshhh",
     unauthenticated: [/\/posts[\s\S]*/, "/users/resetPassword"]
@@ -85,6 +78,18 @@ const parch = new parch.Application({
         }
       }
     }
+  },
+  namespace: "api",
+  server: {
+    name: "my-app",
+    certificate: "/path/to/my.crt",
+    key: "/path/to/my.key",
+    log: Bunyan.createLogger(),
+    middlewares: [
+      restify.bodyParser(),
+      restify.queryParser(),
+      myCustomMiddleware()
+    ]
   }
 });
 
@@ -111,6 +116,65 @@ GET    /users/:id           => UserController.show
 PUT    /users/:id           => UserController.update
 DELETE /users/:id           => UserController.destroy
 POST   /users/resetPassword => UserController.resetPassword
+```
+
+### Router
+
+The router handles route management and normalization, creating CRUD endpoints
+for resources and normalizing all paths.
+
+#### Resource
+
+Use `resource` to generate a set of CRUD endpoints.
+
+```javascript
+app.map(function () {
+  this.resource("user");
+});
+
+/**
+ * GET    /users               => UserController.index
+ * GET    /users/:id           => UserController.show
+ * POST   /users               => UserController.create
+ * PUT    /users/:id           => UserController.update
+ * DELETE /users/:id           => UserController.destroy
+ */
+```
+
+#### Route
+
+Use `route` to define a one off route.
+
+```javascript
+app.map(function () {
+  this.route("/foos/bar", {
+    using: "foo:getBar",
+    method: "get"
+  });
+});
+
+/**
+ * GET /foos/bar => FooController.getBar
+ */
+```
+
+#### Namespace
+
+Use `namespace` to group a set of `routes` under a single base path. Namespace
+takes an array of routes so follow the route api (with the addition of `path`)
+
+```javascript
+app.map(function () {
+  this.namespace("users/:userId", [
+    { path: "/account", using: "user:getAccount", method: "get" },
+    { path: "/image", using: "user:setImage", method: "post" }
+  ]);
+});
+
+/**
+ * GET /users/:userId/account => UserController.getAccount
+ * POST /users/:userId/image  => UserController.setImage
+ */
 ```
 
 ### Controller
@@ -196,7 +260,10 @@ class UserController extends parch.Controller {
 
 ### Controller Hooks
 
-Controller hooks allowing for pre and post processing of requests. Both before and after hooks are supported as well as any additional methods added when using `Controller#route`. When using the `after` hook, make sure to call next after sending your response.
+Controller hooks allow for pre and post processing of requests. Both before and
+after hooks are supported as well as any additional methods added when using
+`Controller#route` or `Controller#namespace`. When using the `after` hook, make
+sure to call next after sending your response.
 
 ```javascript
 class UserController extends parch.Controller {
@@ -313,13 +380,37 @@ client. The authorization middleware will then look for this token in the
 `Authorization` header. [see jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
 
 ```javascript
+// lib/controllers/user_controller.js
+
 const jwt = require("jsonwebtoken");
-const app = require("express")();
 
-app.post("/login", function (req, res, next) {
-  const token = jwt.sign({ userId: 1 }, "secret");
+const config = require("../../config");
 
-  res.send({ token });
+class UserController extends parch.Controller {
+  constructor(settings) {
+    super(settings);
+  }
+
+  authenticate(req, res, next) {
+    this.model.findOne({ where: { email: req.body.email }}).then(user => {
+      if (user) {
+        const token = jwt.sign(user, config.secret);
+
+        res.send(200, { token });
+      } else {
+        throw new this.errors.UnauthorizedError("email or password is invalid");
+      }
+    });
+  }
+}
+
+module.exports = UserController;
+
+...
+// lib/app.js
+
+app.map(function () {
+  this.route("/users/authenticate", { using: "user:authenticate", method: "post" });
 });
 ```
 
@@ -337,8 +428,9 @@ using a custom [Bunyan instance](https://github.com/dylanfoster/parch/blob/maste
 ### Errors
 
 Error handling is done using [restify-errors](https://github.com/restify/errors).
-When using controller helpers (`findAll`, `findOne`, etc) errors are handled automatically
-for you. Just catch your Promise with `next` and parch will handle the rest.
+When using controller helpers (`findAll`, `findOne`, etc) errors are handled
+automatically for you. Just catch your Promise with `next` and parch will handle
+the rest.
 
 ```javascript
 show(req, res, next) {
@@ -368,7 +460,8 @@ Need to handle your own errors? `controller.errors` contains all of [restify-err
 
 ### Responses
 
-Parch also helps you standardize on your response statuses. Using [controller.STATUS_CODES](https://github.com/dylanfoster/parch/blob/develop/src/utils/status_codes.js) you'll never have to worry about which status to send.
+Parch also helps you standardize on your response statuses. Using [controller.STATUS_CODES](https://github.com/dylanfoster/parch/blob/develop/src/utils/status_codes.js)
+you'll never have to worry about which status to send.
 
 ```javascript
 show(req, res, next) {
@@ -378,9 +471,6 @@ show(req, res, next) {
 
 ## Options
 
-  - **server** All options (*with the exception of `middlewares`*) are passed directly to [restify](http://restify.com/#creating-a-server)
-    - `log`: defaults to parch's [bunyan instance](https://github.com/dylanfoster/parch/blob/master/src/logger.js) but can be overridden
-    - `middlewares(Array)`: merged with parch's [default middlwares](https://github.com/dylanfoster/parch/blob/master/src/application.js#L24-L31)
   - **authentication**
     - `secretKey(String)`: A secret string used to sign JWT tokens
     - `unauthenticated(Array)`: an array of strings or regex patterns to skip authentication.
@@ -395,3 +485,7 @@ show(req, res, next) {
     - `serializers(Object)`:
       - `req(Function)`: your request serializer. takes the request as its only argument
       - `res(Function)`: your response serializer. takes the response as its only argument
+  - **namespace**: Set the base namespace for all routes and resources (e.g. `api`)
+  - **server** All options (*with the exception of `middlewares`*) are passed directly to [restify](http://restify.com/#creating-a-server)
+    - `log`: defaults to parch's [bunyan instance](https://github.com/dylanfoster/parch/blob/master/src/logger.js) but can be overridden
+    - `middlewares(Array)`: merged with parch's [default middlwares](https://github.com/dylanfoster/parch/blob/master/src/application.js#L24-L31)
