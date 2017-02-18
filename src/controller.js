@@ -1,5 +1,6 @@
 "use strict";
 
+import _ from "lodash";
 import errors from "restify-errors";
 import inflect from "inflect";
 
@@ -101,8 +102,12 @@ class Controller {
    *
    * @return {Promise<Model[], Error} an array of model instance
    */
-  findAll(where) {
-    return this.model.findAll({ where });
+  findAll(where, options = {}) {
+    const query = { where };
+
+    this._addOptionsToQuery(query, options);
+
+    return this.model.findAll(query);
   }
 
   /**
@@ -116,8 +121,12 @@ class Controller {
    * @param {Number} id the id of the instance to search for
    * @return {Promise<Model, Error>}
    */
-  findOne(id) {
-    return this.model.findById(id).then(record => {
+  findOne(id, options = {}) {
+    const query = { where: { id }};
+
+    this._addOptionsToQuery(query, options);
+
+    return this.model.findOne(query).then(record => {
       if (!record) {
         const error = this.errors.NotFoundError;
         const message = `${this.model.name} with id '${id}' does not exist`;
@@ -163,6 +172,12 @@ class Controller {
       } else {
         throw err;
       }
+    });
+  }
+
+  _addOptionsToQuery(query, options) {
+    Object.keys(options).forEach(prop => {
+      query[prop] = options[prop];
     });
   }
 }
