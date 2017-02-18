@@ -1,6 +1,5 @@
 "use strict";
 
-import _ from "lodash";
 import errors from "restify-errors";
 import inflect from "inflect";
 
