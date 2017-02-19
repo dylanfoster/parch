@@ -1,3 +1,13 @@
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/dylanfoster/parch/compare/0.9.0...v0.10.0) (2017-02-19)
+
+
+### Features
+
+* **controller:** add finder option support ([b3f078f](https://github.com/dylanfoster/parch/commit/b3f078f)), closes [#29](https://github.com/dylanfoster/parch/issues/29) [#29](https://github.com/dylanfoster/parch/issues/29)
+
+
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/dylanfoster/parch/compare/0.8.0...v0.9.0) (2017-01-17)
 
