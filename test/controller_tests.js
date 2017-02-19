@@ -83,6 +83,14 @@ describe("Controller", function () {
         });
       });
 
+      it("allows for finder options", function () {
+        return modelManager.models.User.create({ firstName: "john" }).then(
+          () => controller.findAll({ firstName: "john" }, { attributes: ["firstName"] })
+        ).then(([john]) => {
+          expect(john.toJSON()).to.eql({ firstName: "john" });
+        });
+      });
+
       it("supports pagination");
     });
 
@@ -93,6 +101,14 @@ describe("Controller", function () {
           .then(john => {
             expect(john.firstName).to.eql("john");
           });
+      });
+
+      it("allows for finder options", function () {
+        return modelManager.models.User.create({ firstName: "john" }).then(
+          john => controller.findOne(john.id, { attributes: ["firstName"] })
+        ).then(john => {
+          expect(john.toJSON()).to.eql({ firstName: "john" });
+        });
       });
 
       it("throws NotFoundError if no record is found", function (done) {
