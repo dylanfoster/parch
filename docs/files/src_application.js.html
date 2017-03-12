@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/application.js - Parch</title>
+    <meta name="description" content="Restify + Sequelize">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/theme.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700' rel='stylesheet' type='text/css'>
+    
+</head>
+<body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a href="../" class="navbar-brand">
+            <span>Parch</span>
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="nav">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://github.com/dylanfoster/parch" class="fa fa-github github"></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div id="main-wrapper" class="row">
+        <div id="content-wrapper">
+            <ol class="panel-group" id="sidebar" role="tablist" aria-multiselectable="true">
+                <li class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="sidebar-search-heading">
+                        <h4 class="panel-title">
+                      <a role="button" data-toggle="collapse" href="#sidebar-search" aria-expanded="true" aria-controls="collapseOne">
+                        Search
+                      </a>
+                    </h4>
+                    </div>
+                    <div id="sidebar-search" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-search-heading">
+                        <div class="panel-body">
+                            <div id="api-tabview-filter">
+                                <input type="search" id="api-filter" placeholder="Search...">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                    <li class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="sidebar-version-heading">
+                            <h4 class="panel-title">
+                                <a role="button" href="https://github.com/dylanfoster/parch/commits/1" target="_blank">
+                                  Tag: 0.7.1
+                                </a>
+                            </h4>
+                        </div>
+                    </li>
+                <li class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="sidebar-modules-heading">
+                        <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" href="#sidebar-modules" aria-expanded="true" aria-controls="collapseOne">
+                      Modules
+                    </a>
+                  </h4>
+                    </div>
+                    <div id="sidebar-modules" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-modules-heading">
+                        <div class="panel-body">
+                                <ol>
+                                        <li>
+                                            <a href="../modules/parch.html">parch</a>
+                                        </li>
+                                </ol>
+                        </div>
+                    </div>
+                </li>
+            
+                <li class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="sidebar-classes-heading">
+                        <h4 class="panel-title">
+                      <a role="button" data-toggle="collapse" href="#sidebar-classes" aria-expanded="true" aria-controls="collapseOne">
+                        Classes
+                      </a>
+                    </h4>
+                    </div>
+                    <div id="sidebar-classes" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-classes-heading">
+                        <div class="panel-body">
+                            <ol>
+                                    <li>
+                                        <a href="../classes/Application.html">Application</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/Controller.html">Controller</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/Model.html">Model</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/ModelManager.html">ModelManager</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/Route.html">Route</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/Router.html">Router</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/RouteSegment.html">RouteSegment</a>
+                                    </li>
+                            </ol>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+            <div class="content-container">
+                <div class="apidocs">
+                    <div id="docs-main">
+                        <div class="content">
+<div class="page-header">
+    <h1><i class="fa fa-file-code-o" aria-hidden="true"></i>  File</h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
+&quot;use strict&quot;;
+
+import path from &quot;path&quot;;
+
+import _ from &quot;lodash&quot;;
+import callsite from &quot;callsite&quot;;
+import restify from &quot;restify&quot;;
+import jwt from &quot;restify-jwt&quot;;
+
+import Loader from &quot;./loader&quot;;
+import Logger from &quot;./logger&quot;;
+import ModelManager from &quot;./model_manager&quot;;
+import Router from &quot;./router&quot;;
+import context from &quot;./middleware/context&quot;;
+import logger from &quot;./middleware/logger&quot;;
+
+const DEFAULT_CONNECTION_SETTINGS = {
+  dialect: &quot;sqlite&quot;,
+  database: &quot;test&quot;,
+  username: &quot;test&quot;,
+  password: &quot;test&quot;
+};
+const DEFAULT_JWT_SECRET = &quot;secret&quot;;
+const DEFAULT_LISTEN_PORT = 3000;
+const DEFAULT_MIDDLEWARES = [
+  restify.gzipResponse(),
+  restify.CORS(),
+  restify.authorizationParser(),
+  restify.bodyParser(),
+  restify.fullResponse(),
+  restify.queryParser()
+];
+
+/**
+ * Base application
+ *
+ * @module parch
+ * @class Application
+ */
+class Application {
+  /* eslint-disable complexity */
+
+  /**
+   * @constructor
+   *
+   *     new parch.Application({
+   *     });
+   *
+   * @param options = {}
+   * @return {undefined}
+   */
+  constructor(options = {}) {
+    // who are you
+    const caller = callsite()[1].getFileName();
+    const callerDirectory = path.dirname(caller);
+    const DEFAULT_CONTROLLER_LOOKUP_PATH = path.resolve(callerDirectory, &quot;controllers&quot;);
+    const DEFAULT_MODEL_LOOKUP_PATH = path.resolve(callerDirectory, &quot;models&quot;);
+
+    options.controllers = options.controllers || {};
+    options.controllers.dir = options.controllers.dir || DEFAULT_CONTROLLER_LOOKUP_PATH;
+    options.database = options.database || {};
+    options.database.connection = options.database.connection || DEFAULT_CONNECTION_SETTINGS;
+    options.database.models = options.database.models || {};
+    options.database.models.dir = options.database.models.dir || DEFAULT_MODEL_LOOKUP_PATH;
+    options.logging = options.logging || {};
+    options.server = options.server || {};
+
+    options.server.log = options.server.log || Logger.create(null, options.logging);
+    options.server.middlewares = options.server.middlewares || [];
+
+    const app = options.app || restify.createServer(options.server);
+    const connection = options.database.connection;
+    const controllerLoader = new Loader({
+      type: &quot;controller&quot;,
+      path: options.controllers.dir
+    });
+    const middlewares = _.union(DEFAULT_MIDDLEWARES, options.server.middlewares);
+
+    this._internalModels = new Loader({
+      type: &quot;model&quot;,
+      path: options.database.models.dir
+    });
+
+    this.logger = options.server.log;
+    this.modelManager = new ModelManager({ connection });
+    this._addModels();
+    this._associateModels();
+
+    const routerSettings = {
+      app,
+      loader: {
+        controllers: controllerLoader,
+        models: this.modelManager.models
+      },
+      namespace: options.namespace
+    };
+
+    app.use(restify.acceptParser(app.acceptable));
+
+    if (options.authentication) {
+      let secret, unless;
+
+      if (_.isObject(options.authentication)) {
+        secret = options.authentication.secretKey || DEFAULT_JWT_SECRET;
+        unless = options.authentication.unauthenticated || null;
+      } else {
+        secret = DEFAULT_JWT_SECRET;
+        unless = [];
+      }
+
+      app.use(jwt({ secret }).unless({ path: unless }));
+    }
+
+    app.use(logger({ log: this.logger }));
+    app.on(&quot;after&quot;, (req, res, route, err) =&gt; {
+      req.log.info({ req, res, err });
+    });
+    middlewares.forEach(middlware =&gt; { app.use(middlware); });
+    app.use(context(this));
+    this.app = app;
+    this.map = Router.map.bind(null, routerSettings);
+  }
+
+  /**
+   * Get the restify application instance
+   *
+   * @method getApp
+   *
+   * @return {Object} restify application instance
+   */
+  getApp() {
+    return this.app;
+  }
+
+  /**
+   * starts listening on the defined port
+   *
+   * @method start
+   * @param {Number} port the port to listen on. Default: 3000
+   * @return {Promise&lt;undefined, Error&gt;}
+   */
+  start(port = DEFAULT_LISTEN_PORT) {
+    return new Promise((resolve, reject) =&gt; {
+      this.app.listen(port, () =&gt; { resolve(); });
+    });
+  }
+
+  /**
+   * Loads the models into the model manager using
+   * {{#crossLink &quot;ModelManager/addModel:method&quot;}}ModelManager#addModel{{/crossLink}}
+   *
+   * @private
+   * @method _addModels
+   */
+  _addModels() {
+    const _internalModels = this._internalModels;
+
+    Object.keys(_internalModels.modules).forEach(model =&gt; {
+      this.modelManager.addModel(_internalModels.modules[model]);
+    });
+  }
+
+  /**
+   * runs associations for each model
+   *
+   * @private
+   * @method _associateModels
+   */
+  _associateModels() {
+    const modelManager = this.modelManager;
+
+    Object.keys(modelManager.models).forEach(model =&gt; {
+      if (modelManager.models[model].associate) {
+        modelManager.models[model].associate(modelManager.models[model], modelManager.models);
+      }
+    });
+  }
+}
+
+export default Application;
+
+    </pre>
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../assets/vendor/prettify/prettify-min.js"></script>
+    <script>prettyPrint();</script>
+    <script src="../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../assets/vendor/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="../assets/vendor/github-slugger/slugger.js"></script>
+    <script src="../assets/js/yuidoc-bootstrap.js"></script>
+</body>
+</html>
