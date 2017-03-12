@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/controller.js - Parch</title>
+    <meta name="description" content="Restify + Sequelize">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/theme.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700' rel='stylesheet' type='text/css'>
+    
+</head>
+<body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a href="../" class="navbar-brand">
+            <span>Parch</span>
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="nav">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://github.com/dylanfoster/parch" class="fa fa-github github"></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div id="main-wrapper" class="row">
+        <div id="content-wrapper">
+            <ol class="panel-group" id="sidebar" role="tablist" aria-multiselectable="true">
+                <li class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="sidebar-search-heading">
+                        <h4 class="panel-title">
+                      <a role="button" data-toggle="collapse" href="#sidebar-search" aria-expanded="true" aria-controls="collapseOne">
+                        Search
+                      </a>
+                    </h4>
+                    </div>
+                    <div id="sidebar-search" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-search-heading">
+                        <div class="panel-body">
+                            <div id="api-tabview-filter">
+                                <input type="search" id="api-filter" placeholder="Search...">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                    <li class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="sidebar-version-heading">
+                            <h4 class="panel-title">
+                                <a role="button" href="https://github.com/dylanfoster/parch/commits/1" target="_blank">
+                                  Tag: 0.7.1
+                                </a>
+                            </h4>
+                        </div>
+                    </li>
+                <li class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="sidebar-modules-heading">
+                        <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" href="#sidebar-modules" aria-expanded="true" aria-controls="collapseOne">
+                      Modules
+                    </a>
+                  </h4>
+                    </div>
+                    <div id="sidebar-modules" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-modules-heading">
+                        <div class="panel-body">
+                                <ol>
+                                        <li>
+                                            <a href="../modules/parch.html">parch</a>
+                                        </li>
+                                </ol>
+                        </div>
+                    </div>
+                </li>
+            
+                <li class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="sidebar-classes-heading">
+                        <h4 class="panel-title">
+                      <a role="button" data-toggle="collapse" href="#sidebar-classes" aria-expanded="true" aria-controls="collapseOne">
+                        Classes
+                      </a>
+                    </h4>
+                    </div>
+                    <div id="sidebar-classes" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-classes-heading">
+                        <div class="panel-body">
+                            <ol>
+                                    <li>
+                                        <a href="../classes/Application.html">Application</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/Controller.html">Controller</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/Model.html">Model</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/ModelManager.html">ModelManager</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/Route.html">Route</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/Router.html">Router</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/RouteSegment.html">RouteSegment</a>
+                                    </li>
+                            </ol>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+            <div class="content-container">
+                <div class="apidocs">
+                    <div id="docs-main">
+                        <div class="content">
+<div class="page-header">
+    <h1><i class="fa fa-file-code-o" aria-hidden="true"></i>  File</h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
+&quot;use strict&quot;;
+
+import errors from &quot;restify-errors&quot;;
+import inflect from &quot;inflect&quot;;
+
+import STATUS_CODES from &quot;./utils/status_codes&quot;;
+
+/**
+ * Base controller
+ *
+ * @module parch
+ * @class Controller
+ */
+class Controller {
+  get name() {
+    return this.constructor.name.split(/controller/i)[0].toLowerCase();
+  }
+
+  /**
+   * @constructor
+   *
+   * @param {Object} settings controller settings
+   * @param {Object} settings.loader loader for controllers and models
+   */
+  constructor(settings) {
+    this.errors = errors;
+    this.loader = settings.loader;
+    this.models = this.loader.models;
+
+    this.modelName = settings.model || this.name;
+    this.model = this.models[this.modelName] || this.models[inflect.capitalize(this.modelName)];
+    this.STATUS_CODES = STATUS_CODES;
+  }
+
+  /**
+   * Builds, validates and saves a model instance.
+   *
+   *     return this.createRecord({ firstname: &#x27;bar&#x27; }).then(record =&gt; {
+   *
+   *     });
+   *
+   * @method createRecord
+   * @param {Object} data the model data to create the instance with
+   * @return {Promise&lt;Model, Error&gt;} the model instance
+   */
+  createRecord(data) {
+    if (!data) {
+      const error = this.errors.BadRequestError;
+      const message = &quot;Missing or invalid POST body&quot;;
+
+      return Promise.reject(new error(message));
+    }
+
+    const record = this.model.build(data);
+
+    return record.validate().then(err =&gt; {
+      if (err &amp;&amp; err.errors &amp;&amp; err.errors.length) {
+        const { errors: [validationError] } = err;
+        const error = this.errors.UnprocessableEntityError;
+        const message = validationError.message;
+
+        throw new error(message);
+      }
+
+      return record.save();
+    });
+  }
+
+  /**
+   * Destroy a model instance and remove it from the db
+   *
+   *     return this.destroyRecord(1).then(() =&gt; {
+   *
+   *     });
+   *
+   * @method destroyRecord
+   * @param {Number} id the id of the resource to destroy
+   * @return {Promise&lt;undefined, Error}
+   */
+  destroyRecord(id) {
+    return this.findOne(id).then(record =&gt; record.destroy());
+  }
+
+  /**
+   * Find all records.
+   *
+   *     return this.findAll().then(records =&gt; {
+   *
+   *     })
+   *
+   * You can optionally pass in a where clause
+   *
+   *     return this.findAll({ username: &#x27;john&#x27; }).then(user =&gt; {
+   *
+   *     });
+   *
+   * @method findAll
+   * @param {Object} where sequelize where clause
+   * @see http://docs.sequelizejs.com/en/v3/docs/querying/#where
+   * @todo: add support for other find options (attributes, order, limit, etc)
+   *
+   * @return {Promise&lt;Model[], Error} an array of model instance
+   */
+  findAll(where, options = {}) {
+    const query = { where };
+
+    this._addOptionsToQuery(query, options);
+
+    return this.model.findAll(query);
+  }
+
+  /**
+   * Find a single instance by id
+   *
+   *     return this.findOne(1).then(record =&gt; {
+   *
+   *     });
+   *
+   * @method findOne
+   * @param {Number} id the id of the instance to search for
+   * @return {Promise&lt;Model, Error&gt;}
+   */
+  findOne(id, options = {}) {
+    const query = { where: { id }};
+
+    this._addOptionsToQuery(query, options);
+
+    return this.model.findOne(query).then(record =&gt; {
+      if (!record) {
+        const error = this.errors.NotFoundError;
+        const message = &#x60;${this.model.name} with id &#x27;${id}&#x27; does not exist&#x60;;
+
+        throw new error(message);
+      }
+
+      return record;
+    });
+  }
+
+  /**
+   * Update a single record
+   *
+   *     return this.updateRecord(1, { firstName: &#x27;foo&#x27; }).then(record =&gt; {
+   *
+   *     });
+   *
+   * @method updateRecord
+   * @param {Number} id the id of the record to update
+   * @param {Object} data the data to update on the record
+   * @return {Promise&lt;Model, Error&gt;}
+   */
+  updateRecord(id, data) {
+    if (!data) {
+      const error = this.errors.BadRequestError;
+      const message = &quot;Missing or invalid PUT body&quot;;
+
+      return Promise.reject(new error(message));
+    }
+
+    return this.findOne(id).then(record =&gt; record.update(data)).catch(err =&gt; {
+      /**
+       * HACK: if this is a sequelize validation error, we transform it, otherwise
+       * we can&#x27;t be totally sure so just throw it up the stack
+       */
+      if (err.name === &quot;SequelizeValidationError&quot;) {
+        const { errors: [validationError] } = err;
+        const error = this.errors.UnprocessableEntityError;
+        const message = validationError.message;
+
+        throw new error(message);
+      } else {
+        throw err;
+      }
+    });
+  }
+
+  _addOptionsToQuery(query, options) {
+    Object.keys(options).forEach(prop =&gt; {
+      query[prop] = options[prop];
+    });
+  }
+}
+
+export default Controller;
+
+    </pre>
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../assets/vendor/prettify/prettify-min.js"></script>
+    <script>prettyPrint();</script>
+    <script src="../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../assets/vendor/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="../assets/vendor/github-slugger/slugger.js"></script>
+    <script src="../assets/js/yuidoc-bootstrap.js"></script>
+</body>
+</html>
