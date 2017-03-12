@@ -262,7 +262,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 124,
+            "line": 121,
             "description": "Get the restify application instance",
             "itemtype": "method",
             "name": "getApp",
@@ -275,7 +275,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 135,
+            "line": 132,
             "description": "starts listening on the defined port",
             "itemtype": "method",
             "name": "start",
@@ -295,7 +295,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 148,
+            "line": 145,
             "description": "Loads the models into the model manager using\n{{#crossLink \"ModelManager/addModel:method\"}}ModelManager#addModel{{/crossLink}}",
             "access": "private",
             "tagname": "",
@@ -306,7 +306,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 163,
+            "line": 160,
             "description": "runs associations for each model",
             "access": "private",
             "tagname": "",
