@@ -82,13 +82,17 @@ class Router {
    *
    * @method resource
    * @param {String} name the resource name in singular form
+   * @param {Object} options resource mapping options
+   * @param {String} options.namespace mount the resource endpoint under a namespace
+   *
+   *     this.resource("user", { namespace: "api" })
    */
-  resource(name) {
+  resource(name, options = {}) {
     name = inflect.singularize(name);
     const controller = this.controllers.get(name);
 
     for (const [action] of restActionMapper) {
-      this._mapControllerAction(name, controller, action);
+      this._mapControllerAction(name, controller, action, options);
     }
   }
 
@@ -105,7 +109,11 @@ class Router {
    * @param {String} path the route path (e.g. /foo/bar)
    * @param {Object} options
    * @param {String} options.using colon delimited controller method identifier
+   *
+   *     this.route("/foo/bar", { using: "foo:bar" });
    * @param {String} options.method http method
+   *
+   *     this.route("/foo/bar", { method: "get" });
    */
   route(path, options) {
     const [controllerName, actionName] = options.using.split(":");
@@ -186,14 +194,17 @@ class Router {
    * @param {String} resource the resource name
    * @param {Object} controller the resource controller
    * @param {String} action the controller method
+   * @param {Object} options mapping options
    */
-  _mapControllerAction(resource, controller, action) {
+  _mapControllerAction(resource, controller, action, options) {
     const method = restActionMapper.get(action);
+    const namespace = options.namespace || "";
     const singularResource = inflect.singularize(resource);
     const pluralResource = inflect.pluralize(singularResource);
     const pathSegment = restPathMapper.get(action);
     const resourcePath = this._buildRoute(
       this.namespacePrefix,
+      namespace,
       pluralResource,
       pathSegment
     );

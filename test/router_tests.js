@@ -130,72 +130,82 @@ describe("Router", function () {
         .end(done);
     });
 
-    describe("hooks", function () {
-      let controller, create, destroy, hooks, index, show, update;
+    it("allows for namespacing", function (done) {
+      router.resource("foo", { namespace: "api" });
 
-      beforeEach(function () {
-        controller = router.controllers.get("foo");
-      });
+      client.get("/api/foos")
+        .expect(200)
+        .end(done);
+    });
+  });
 
-      it("binds a controller's index hooks", function (done) {
-        client.get("/foos")
-          .expect(200)
-          .end(function (err, res) {
-            if (err) { return done(err); }
+  describe("hooks", function () {
+    let controller, create, destroy, hooks, index, show, update;
 
-            expect(controller.hooks.index.before.called).to.be.true;
-            expect(controller.hooks.index.after.called).to.be.true;
-            done();
-          });
-      });
+    beforeEach(function () {
+      controller = router.controllers.get("foo");
+      router.resource("foo");
+      client = supertest(app);
+    });
 
-      it("binds a controller's show hooks", function (done) {
-        client.get("/foos/1")
-          .expect(200)
-          .end(function (err, res) {
-            if (err) { return done(err); }
+    it("binds a controller's index hooks", function (done) {
+      client.get("/foos")
+        .expect(200)
+        .end(function (err, res) {
+          if (err) { return done(err); }
 
-            expect(controller.hooks.show.before.called).to.be.true;
-            expect(controller.hooks.show.after.called).to.be.true;
-            done();
-          });
-      });
+          expect(controller.hooks.index.before.called).to.be.true;
+          expect(controller.hooks.index.after.called).to.be.true;
+          done();
+        });
+    });
 
-      it("binds a controller's create hooks", function (done) {
-        client.post("/foos")
-          .expect(201)
-          .end(function (err, res) {
-            if (err) { return done(err); }
+    it("binds a controller's show hooks", function (done) {
+      client.get("/foos/1")
+        .expect(200)
+        .end(function (err, res) {
+          if (err) { return done(err); }
 
-            expect(controller.hooks.create.before.called).to.be.true;
-            expect(controller.hooks.create.after.called).to.be.true;
-            done();
-          });
-      });
+          expect(controller.hooks.show.before.called).to.be.true;
+          expect(controller.hooks.show.after.called).to.be.true;
+          done();
+        });
+    });
 
-      it("binds a controller's update hooks", function (done) {
-        client.put("/foos/1")
-          .expect(200)
-          .end(function (err, res) {
-            if (err) { return done(err); }
+    it("binds a controller's create hooks", function (done) {
+      client.post("/foos")
+        .expect(201)
+        .end(function (err, res) {
+          if (err) { return done(err); }
 
-            expect(controller.hooks.update.before.called).to.be.true;
-            expect(controller.hooks.update.after.called).to.be.true;
-            done();
-          });
-      });
+          expect(controller.hooks.create.before.called).to.be.true;
+          expect(controller.hooks.create.after.called).to.be.true;
+          done();
+        });
+    });
 
-      it("binds a controller's destroy hooks", function (done) {
-        client.del("/foos/1")
-          .expect(204)
-          .end(function (err, res) {
-            if (err) { return done(err); }
+    it("binds a controller's update hooks", function (done) {
+      client.put("/foos/1")
+        .expect(200)
+        .end(function (err, res) {
+          if (err) { return done(err); }
 
-            expect(controller.hooks.destroy.before.called).to.be.true;
-            expect(controller.hooks.destroy.after.called).to.be.true;
-            done();
-          });
-      });
+          expect(controller.hooks.update.before.called).to.be.true;
+          expect(controller.hooks.update.after.called).to.be.true;
+          done();
+        });
+    });
+
+    it("binds a controller's destroy hooks", function (done) {
+      client.del("/foos/1")
+        .expect(204)
+        .end(function (err, res) {
+          if (err) { return done(err); }
+
+          expect(controller.hooks.destroy.before.called).to.be.true;
+          expect(controller.hooks.destroy.after.called).to.be.true;
+          done();
+        });
     });
   });
 

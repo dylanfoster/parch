@@ -53,7 +53,7 @@
                         <div class="panel-heading" role="tab" id="sidebar-version-heading">
                             <h4 class="panel-title">
                                 <a role="button" href="https://github.com/dylanfoster/parch/commits/0" target="_blank">
-                                  Tag: 0.11.0
+                                  Tag: 0.12.0
                                 </a>
                             </h4>
                         </div>
@@ -249,7 +249,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/router.js#L123">src/router.js:123</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/router.js#L131">src/router.js:131</a>
   		</p>
   
   
@@ -305,7 +305,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/router.js#L137">src/router.js:137</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/router.js#L145">src/router.js:145</a>
   		</p>
   
   
@@ -369,7 +369,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/router.js#L166">src/router.js:166</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/router.js#L174">src/router.js:174</a>
   		</p>
   
   
@@ -400,6 +400,9 @@
   				<li class="arg">
   						<code>action</code>
   				</li>
+  				<li class="arg">
+  						<code>options</code>
+  				</li>
   			</ul><span class="paren">)</span>
   		</div>
   	</span>
@@ -414,7 +417,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/router.js#L181">src/router.js:181</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/router.js#L189">src/router.js:189</a>
   		</p>
   
   
@@ -452,6 +455,15 @@
   
   
   					<div class="param-description"><p>the controller method</p>
+  </div>
+  
+  				</li>
+  				<li class="param">
+  						<code class="param-name">options</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  
+  
+  					<div class="param-description"><p>mapping options</p>
   </div>
   
   				</li>
@@ -545,6 +557,9 @@
   				<li class="arg">
   						<code>name</code>
   				</li>
+  				<li class="arg">
+  						<code>options</code>
+  				</li>
   			</ul><span class="paren">)</span>
   		</div>
   	</span>
@@ -586,6 +601,26 @@
   </div>
   
   				</li>
+  				<li class="param">
+  						<code class="param-name">options</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  
+  
+  					<div class="param-description"><p>resource mapping options</p>
+  </div>
+  
+  						<ul class="params-list">
+  							<li class="param">
+  									<code class="param-name">namespace</code>
+  									<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  								<div class="param-description"><p>mount the resource endpoint under a namespace</p>
+  <pre><code>this.resource("user", { namespace: "api" })</code></pre>
+  </div>
+  
+  							</li>
+  						</ul>
+  				</li>
   			</ul>
   		</div>
   
@@ -619,7 +654,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/router.js#L95">src/router.js:95</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/router.js#L99">src/router.js:99</a>
   		</p>
   
   
@@ -659,6 +694,7 @@
   									<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
   
   								<div class="param-description"><p>colon delimited controller method identifier</p>
+  <pre><code>this.route("/foo/bar", { using: "foo:bar" });</code></pre>
   </div>
   
   							</li>
@@ -667,6 +703,7 @@
   									<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
   
   								<div class="param-description"><p>http method</p>
+  <pre><code>this.route("/foo/bar", { method: "get" });</code></pre>
   </div>
   
   							</li>

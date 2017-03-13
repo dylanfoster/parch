@@ -1,3 +1,13 @@
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/dylanfoster/parch/compare/0.11.0...v0.12.0) (2017-03-13)
+
+
+### Features
+
+* **router:** add namespace support for resource ([0548ed5](https://github.com/dylanfoster/parch/commit/0548ed5))
+
+
+
 <a name="0.11.0"></a>
 # [0.11.0](https://github.com/dylanfoster/parch/compare/0.10.0...v0.11.0) (2017-03-13)
 
