@@ -102,15 +102,13 @@ class Controller {
    *     }).then(user => {
    *
    *     });
-   * <a href="http://docs.sequelizejs.com/en/v3/docs/querying/#where">
-   *   see http://docs.sequelizejs.com/en/v3/docs/querying/#where
-   * </a>
    *
    * @method findAll
    * @param {Object} where sequelize where clause
-   * @param {Object} options sequelize finder options
+   * @param {Object} options <a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
+   *   sequelize finder options
+   * </a>
    * @see http://docs.sequelizejs.com/en/v3/docs/querying/#where
-   * @todo: add support for other find options (attributes, order, limit, etc)
    *
    * @return {Promise<Model[], Error} an array of model instance
    */
@@ -139,7 +137,9 @@ class Controller {
    *
    * @method findOne
    * @param {Number} id the id of the instance to search for
-   * @param {Object} options sequelize finder options
+   * @param {Object} options <a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
+   *   sequelize finder options
+   * </a>
    * @return {Promise<Model, Error>}
    */
   findOne(id, options = {}) {

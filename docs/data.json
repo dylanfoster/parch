@@ -379,7 +379,7 @@
         {
             "file": "src/controller.js",
             "line": 84,
-            "description": "Find all records.\n\n    return this.findAll().then(records => {\n\n    })\n\nYou can optionally pass in a where clause\n\n    return this.findAll({ username: 'john' }).then(user => {\n\n    });\n\nAs well as any finder options\n\n    return this.findAll(null, {\n      attributes: [\"title\"],\n      include: [this.models.User]\n    }).then(user => {\n\n    });\n<a href=\"http://docs.sequelizejs.com/en/v3/docs/querying/#where\">\n  see http://docs.sequelizejs.com/en/v3/docs/querying/#where\n</a>",
+            "description": "Find all records.\n\n    return this.findAll().then(records => {\n\n    })\n\nYou can optionally pass in a where clause\n\n    return this.findAll({ username: 'john' }).then(user => {\n\n    });\n\nAs well as any finder options\n\n    return this.findAll(null, {\n      attributes: [\"title\"],\n      include: [this.models.User]\n    }).then(user => {\n\n    });",
             "itemtype": "method",
             "name": "findAll",
             "params": [
@@ -390,18 +390,12 @@
                 },
                 {
                     "name": "options",
-                    "description": "sequelize finder options",
+                    "description": "<a href=\"http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance\" target=\"_blank\">\n  sequelize finder options\n</a>",
                     "type": "Object"
                 }
             ],
             "see": [
                 "http://docs.sequelizejs.com/en/v3/docs/querying/#where"
-            ],
-            "todo": [
-                ": add support for other find options (attributes",
-                "order",
-                "limit",
-                "etc)"
             ],
             "return": {
                 "description": "an array of model instance",
@@ -412,7 +406,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 125,
+            "line": 123,
             "description": "Find a single instance by id\n\n    return this.findOne(1).then(record => {\n\n    });\n\nThe same options apply to findOne\n\n    return this.findOne(1, {\n      attributes: [\"firstName\"]\n    }).then(user => {\n\n    });",
             "itemtype": "method",
             "name": "findOne",
@@ -424,7 +418,7 @@
                 },
                 {
                     "name": "options",
-                    "description": "sequelize finder options",
+                    "description": "<a href=\"http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance\" target=\"_blank\">\n  sequelize finder options\n</a>",
                     "type": "Object"
                 }
             ],
