@@ -2,7 +2,7 @@
     "project": {
         "name": "Parch",
         "url": "https://github.com/dylanfoster/parch",
-        "version": "0.11.0",
+        "version": "0.12.0",
         "description": "Restify + Sequelize"
     },
     "files": {
@@ -743,12 +743,12 @@
                     "props": [
                         {
                             "name": "using",
-                            "description": "colon delimited controller method identifier",
+                            "description": "colon delimited controller method identifier\n\n    this.route(\"/foo/bar\", { using: \"foo:bar\" });",
                             "type": "String"
                         },
                         {
                             "name": "method",
-                            "description": "http method",
+                            "description": "http method\n\n    this.route(\"/foo/bar\", { method: \"get\" });",
                             "type": "String"
                         }
                     ]
@@ -759,7 +759,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 127,
+            "line": 131,
             "description": "Consistently builds a route from a set of path segments using\n{{#crossLink \"Route\"}}Route{{/crossLink}}\n\n    router._buildRoute(\"foo\", \"/bar\" \"baz/\");",
             "itemtype": "method",
             "name": "_buildRoute",
@@ -774,7 +774,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 141,
+            "line": 145,
             "description": "generates main route handler plus pre and post hooks",
             "access": "private",
             "tagname": "",
@@ -801,7 +801,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 170,
+            "line": 174,
             "description": "loads controllers from the loader",
             "access": "private",
             "tagname": "",
@@ -812,7 +812,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 185,
+            "line": 189,
             "description": "maps a resource controller action and route",
             "access": "private",
             "tagname": "",
@@ -833,6 +833,11 @@
                     "name": "action",
                     "description": "the controller method",
                     "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "mapping options",
+                    "type": "Object"
                 }
             ],
             "class": "Router",
@@ -840,7 +845,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 211,
+            "line": 216,
             "description": "configures router resources",
             "static": 1,
             "params": [
@@ -910,7 +915,7 @@
         },
         {
             "message": "Missing item type\nconfigures router resources",
-            "line": " src/router.js:211"
+            "line": " src/router.js:216"
         }
     ]
 }
