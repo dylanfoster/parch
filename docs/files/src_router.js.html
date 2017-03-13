@@ -208,13 +208,17 @@ class Router {
    *
    * @method resource
    * @param {String} name the resource name in singular form
+   * @param {Object} options resource mapping options
+   * @param {String} options.namespace mount the resource endpoint under a namespace
+   *
+   *     this.resource(&quot;user&quot;, { namespace: &quot;api&quot; })
    */
-  resource(name) {
+  resource(name, options = {}) {
     name = inflect.singularize(name);
     const controller = this.controllers.get(name);
 
     for (const [action] of restActionMapper) {
-      this._mapControllerAction(name, controller, action);
+      this._mapControllerAction(name, controller, action, options);
     }
   }
 
@@ -313,13 +317,15 @@ class Router {
    * @param {Object} controller the resource controller
    * @param {String} action the controller method
    */
-  _mapControllerAction(resource, controller, action) {
+  _mapControllerAction(resource, controller, action, options) {
     const method = restActionMapper.get(action);
+    const namespace = options.namespace || &quot;&quot;;
     const singularResource = inflect.singularize(resource);
     const pluralResource = inflect.pluralize(singularResource);
     const pathSegment = restPathMapper.get(action);
     const resourcePath = this._buildRoute(
       this.namespacePrefix,
+      namespace,
       pluralResource,
       pathSegment
     );

@@ -707,6 +707,18 @@
                     "name": "name",
                     "description": "the resource name in singular form",
                     "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "resource mapping options",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "namespace",
+                            "description": "mount the resource endpoint under a namespace\n\n    this.resource(\"user\", { namespace: \"api\" })",
+                            "type": "String"
+                        }
+                    ]
                 }
             ],
             "class": "Router",
@@ -714,7 +726,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 95,
+            "line": 99,
             "description": "Register a single route.\nUses {{#crossLink \"Router/_buildRoute:method\"}}_buildRoute{{/crossLink}} to\nnormalize the path\n\n    Router.map(function () {\n      this.route(\"/user/foo\", { using: \"users:foo\", method: \"get\" });\n    });",
             "itemtype": "method",
             "name": "route",
@@ -747,7 +759,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 123,
+            "line": 127,
             "description": "Consistently builds a route from a set of path segments using\n{{#crossLink \"Route\"}}Route{{/crossLink}}\n\n    router._buildRoute(\"foo\", \"/bar\" \"baz/\");",
             "itemtype": "method",
             "name": "_buildRoute",
@@ -762,7 +774,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 137,
+            "line": 141,
             "description": "generates main route handler plus pre and post hooks",
             "access": "private",
             "tagname": "",
@@ -789,7 +801,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 166,
+            "line": 170,
             "description": "loads controllers from the loader",
             "access": "private",
             "tagname": "",
@@ -800,7 +812,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 181,
+            "line": 185,
             "description": "maps a resource controller action and route",
             "access": "private",
             "tagname": "",
@@ -828,7 +840,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 205,
+            "line": 211,
             "description": "configures router resources",
             "static": 1,
             "params": [
@@ -898,7 +910,7 @@
         },
         {
             "message": "Missing item type\nconfigures router resources",
-            "line": " src/router.js:205"
+            "line": " src/router.js:211"
         }
     ]
 }
