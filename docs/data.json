@@ -111,7 +111,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src/router.js",
-            "line": 22,
+            "line": 25,
             "description": "Base application"
         }
     },
@@ -211,7 +211,7 @@
             "module": "parch",
             "namespace": "",
             "file": "src/router.js",
-            "line": 22,
+            "line": 25,
             "description": "Manages routing"
         }
     },
@@ -652,7 +652,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 28,
+            "line": 31,
             "description": "constructor",
             "is_constructor": 1,
             "params": [
@@ -676,7 +676,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 44,
+            "line": 47,
             "description": "Bind a set of routes to a namespace.\nUses {{#crossLink \"Router/_buildRoute:method\"}}_buildRoute{{/crossLink}} to\nnormalize the path\n\n    Router.map(function () {\n      this.namespace(\"/users/:userId\", [\n        { path: \"/setProfileImage\", using: \"user:setImage\", method: \"post\" }\n      ])\n    });",
             "itemtype": "method",
             "name": "namespace",
@@ -698,7 +698,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 71,
+            "line": 74,
             "description": "Register a resource and wire up restful endpoints.\nUses {{#crossLink \"Router/_buildRoute:method\"}}_buildRoute{{/crossLink}} to\nnormalize the path\n\n    Router.map(function () {\n      this.resource(\"user\");\n    });",
             "itemtype": "method",
             "name": "resource",
@@ -714,7 +714,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 92,
+            "line": 95,
             "description": "Register a single route.\nUses {{#crossLink \"Router/_buildRoute:method\"}}_buildRoute{{/crossLink}} to\nnormalize the path\n\n    Router.map(function () {\n      this.route(\"/user/foo\", { using: \"users:foo\", method: \"get\" });\n    });",
             "itemtype": "method",
             "name": "route",
@@ -747,7 +747,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 116,
+            "line": 123,
             "description": "Consistently builds a route from a set of path segments using\n{{#crossLink \"Route\"}}Route{{/crossLink}}\n\n    router._buildRoute(\"foo\", \"/bar\" \"baz/\");",
             "itemtype": "method",
             "name": "_buildRoute",
@@ -762,7 +762,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 130,
+            "line": 137,
             "description": "generates main route handler plus pre and post hooks",
             "access": "private",
             "tagname": "",
@@ -789,7 +789,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 159,
+            "line": 166,
             "description": "loads controllers from the loader",
             "access": "private",
             "tagname": "",
@@ -800,7 +800,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 174,
+            "line": 181,
             "description": "maps a resource controller action and route",
             "access": "private",
             "tagname": "",
@@ -828,7 +828,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 198,
+            "line": 205,
             "description": "configures router resources",
             "static": 1,
             "params": [
@@ -894,11 +894,11 @@
         },
         {
             "message": "Missing item type\nconstructor",
-            "line": " src/router.js:28"
+            "line": " src/router.js:31"
         },
         {
             "message": "Missing item type\nconfigures router resources",
-            "line": " src/router.js:198"
+            "line": " src/router.js:205"
         }
     ]
 }

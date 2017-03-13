@@ -144,6 +144,9 @@ const restPathMapper = new Map([
     [&quot;update&quot;, &quot;/:id&quot;],
     [&quot;destroy&quot;, &quot;/:id&quot;]
 ]);
+const METHODS = {
+  DELETE: &quot;delete&quot;
+};
 
 /**
  * Manages routing
@@ -233,8 +236,12 @@ class Router {
   route(path, options) {
     const [controllerName, actionName] = options.using.split(&quot;:&quot;);
     const controller = this.controllers.get(controllerName);
-    const method = options.method;
+    let method = options.method;
     const handlers = this._generateControllerHandlers(controller, actionName);
+
+    if (method === METHODS.DELETE) {
+      method = &quot;del&quot;;
+    }
 
     this.app[method](path, handlers);
   }
