@@ -227,5 +227,13 @@ describe("Router", function () {
           done();
         });
     });
+
+    it("supports full delete method", function (done) {
+      router.route("/foo/bar", { using: "foo:bar", method: "delete" });
+
+      client.delete("/foo/bar")
+        .expect(200)
+        .end(done);
+    });
   });
 });
