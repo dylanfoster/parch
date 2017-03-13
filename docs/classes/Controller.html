@@ -364,6 +364,9 @@
   				<li class="arg">
   						<code>where</code>
   				</li>
+  				<li class="arg">
+  						<code>options</code>
+  				</li>
   			</ul><span class="paren">)</span>
   		</div>
   		<span class="returns-inline">
@@ -395,8 +398,19 @@
   <p>You can optionally pass in a where clause</p>
   <pre class="code prettyprint"><code>return this.findAll({ username: 'john' }).then(user =&gt; {
   
-  });</code></pre>
-  </div>
+  });
+  </code></pre>
+  <p>As well as any finder options</p>
+  <pre class="code prettyprint"><code>return this.findAll(null, {
+    attributes: ["title"],
+    include: [this.models.User]
+  }).then(user =&gt; {
+  
+  });
+  </code></pre>
+  <a href="http://docs.sequelizejs.com/en/v3/docs/querying/#where">
+    see http://docs.sequelizejs.com/en/v3/docs/querying/#where
+  </a></div>
   
   		<div class="params">
   			<h4>Parameters:</h4>
@@ -408,6 +422,15 @@
   
   
   					<div class="param-description"><p>sequelize where clause</p>
+  </div>
+  
+  				</li>
+  				<li class="param">
+  						<code class="param-name">options</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  
+  
+  					<div class="param-description"><p>sequelize finder options</p>
   </div>
   
   				</li>
@@ -437,6 +460,9 @@
   				<li class="arg">
   						<code>id</code>
   				</li>
+  				<li class="arg">
+  						<code>options</code>
+  				</li>
   			</ul><span class="paren">)</span>
   		</div>
   		<span class="returns-inline">
@@ -453,7 +479,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L112">src/controller.js:112</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L125">src/controller.js:125</a>
   		</p>
   
   
@@ -462,6 +488,13 @@
   
   	<div class="description"><p>Find a single instance by id</p>
   <pre class="code prettyprint"><code>return this.findOne(1).then(record =&gt; {
+  
+  });
+  </code></pre>
+  <p>The same options apply to findOne</p>
+  <pre class="code prettyprint"><code>return this.findOne(1, {
+    attributes: ["firstName"]
+  }).then(user =&gt; {
   
   });</code></pre>
   </div>
@@ -476,6 +509,15 @@
   
   
   					<div class="param-description"><p>the id of the instance to search for</p>
+  </div>
+  
+  				</li>
+  				<li class="param">
+  						<code class="param-name">options</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  
+  
+  					<div class="param-description"><p>sequelize finder options</p>
   </div>
   
   				</li>
@@ -522,7 +564,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L140">src/controller.js:140</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L162">src/controller.js:162</a>
   		</p>
   
   

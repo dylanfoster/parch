@@ -94,8 +94,21 @@ class Controller {
    *
    *     });
    *
+   * As well as any finder options
+   *
+   *     return this.findAll(null, {
+   *       attributes: ["title"],
+   *       include: [this.models.User]
+   *     }).then(user => {
+   *
+   *     });
+   * <a href="http://docs.sequelizejs.com/en/v3/docs/querying/#where">
+   *   see http://docs.sequelizejs.com/en/v3/docs/querying/#where
+   * </a>
+   *
    * @method findAll
    * @param {Object} where sequelize where clause
+   * @param {Object} options sequelize finder options
    * @see http://docs.sequelizejs.com/en/v3/docs/querying/#where
    * @todo: add support for other find options (attributes, order, limit, etc)
    *
@@ -116,8 +129,17 @@ class Controller {
    *
    *     });
    *
+   * The same options apply to findOne
+   *
+   *     return this.findOne(1, {
+   *       attributes: ["firstName"]
+   *     }).then(user => {
+   *
+   *     });
+   *
    * @method findOne
    * @param {Number} id the id of the instance to search for
+   * @param {Object} options sequelize finder options
    * @return {Promise<Model, Error>}
    */
   findOne(id, options = {}) {

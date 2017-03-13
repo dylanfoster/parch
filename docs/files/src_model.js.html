@@ -140,10 +140,26 @@ class Model {
   /**
    * @constructor
    *
+   * &lt;a href=&quot;http://docs.sequelizejs.com/en/v3/docs/models-definition/#configuration&quot;&gt;
+   *   see http://docs.sequelizejs.com/en/v3/docs/models-definition/#configuration
+   * &lt;/a&gt;
+   *
    * @param {Object} options sequelize model options
    * @see http://docs.sequelizejs.com/en/v3/docs/models-definition/#configuration
    */
   constructor(options = {}) {
+    /**
+     * Model options get passed directly to sequelize model definition. The main
+     * difference is the separation of model constructor options and model
+     * attribute definitions.
+     *
+     * &lt;a href=&quot;http://docs.sequelizejs.com/en/v3/docs/models-definition/&quot;&gt;
+     *   see http://docs.sequelizejs.com/en/v3/docs/models-definition/
+     * &lt;/a&gt;
+     *
+     * @property {Object} options
+     * @see http://docs.sequelizejs.com/en/v3/docs/models-definition/
+     */
     this.options = options;
   }
 
@@ -160,6 +176,10 @@ class Model {
    *
    *       return user;
    *     }
+   *
+   * &lt;a href=&quot;http://docs.sequelizejs.com/en/v3/docs/models-definition/#data-types&quot;&gt;
+   *   see http://docs.sequelizejs.com/en/v3/docs/models-definition/#data-types
+   * &lt;/a&gt;
    *
    * @method define
    * @param {Object} DataTypes sequelize DataTypes Object

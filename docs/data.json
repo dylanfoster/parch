@@ -379,13 +379,18 @@
         {
             "file": "src/controller.js",
             "line": 84,
-            "description": "Find all records.\n\n    return this.findAll().then(records => {\n\n    })\n\nYou can optionally pass in a where clause\n\n    return this.findAll({ username: 'john' }).then(user => {\n\n    });",
+            "description": "Find all records.\n\n    return this.findAll().then(records => {\n\n    })\n\nYou can optionally pass in a where clause\n\n    return this.findAll({ username: 'john' }).then(user => {\n\n    });\n\nAs well as any finder options\n\n    return this.findAll(null, {\n      attributes: [\"title\"],\n      include: [this.models.User]\n    }).then(user => {\n\n    });\n<a href=\"http://docs.sequelizejs.com/en/v3/docs/querying/#where\">\n  see http://docs.sequelizejs.com/en/v3/docs/querying/#where\n</a>",
             "itemtype": "method",
             "name": "findAll",
             "params": [
                 {
                     "name": "where",
                     "description": "sequelize where clause",
+                    "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "sequelize finder options",
                     "type": "Object"
                 }
             ],
@@ -407,8 +412,8 @@
         },
         {
             "file": "src/controller.js",
-            "line": 112,
-            "description": "Find a single instance by id\n\n    return this.findOne(1).then(record => {\n\n    });",
+            "line": 125,
+            "description": "Find a single instance by id\n\n    return this.findOne(1).then(record => {\n\n    });\n\nThe same options apply to findOne\n\n    return this.findOne(1, {\n      attributes: [\"firstName\"]\n    }).then(user => {\n\n    });",
             "itemtype": "method",
             "name": "findOne",
             "params": [
@@ -416,6 +421,11 @@
                     "name": "id",
                     "description": "the id of the instance to search for",
                     "type": "Number"
+                },
+                {
+                    "name": "options",
+                    "description": "sequelize finder options",
+                    "type": "Object"
                 }
             ],
             "return": {
@@ -427,7 +437,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 140,
+            "line": 162,
             "description": "Update a single record\n\n    return this.updateRecord(1, { firstName: 'foo' }).then(record => {\n\n    });",
             "itemtype": "method",
             "name": "updateRecord",
@@ -452,7 +462,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 161,
+            "line": 183,
             "description": "HACK: if this is a sequelize validation error, we transform it, otherwise\nwe can't be totally sure so just throw it up the stack",
             "class": "Controller",
             "module": "parch"
@@ -483,8 +493,21 @@
         },
         {
             "file": "src/model.js",
-            "line": 24,
-            "description": "Model definition\n\n    define(DataTypes) {\n      const user = {\n        username: {\n          allowNull: false\n          type: DataTypes.STRING\n        }\n      };\n\n      return user;\n    }",
+            "line": 25,
+            "description": "Model options get passed directly to sequelize model definition. The main\ndifference is the separation of model constructor options and model\nattribute definitions.\n\n<a href=\"http://docs.sequelizejs.com/en/v3/docs/models-definition/\">\n  see http://docs.sequelizejs.com/en/v3/docs/models-definition/\n</a>",
+            "itemtype": "property",
+            "name": "options",
+            "type": "Object",
+            "see": [
+                "http://docs.sequelizejs.com/en/v3/docs/models-definition/"
+            ],
+            "class": "Model",
+            "module": "parch"
+        },
+        {
+            "file": "src/model.js",
+            "line": 40,
+            "description": "Model definition\n\n    define(DataTypes) {\n      const user = {\n        username: {\n          allowNull: false\n          type: DataTypes.STRING\n        }\n      };\n\n      return user;\n    }\n\n<a href=\"http://docs.sequelizejs.com/en/v3/docs/models-definition/#data-types\">\n  see http://docs.sequelizejs.com/en/v3/docs/models-definition/#data-types\n</a>",
             "itemtype": "method",
             "name": "define",
             "params": [
@@ -853,7 +876,7 @@
         },
         {
             "message": "Missing item type\nHACK: if this is a sequelize validation error, we transform it, otherwise\nwe can't be totally sure so just throw it up the stack",
-            "line": " src/controller.js:161"
+            "line": " src/controller.js:183"
         },
         {
             "message": "Missing item type\nHACK: Babel no longer exports [default], though I'm pretty sure I have\nthat transform installed so....¯\\_(ツ)_/¯",
