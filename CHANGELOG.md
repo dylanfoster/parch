@@ -1,3 +1,13 @@
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/dylanfoster/parch/compare/0.10.0...v0.11.0) (2017-03-13)
+
+
+### Features
+
+* **router:** add delete method support ([07e2c96](https://github.com/dylanfoster/parch/commit/07e2c96)), closes [#25](https://github.com/dylanfoster/parch/issues/25) [#25](https://github.com/dylanfoster/parch/issues/25)
+
+
+
 <a name="0.10.0"></a>
 # [0.10.0](https://github.com/dylanfoster/parch/compare/0.9.0...v0.10.0) (2017-02-19)
 
