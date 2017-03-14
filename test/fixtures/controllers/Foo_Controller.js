@@ -2,6 +2,14 @@
 
 import Controller from "../../../src/controller";
 
+const foos = [{
+  id: 1,
+  name: "bar"
+}, {
+  id: 2,
+  name: "baz"
+}];
+
 class FooController extends Controller {
   constructor(settings) {
     super(settings);
@@ -71,12 +79,19 @@ class FooController extends Controller {
   }
 
   index(req, res, next) {
-    res.send({ foos: [] });
+    res.send({ foos });
     next();
   }
 
   show(req, res, next) {
-    res.send({ foo: {}});
+    const foo = foos.filter(f => f.id === Number(req.params.fooId));
+
+    if (foo) {
+      res.send({ foo: foo[0] });
+    } else {
+      res.send(404);
+    }
+
     next();
   }
 
