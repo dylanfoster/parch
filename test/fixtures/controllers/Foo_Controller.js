@@ -2,7 +2,7 @@
 
 import Controller from "../../../src/controller";
 
-const fooRecords = [{
+const foos = [{
   id: 1,
   name: "bar"
 }, {
@@ -84,7 +84,14 @@ class FooController extends Controller {
   }
 
   show(req, res, next) {
-    res.send({ foo: {}});
+    const foo = foos.filter(f => f.id === Number(req.params.fooId));
+
+    if (foo) {
+      res.send({ foo: foo[0] });
+    } else {
+      res.send(404);
+    }
+
     next();
   }
 

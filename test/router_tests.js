@@ -92,7 +92,7 @@ describe("Router", function () {
     });
   });
 
-  describe.only("#resource", function () {
+  describe("#resource", function () {
     beforeEach(function () {
       router.resource("foo");
       client = supertest(app);
@@ -100,13 +100,24 @@ describe("Router", function () {
 
     it("maps a resource to a controller's index method", function (done) {
       client.get("/foos")
-        .expect(200, { foos: [] })
+        .expect(200, {
+          foos: [{
+            id: 1,
+            name: "bar"
+          }, {
+            id: 2,
+            name: "baz"
+          }]
+        })
         .end(done);
     });
 
     it("maps a resource to a controller's show method", function (done) {
       client.get("/foos/1")
-        .expect(200, { foo: {}})
+        .expect(200, { foo: {
+          id: 1,
+          name: "bar"
+        }})
         .end(done);
     });
 
