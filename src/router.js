@@ -172,6 +172,27 @@ class Router {
   }
 
   /**
+   * Generates a path segment from a given resource name
+   *
+   *     router._getPathSegment("foo", "show");
+   *     // :fooId
+   *
+   * @private
+   * @method _getPathSegment
+   * @param resource
+   * @param action
+   * @returns {String} pathSegment
+   */
+  _getPathSegment(resource, action) {
+    const restPathSegment = restPathMapper.get(action);
+    const resourceSegmentString = `:${resource}Id`;
+
+    return inflect.camelize(
+      restPathSegment.replace(":id", resourceSegmentString)
+    );
+  }
+
+  /**
    * loads controllers from the loader
    *
    * @private
@@ -197,18 +218,18 @@ class Router {
    * @param {Object} options mapping options
    */
   _mapControllerAction(resource, controller, action, options) {
+    const handlers = this._generateControllerHandlers(controller, action);
     const method = restActionMapper.get(action);
     const namespace = options.namespace || "";
     const singularResource = inflect.singularize(resource);
     const pluralResource = inflect.pluralize(singularResource);
-    const pathSegment = restPathMapper.get(action);
+    const pathSegment = this._getPathSegment(singularResource, action);
     const resourcePath = this._buildRoute(
       this.namespacePrefix,
       namespace,
       pluralResource,
       pathSegment
     );
-    const handlers = this._generateControllerHandlers(controller, action);
 
     this.app[method](resourcePath, handlers);
   }
