@@ -92,7 +92,7 @@ describe("Router", function () {
     });
   });
 
-  describe("#resource", function () {
+  describe.only("#resource", function () {
     beforeEach(function () {
       router.resource("foo");
       client = supertest(app);
