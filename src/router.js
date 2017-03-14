@@ -185,10 +185,10 @@ class Router {
    */
   _getPathSegment(resource, action) {
     const restPathSegment = restPathMapper.get(action);
-    const resourceSegmentString = `:${resource}Id`;
+    const resourceSegmentString = `${resource}Id`;
 
     return inflect.camelize(
-      restPathSegment.replace(":id", resourceSegmentString)
+      restPathSegment.replace("id", resourceSegmentString)
     );
   }
 
