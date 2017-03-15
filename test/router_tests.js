@@ -9,7 +9,7 @@ import sinonChai from "sinon-chai";
 import supertest from "supertest";
 
 import Router from "../src/router";
-import { loader } from "./fixtures";
+import { application, loader, registry } from "./fixtures";
 
 chai.use(sinonChai);
 
@@ -17,20 +17,14 @@ describe("Router", function () {
   let app, client, router;
 
   beforeEach(function () {
-    app = restify.createServer();
-    router = new Router({
-      app,
-      loader
-    });
+    app = registry.lookup("service:server");
+
+    router = new Router(registry);
     client = supertest(app);
   });
 
   it("uses a namespace", function () {
-    router = new Router({
-      app,
-      loader,
-      namespace: "api"
-    });
+    router.namespacePrefix = "api";
     router.resource("foo");
     client = supertest(app);
 
@@ -80,13 +74,13 @@ describe("Router", function () {
 
   describe("map", function () {
     it("returns an instance of Router", function () {
-      router = Router.map({ loader }, function () {});
+      router = Router.map(registry, function () {});
 
       expect(router).to.be.an.instanceof(Router);
     });
 
     it("calls callback with an instance of Router", function () {
-      Router.map({ loader }, function () {
+      Router.map(registry, function () {
         expect(this).to.be.an.instanceof(Router);
       });
     });
@@ -156,7 +150,7 @@ describe("Router", function () {
     let controller, create, destroy, hooks, index, show, update;
 
     beforeEach(function () {
-      controller = router.controllers.get("foo");
+      controller = registry.lookup("controller:foo");
       router.resource("foo");
       client = supertest(app);
     });
@@ -226,7 +220,7 @@ describe("Router", function () {
     let controller;
 
     beforeEach(function () {
-      controller = router.controllers.get("foo");
+      controller = registry.lookup("controller:foo");
     });
 
     it("maps a static route to a controller action", function (done) {

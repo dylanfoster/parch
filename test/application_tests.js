@@ -15,8 +15,8 @@ import supertest from "supertest";
 chai.use(sinonChai);
 
 import Application from "../src/application";
-import { connection } from "./fixtures";
 import Router from "../src/router";
+import { connection } from "./fixtures";
 
 describe("Application", function () {
   let application;
@@ -182,9 +182,11 @@ describe("Application", function () {
         },
         logging: { dir: loggingDir }
       });
+
       application.map(function () {
         this.resource("user");
       });
+
       supertest(application.getApp())
         .get("/users")
         .end(function (err, res) {

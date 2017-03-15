@@ -59,6 +59,7 @@ class Application {
    * Get the restify application instance
    *
    * @method getApp
+   * @todo: deprecate
    *
    * @return {Object} restify application instance
    */

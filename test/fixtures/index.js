@@ -8,7 +8,6 @@ import Registry from "../../src/registry";
 import modelManagerInitializer from "../../src/initializers/model_manager";
 
 const FIXTURES_PATH = path.resolve(__dirname);
-
 const application = new Application({
   database: {
     connection: {

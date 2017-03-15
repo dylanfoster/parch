@@ -3,6 +3,7 @@
 import inflect from "inflect";
 
 import Route from "./route";
+import { getOwner, setOwner } from "./containment";
 
 const restActionMapper = new Map([
     ["index", "get"],
@@ -36,11 +37,16 @@ class Router {
    * @param settings.app restify app instance
    * @param settings.loader module loader
    */
-  constructor(settings) {
-    this.app = settings.app;
-    this.controllers = new Map();
-    this.loader = settings.loader;
-    this.namespacePrefix = settings.namespace || "";
+  constructor(registry) {
+    setOwner(this, registry);
+
+    const config = registry.lookup("config:main");
+
+    this.loader = {
+      controllers: registry.lookup("loader:controller"),
+      models: registry.lookup("service:model-manager").models
+    };
+    this.namespacePrefix = config.namespace || "";
     this._loadControllers();
   }
 
@@ -89,7 +95,7 @@ class Router {
    */
   resource(name, options = {}) {
     name = inflect.singularize(name);
-    const controller = this.controllers.get(name);
+    const controller = getOwner(this).lookup(`controller:${name}`);
 
     for (const [action] of restActionMapper) {
       this._mapControllerAction(name, controller, action, options);
@@ -116,8 +122,9 @@ class Router {
    *     this.route("/foo/bar", { method: "get" });
    */
   route(path, options) {
+    const app = getOwner(this).lookup("service:server");
     const [controllerName, actionName] = options.using.split(":");
-    const controller = this.controllers.get(controllerName);
+    const controller = getOwner(this).lookup(`controller:${controllerName}`);
     let method = options.method;
     const handlers = this._generateControllerHandlers(controller, actionName);
 
@@ -125,7 +132,7 @@ class Router {
       method = "del";
     }
 
-    this.app[method](path, handlers);
+    app[method](path, handlers);
   }
 
   /**
@@ -199,11 +206,16 @@ class Router {
    * @method _loadControllers
    */
   _loadControllers() {
-    const controllers = this.loader.controllers.modules;
+    const controllerLoader = getOwner(this).lookup("loader:controller");
+    const { modules: controllers } = controllerLoader;
     const loader = this.loader;
 
     Object.keys(controllers).forEach(controller => {
-      this.controllers.set(controller, new controllers[controller]({ loader }));
+      const Klass = controllers[controller];
+      const instance = new Klass({ loader });
+      const instanceName = inflect.singularize(instance.name);
+
+      getOwner(this).register(`controller:${instanceName}`, instance);
     });
   }
 
@@ -218,6 +230,7 @@ class Router {
    * @param {Object} options mapping options
    */
   _mapControllerAction(resource, controller, action, options) {
+    const app = getOwner(this).lookup("service:server");
     const handlers = this._generateControllerHandlers(controller, action);
     const method = restActionMapper.get(action);
     const namespace = options.namespace || "";
@@ -231,7 +244,7 @@ class Router {
       pathSegment
     );
 
-    this.app[method](resourcePath, handlers);
+    app[method](resourcePath, handlers);
   }
 
   /**
@@ -242,8 +255,8 @@ class Router {
    * @param {Function} callback called with the router instance
    * @return {undefined}
    */
-  static map(settings, callback) {
-    const router = new Router(settings);
+  static map(registry, callback) {
+    const router = new Router(registry);
 
     callback.call(router);
     return router;

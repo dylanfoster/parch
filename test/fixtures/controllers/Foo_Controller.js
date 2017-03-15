@@ -16,66 +16,90 @@ class FooController extends Controller {
 
     this.hooks = {
       index: {
-        before(req, res, next) {
-          this.hooks.index.before.called = true;
-          next();
-        },
-        after(req, res, next) {
-          this.hooks.index.after.called = true;
-          next();
-        }
+        before: this.beforeIndex,
+        after: this.afterIndex
       },
       show: {
-        before(req, res, next) {
-          this.hooks.show.before.called = true;
-          next();
-        },
-        after(req, res, next) {
-          this.hooks.show.after.called = true;
-          next();
-        }
+        before: this.beforeShow,
+        after: this.afterShow
       },
       create: {
-        before(req, res, next) {
-          this.hooks.create.before.called = true;
-          next();
-        },
-        after(req, res, next) {
-          this.hooks.create.after.called = true;
-          next();
-        }
+        before: this.beforeCreate,
+        after: this.afterCreate
       },
       update: {
-        before(req, res, next) {
-          this.hooks.update.before.called = true;
-          next();
-        },
-        after(req, res, next) {
-          this.hooks.update.after.called = true;
-          next();
-        }
+        before: this.beforeUpdate,
+        after: this.afterUpdate
       },
       destroy: {
-        before(req, res, next) {
-          this.hooks.destroy.before.called = true;
-          next();
-        },
-        after(req, res, next) {
-          this.hooks.destroy.after.called = true;
-          next();
-        }
+        before: this.beforeDestroy,
+        after: this.afterDestroy
       },
       bar: {
-        before(req, res, next) {
-          this.hooks.bar.before.called = true;
-          next();
-        },
-        after(req, res, next) {
-          this.hooks.bar.after.called = true;
-          next();
-        }
+        before: this.beforeBar,
+        after: this.afterBar
       }
     };
+  }
+
+  beforeIndex(req, res, next) {
+    this.hooks.index.before.called = true;
+    next();
+  }
+
+  afterIndex(req, res, next) {
+    this.hooks.index.after.called = true;
+    next();
+  }
+
+  beforeShow(req, res, next) {
+    this.hooks.show.before.called = true;
+    next();
+  }
+
+  afterShow(req, res, next) {
+    this.hooks.show.after.called = true;
+    next();
+  }
+
+  beforeCreate(req, res, next) {
+    this.hooks.create.before.called = true;
+    next();
+  }
+
+  afterCreate(req, res, next) {
+    this.hooks.create.after.called = true;
+    next();
+  }
+
+  beforeUpdate(req, res, next) {
+    this.hooks.update.before.called = true;
+    next();
+  }
+
+  afterUpdate(req, res, next) {
+    this.hooks.update.after.called = true;
+    next();
+  }
+
+  beforeDestroy(req, res, next) {
+    this.hooks.destroy.before.called = true;
+    next();
+  }
+
+  afterDestroy(req, res, next) {
+    this.hooks.destroy.after.called = true;
+    next();
+  }
+
+  beforeBar(req, res, next) {
+    this.hooks.bar.before.called = true;
+    next();
+  }
+
+  afterBar(req, res, next) {
+    this.hooks.bar.after.called = true;
+    next();
   }
 
   index(req, res, next) {
