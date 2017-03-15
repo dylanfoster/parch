@@ -208,11 +208,10 @@ class Router {
   _loadControllers() {
     const controllerLoader = getOwner(this).lookup("loader:controller");
     const { modules: controllers } = controllerLoader;
-    const loader = this.loader;
 
     Object.keys(controllers).forEach(controller => {
       const Klass = controllers[controller];
-      const instance = new Klass({ loader });
+      const instance = new Klass(getOwner(this));
       const instanceName = inflect.singularize(instance.name);
 
       getOwner(this).register(`controller:${instanceName}`, instance);

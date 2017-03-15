@@ -4,6 +4,7 @@ import errors from "restify-errors";
 import inflect from "inflect";
 
 import STATUS_CODES from "./utils/status_codes";
+import { setOwner } from "./containment";
 
 /**
  * Base controller
@@ -22,12 +23,12 @@ class Controller {
    * @param {Object} settings controller settings
    * @param {Object} settings.loader loader for controllers and models
    */
-  constructor(settings) {
-    this.errors = errors;
-    this.loader = settings.loader;
-    this.models = this.loader.models;
+  constructor(registry, options = {}) {
+    setOwner(this, registry);
 
-    this.modelName = settings.model || this.name;
+    this.errors = errors;
+    this.models = registry.lookup("service:model-manager").models;
+    this.modelName = options.model || this.name;
     this.model = this.models[this.modelName] || this.models[inflect.capitalize(this.modelName)];
     this.STATUS_CODES = STATUS_CODES;
   }

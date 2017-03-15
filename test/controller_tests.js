@@ -3,54 +3,36 @@
 import { expect } from "chai";
 
 import Controller from "../src/controller";
-import ModelManager from "../src/model_manager";
-import UserModel from "./fixtures/models/user_model";
-import { loader, modelManager } from "./fixtures";
+import { modelManager, registry } from "./fixtures";
 
 describe("Controller", function () {
   let controller;
 
   it("has a name", function () {
-    class UserController extends Controller {
-      constructor(settings) {
-        super(settings);
-      }
-    }
+    class UserController extends Controller {}
 
-    controller = new UserController({ loader });
+    controller = new UserController(registry);
     expect(controller.name).to.eql("user");
   });
 
   it("has a corresponding model", function () {
-    class UserController extends Controller {
-      constructor(settings) {
-        super(settings);
-      }
-    }
+    class UserController extends Controller {}
 
-    controller = new UserController({ loader });
+    controller = new UserController(registry);
     expect(controller.model.name).to.eql("User");
   });
 
   it("overrides model when provided", function () {
-    class UserController extends Controller {
-      constructor(settings) {
-        super(settings);
-      }
-    }
+    class UserController extends Controller {}
 
-    controller = new UserController({ loader, model: "foo" });
+    controller = new UserController(registry, { model: "foo" });
     expect(controller.model.name).to.eql("Foo");
   });
 
   describe("finders", function () {
     beforeEach(function () {
-      class UserController extends Controller {
-        constructor(settings) {
-          super(settings);
-        }
-      }
-      controller = new UserController({ loader });
+      class UserController extends Controller {}
+      controller = new UserController(registry);
       return modelManager.sequelize.sync({ force: true });
     });
 
