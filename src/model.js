@@ -19,6 +19,7 @@ class Model {
    * </a>
    *
    * @param {Object} options sequelize model options
+   * @todo: set owner and inject this model and all models (from manager)
    * @see http://docs.sequelizejs.com/en/v3/docs/models-definition/#configuration
    */
   constructor(options = {}) {

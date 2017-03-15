@@ -1,7 +1,7 @@
 "use strict";
 
 import Sequelize from "sequelize";
-import { getOwner, setOwner } from "./containment";
+import { setOwner } from "./containment";
 
 /**
  * Manages all models
@@ -15,10 +15,11 @@ class ModelManager {
    * @param {Object} settings
    * @param {Object} settings.connection
    */
-  constructor(container) {
-    setOwner(this, container);
-    const config = getOwner(this).lookup("config:main");
+  constructor(registry) {
+    const config = registry.lookup("config:main");
     const { database: { connection }} = config;
+
+    setOwner(this, registry);
 
     this._models = {};
     this.Sequelize = Sequelize;
