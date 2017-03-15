@@ -53,7 +53,7 @@
                         <div class="panel-heading" role="tab" id="sidebar-version-heading">
                             <h4 class="panel-title">
                                 <a role="button" href="https://github.com/dylanfoster/parch/commits/0" target="_blank">
-                                  Tag: 0.12.0
+                                  Tag: 1.0.0
                                 </a>
                             </h4>
                         </div>
@@ -298,6 +298,27 @@ class Router {
   }
 
   /**
+   * Generates a path segment from a given resource name
+   *
+   *     router._getPathSegment(&quot;foo&quot;, &quot;show&quot;);
+   *     // :fooId
+   *
+   * @private
+   * @method _getPathSegment
+   * @param resource
+   * @param action
+   * @returns {String} pathSegment
+   */
+  _getPathSegment(resource, action) {
+    const restPathSegment = restPathMapper.get(action);
+    const resourceSegmentString = &#x60;${resource}Id&#x60;;
+
+    return inflect.camelize(
+      restPathSegment.replace(&quot;id&quot;, resourceSegmentString)
+    );
+  }
+
+  /**
    * loads controllers from the loader
    *
    * @private
@@ -323,18 +344,18 @@ class Router {
    * @param {Object} options mapping options
    */
   _mapControllerAction(resource, controller, action, options) {
+    const handlers = this._generateControllerHandlers(controller, action);
     const method = restActionMapper.get(action);
     const namespace = options.namespace || &quot;&quot;;
     const singularResource = inflect.singularize(resource);
     const pluralResource = inflect.pluralize(singularResource);
-    const pathSegment = restPathMapper.get(action);
+    const pathSegment = this._getPathSegment(singularResource, action);
     const resourcePath = this._buildRoute(
       this.namespacePrefix,
       namespace,
       pluralResource,
       pathSegment
     );
-    const handlers = this._generateControllerHandlers(controller, action);
 
     this.app[method](resourcePath, handlers);
   }

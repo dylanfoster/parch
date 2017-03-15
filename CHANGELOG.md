@@ -1,3 +1,51 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/dylanfoster/parch/compare/0.12.0...v1.0.0) (2017-03-15)
+
+
+### Features
+
+* **router:** use resource name for path segment ([3f81bb4](https://github.com/dylanfoster/parch/commit/3f81bb4)), closes [#6](https://github.com/dylanfoster/parch/issues/6)
+
+
+### BREAKING CHANGES
+
+* router: dynamic path segment for resources has been changed to use the
+resource name e.g. :id => :userId. As a result, users using req.params.id will
+need to make the update
+
+commit f529a8a954338ba9e48ac77154cdf2b5d14780d2
+Merge: ea13de9 8386f45
+Author: Dylan Foster <dylan947@gmail.com>
+Date:   Tue Mar 14 13:07:39 2017 -0700
+
+    chore: rebase develop
+
+commit ea13de969b7900d231f6cf9f74a1bd23b8b221e6
+Author: Dylan Foster <dylan947@gmail.com>
+Date:   Tue Mar 14 10:39:09 2017 -0700
+
+    test(router): update controller fixture
+
+commit d8835f05e358a9c4b7226caf2ef00b444065ab51
+Author: Dylan Foster <dylan947@gmail.com>
+Date:   Tue Mar 14 10:22:47 2017 -0700
+
+    feat(router): use resource name for path segment
+
+commit 8386f451c759baeb9dc2c95bef5daadf055f5649
+Author: Dylan Foster <dylan947@gmail.com>
+Date:   Tue Mar 14 10:39:09 2017 -0700
+
+    test(router): update controller fixture
+
+commit 305c724cfe0fc6f684e2a1a1da349ed502dd2fbc
+Author: Dylan Foster <dylan947@gmail.com>
+Date:   Tue Mar 14 10:22:47 2017 -0700
+
+    feat(router): use resource name for path segment
+
+
+
 <a name="0.12.0"></a>
 # [0.12.0](https://github.com/dylanfoster/parch/compare/0.11.0...v0.12.0) (2017-03-13)
 
