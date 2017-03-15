@@ -66,6 +66,6 @@ export default class Registry {
       return this._registry.set(name, new Obj());
     }
 
-    this._registry.set(name, Obj);
+    return this._registry.set(name, Obj);
   }
 }

@@ -28,6 +28,20 @@ describe("Registry", function () {
   });
 
   describe("#lookup", function () {
+    beforeEach(function () {
+      registry.register("config:main", {
+        database: {
+          connection: {
+            dialect: "sqlite",
+            database: "test",
+            username: "test",
+            password: "test",
+            logging: false
+          }
+        }
+      });
+    });
+
     it("finds and returns an object by reference", function () {
       registry._registry.set("service:foo", { foo: "bar" });
 
@@ -36,14 +50,7 @@ describe("Registry", function () {
 
     it("requires in a new module if one is not registered", function () {
       const Lookup = registry.lookup("module:model-manager");
-      const manager = new Lookup({
-        connection: {
-          dialect: "sqlite",
-          database: "test",
-          username: "test",
-          password: "test"
-        }
-      });
+      const manager = new Lookup(registry);
 
       expect(manager.models).to.eql({});
     });

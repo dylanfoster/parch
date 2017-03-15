@@ -36,7 +36,7 @@ describe("Application", function () {
 
     it("gets called with a Router instance", function () {
       application.map(function () {
-        expect(this).to.be.an.instanceof(Router);
+        expect(this).to.have.property("resource");
       });
     });
 

@@ -3,8 +3,22 @@
 import path from "path";
 
 import Loader from "../../src/loader";
-import ModelManager from "../../src/model_manager";
+import Registry from "../../src/registry";
+import modelManagerInitializer from "../../src/initializers/model_manager";
 
+const registry = new Registry();
+
+registry.register("config:main", {
+  database: {
+    connection: {
+      dialect: "sqlite",
+      database: "test",
+      username: "test",
+      password: "test",
+      logging: false
+    }
+  }
+});
 const FIXTURES_PATH = path.resolve(__dirname);
 const controllerLoader = new Loader({
   type: "controller",
@@ -14,14 +28,9 @@ const modelLoader = new Loader({
   type: "model",
   path: path.join(FIXTURES_PATH, "models")
 });
-const connection = {
-  database: "test",
-  username: "luke",
-  password: "skywalker",
-  dialect: "sqlite",
-  logging: false
-};
-const modelManager = new ModelManager({ connection });
+
+modelManagerInitializer.initialize(registry);
+const modelManager = registry.lookup("service:model-manager");
 
 Object.keys(modelLoader.modules).forEach(model => {
   modelManager.addModel(modelLoader.modules[model]);
@@ -32,9 +41,10 @@ Object.keys(modelManager.models).forEach(model => {
     modelManager.models[model].associate(modelManager.models[model], modelManager.models);
   }
 });
+
 const loader = {
   controllers: controllerLoader,
   models: modelManager.models
 };
 
-export { connection, loader, modelManager };
+export { loader, modelManager, registry };
