@@ -101,6 +101,8 @@ class Application {
     const initializers = includeAll({
       dirname: __dirname
     }).initializers;
+
+    // TODO: throw an error if the initializer is missing
     const [initializer] = Object.keys(initializers).filter(
       init => initializers[init].name === name
     );

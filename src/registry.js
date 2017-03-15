@@ -78,6 +78,8 @@ export default class Registry {
    * @param name
    * @param Obj
    * @param options={}
+   * @todo: guard against overwrites with singleton option
+   *
    * @returns {undefined}
    */
   register(name, Obj, options = {}) {
