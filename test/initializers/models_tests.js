@@ -3,9 +3,9 @@
 import { expect } from "chai";
 
 import { application } from "../fixtures";
-import initializer from "../../src/initializers/model_manager";
+import initializer from "../../src/initializers/models";
 
-describe("initializer | model-manager", function () {
+describe("initializer | models", function () {
   let registry;
 
   beforeEach(function () {
@@ -13,12 +13,12 @@ describe("initializer | model-manager", function () {
   });
 
   describe("#initialize", function () {
-    it("registers the model manager", function () {
+    it("registers the models", function () {
       initializer.initialize(application, registry);
 
-      const modelManager = registry.lookup("service:model-manager");
+      const model = registry.lookup("model:foo");
 
-      expect(modelManager.models).to.eql({});
+      expect(model.name).to.eql("Foo");
     });
   });
 });

@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-  initialize(registry) {
+  initialize(application, registry) {
     const ModelManager = registry.lookup("module:model-manager");
     const manager = new ModelManager(registry);
 
