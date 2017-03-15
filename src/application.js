@@ -4,12 +4,14 @@ import path from "path";
 
 import _ from "lodash";
 import callsite from "callsite";
+import includeAll from "include-all";
+import inflect from "inflect";
 import restify from "restify";
 import jwt from "restify-jwt";
 
 import Loader from "./loader";
 import Logger from "./logger";
-import ModelManager from "./model_manager";
+import Registry from "./registry";
 import Router from "./router";
 import context from "./middleware/context";
 import logger from "./middleware/logger";
@@ -50,36 +52,28 @@ class Application {
     // who are you
     const caller = callsite()[1].getFileName();
     const callerDirectory = path.dirname(caller);
-    const DEFAULT_CONTROLLER_LOOKUP_PATH = path.resolve(callerDirectory, "controllers");
-    const DEFAULT_MODEL_LOOKUP_PATH = path.resolve(callerDirectory, "models");
 
-    options.controllers = options.controllers || {};
-    options.controllers.dir = options.controllers.dir || DEFAULT_CONTROLLER_LOOKUP_PATH;
-    options.database = options.database || {};
-    options.database.connection = options.database.connection || DEFAULT_CONNECTION_SETTINGS;
-    options.database.models = options.database.models || {};
-    options.database.models.dir = options.database.models.dir || DEFAULT_MODEL_LOOKUP_PATH;
-    options.logging = options.logging || {};
-    options.server = options.server || {};
+    this.DEFAULT_CONTROLLER_LOOKUP_PATH = path.resolve(callerDirectory, "controllers");
+    this.DEFAULT_MODEL_LOOKUP_PATH = path.resolve(callerDirectory, "models");
+    options = this._configure(options);
+    this.logger = options.server.log;
+    const registry = this.registry = new Registry();
 
-    options.server.log = options.server.log || Logger.create(null, options.logging);
-    options.server.middlewares = options.server.middlewares || [];
+    registry.register("config:main", options);
+    this._initialize("model-manager");
+    this.modelManager = registry.lookup("service:model-manager");
+    this._internalModels = new Loader({
+      type: "model",
+      path: options.database.models.dir
+    });
 
     const app = options.app || restify.createServer(options.server);
-    const connection = options.database.connection;
     const controllerLoader = new Loader({
       type: "controller",
       path: options.controllers.dir
     });
     const middlewares = _.union(DEFAULT_MIDDLEWARES, options.server.middlewares);
 
-    this._internalModels = new Loader({
-      type: "model",
-      path: options.database.models.dir
-    });
-
-    this.logger = options.server.log;
-    this.modelManager = new ModelManager({ connection });
     this._addModels();
     this._associateModels();
 
@@ -171,6 +165,33 @@ class Application {
         modelManager.models[model].associate(modelManager.models[model], modelManager.models);
       }
     });
+  }
+
+  _configure(config) {
+    config.controllers = config.controllers || {};
+    config.controllers.dir = config.controllers.dir || this.DEFAULT_CONTROLLER_LOOKUP_PATH;
+    config.database = config.database || {};
+    config.database.connection = config.database.connection || DEFAULT_CONNECTION_SETTINGS;
+    config.database.models = config.database.models || {};
+    config.database.models.dir = config.database.models.dir || this.DEFAULT_MODEL_LOOKUP_PATH;
+    config.logging = config.logging || {};
+    config.server = config.server || {};
+
+    config.server.log = config.server.log || Logger.create("application", config.logging);
+    config.server.middlewares = config.server.middlewares || [];
+
+    return config;
+  }
+
+  _initialize(name, config) {
+    const initializers = includeAll({
+      dirname: __dirname
+    }).initializers;
+    const [initializer] = Object.keys(initializers).filter(
+      init => initializers[init].name === name
+    );
+
+    return initializers[initializer].initialize(this.registry);
   }
 }
 
