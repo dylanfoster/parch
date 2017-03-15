@@ -1,6 +1,5 @@
 "use strict";
 
-import Loader from "./loader";
 import includeAll from "include-all";
 import inflect from "inflect";
 
@@ -15,12 +14,12 @@ export default class Registry {
 
   inject(context, lookup) {
     const obj = this.lookup(lookup);
-    const [, name] = lookup.split(":");
+    const [prop] = lookup.split(":");
 
-    if (Object.prototype.hasOwnProperty.call(context, name)) { return; }
+    if (Object.prototype.hasOwnProperty.call(context, prop)) { return; }
 
     if (obj) {
-      Object.defineProperty(context, name, {
+      Object.defineProperty(context, prop, {
         enumerable: false,
         configurable: false,
         get() {

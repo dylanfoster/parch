@@ -43,15 +43,16 @@ class Application {
     const registry = this.registry = new Registry();
 
     registry.register("config:main", options);
-    this._initialize("model-manager");
 
-    // TODO: backwards compat. deprecate here until the next major version
-    this.modelManager = registry.lookup("service:model-manager");
     this._initialize("server");
     this._initialize("loaders");
+    this._initialize("model-manager");
     this._initialize("models");
     this._initialize("middleware");
     this._initialize("router");
+
+    // TODO: backwards compat. deprecate here until the next major version
+    this.modelManager = registry.lookup("service:model-manager");
     this.app = registry.lookup("service:server");
   }
 

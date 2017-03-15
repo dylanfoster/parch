@@ -63,7 +63,7 @@ describe("Registry", function () {
       registry.register("service:foo", { foo: "bar" });
       registry.inject(obj, "service:foo");
 
-      expect(obj.foo).to.eql({ foo: "bar" });
+      expect(obj.service).to.eql({ foo: "bar" });
     });
 
     it("doesn't overwrite an existing reference", function () {
@@ -72,7 +72,7 @@ describe("Registry", function () {
       registry.register("service:foo", { foo: "bar" });
       registry.inject(obj, "service:foo");
 
-      expect(obj.foo).to.eql("foo");
+      expect(obj.service).to.eql({ foo: "bar" });
     });
   });
 });

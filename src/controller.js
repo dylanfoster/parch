@@ -28,8 +28,14 @@ class Controller {
 
     this.errors = errors;
     this.models = registry.lookup("service:model-manager").models;
-    this.modelName = options.model || this.name;
-    this.model = this.models[this.modelName] || this.models[inflect.capitalize(this.modelName)];
+
+    const modelName = options.model || this.name;
+
+    try {
+      registry.inject(this, `model:${modelName}`);
+    } catch (err) {
+    }
+
     this.STATUS_CODES = STATUS_CODES;
   }
 
