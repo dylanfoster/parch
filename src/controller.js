@@ -31,6 +31,8 @@ class Controller {
 
     const modelName = options.model || this.name;
 
+    // TODO: move failover into registry
+    // TODO: move to store service
     try {
       registry.inject(this, `model:${modelName}`);
     } catch (err) {

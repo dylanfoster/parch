@@ -7,11 +7,32 @@ const LOOKUP_MAP = {
   module: __dirname
 };
 
+/**
+ * Registry
+ *
+ * @class
+ * @constructor
+ */
 export default class Registry {
   constructor() {
     this._registry = new Map();
   }
 
+  /**
+   * inject
+   *
+   *     registry.inject(object, "service:store");
+   *     // object.store
+   *
+   *     registry.inject(object, "service:model-manager", "modelManager");
+   *     // object.modelManager
+   *
+   * @param context
+   * @param lookup
+   * @todo: add propery option to specify the instance property name
+   *
+   * @returns {undefined}
+   */
   inject(context, lookup) {
     const obj = this.lookup(lookup);
     const [prop] = lookup.split(":");
@@ -32,6 +53,12 @@ export default class Registry {
     return context;
   }
 
+  /**
+   * lookup
+   *
+   * @param name
+   * @returns {undefined}
+   */
   lookup(name) {
     const [moduleLookup, moduleName] = name.split(":");
     let obj = this._registry.get(name);
@@ -45,19 +72,14 @@ export default class Registry {
     return obj;
   }
 
-  _loadModule(lookup, name) {
-    const modules = includeAll({
-      dirname: this._getLookupDirectory(lookup)
-    });
-    const key = `${inflect.underscore(name)}.js`;
-
-    return modules[key];
-  }
-
-  _getLookupDirectory(lookup) {
-    return LOOKUP_MAP[lookup];
-  }
-
+  /**
+   * register
+   *
+   * @param name
+   * @param Obj
+   * @param options={}
+   * @returns {undefined}
+   */
   register(name, Obj, options = {}) {
     const { instantiate } = options;
 
@@ -66,5 +88,33 @@ export default class Registry {
     }
 
     return this._registry.set(name, Obj);
+  }
+
+  /**
+   * _getLookupDirectory
+   *
+   * @param lookup
+   * @returns {undefined}
+   */
+  _getLookupDirectory(lookup) {
+    return LOOKUP_MAP[lookup];
+  }
+
+  /**
+   * _loadModule
+   *
+   * @param lookup
+   * @param name
+   * @returns {undefined}
+   */
+  _loadModule(lookup, name) {
+    const modules = includeAll({
+      dirname: this._getLookupDirectory(lookup)
+    });
+
+    // TODO: this will need to be configurable somehow (or better regex)
+    const key = `${inflect.underscore(name)}.js`;
+
+    return modules[key];
   }
 }
