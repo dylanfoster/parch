@@ -110,11 +110,11 @@ parch.start(3000).then(() => {
 The above will create the following route mapping
 
 ```
-POST   /users               => UserController.create
 GET    /users               => UserController.index
-GET    /users/:id           => UserController.show
-PUT    /users/:id           => UserController.update
-DELETE /users/:id           => UserController.destroy
+GET    /users/:userId       => UserController.show
+POST   /users               => UserController.create
+PUT    /users/:userId       => UserController.update
+DELETE /users/:userId       => UserController.destroy
 POST   /users/resetPassword => UserController.resetPassword
 ```
 
@@ -134,10 +134,10 @@ app.map(function () {
 
 /**
  * GET    /users               => UserController.index
- * GET    /users/:id           => UserController.show
+ * GET    /users/:userId       => UserController.show
  * POST   /users               => UserController.create
- * PUT    /users/:id           => UserController.update
- * DELETE /users/:id           => UserController.destroy
+ * PUT    /users/:userId       => UserController.update
+ * DELETE /users/:userId       => UserController.destroy
  */
 ```
 
