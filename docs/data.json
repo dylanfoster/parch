@@ -2,7 +2,7 @@
     "project": {
         "name": "Parch",
         "url": "https://github.com/dylanfoster/parch",
-        "version": "0.12.0",
+        "version": "1.0.0",
         "description": "Restify + Sequelize"
     },
     "files": {
@@ -802,6 +802,31 @@
         {
             "file": "src/router.js",
             "line": 174,
+            "description": "Generates a path segment from a given resource name\n\n    router._getPathSegment(\"foo\", \"show\");\n    // :fooId",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "_getPathSegment",
+            "params": [
+                {
+                    "name": "resource",
+                    "description": ""
+                },
+                {
+                    "name": "action",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "pathSegment",
+                "type": "String"
+            },
+            "class": "Router",
+            "module": "parch"
+        },
+        {
+            "file": "src/router.js",
+            "line": 195,
             "description": "loads controllers from the loader",
             "access": "private",
             "tagname": "",
@@ -812,7 +837,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 189,
+            "line": 210,
             "description": "maps a resource controller action and route",
             "access": "private",
             "tagname": "",
@@ -845,7 +870,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 216,
+            "line": 237,
             "description": "configures router resources",
             "static": 1,
             "params": [
@@ -869,6 +894,10 @@
         }
     ],
     "warnings": [
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/router.js:174"
+        },
         {
             "message": "Missing item type\nGenerate a unique slug.",
             "line": " docs/assets/vendor/github-slugger/slugger.js:12"
@@ -915,7 +944,7 @@
         },
         {
             "message": "Missing item type\nconfigures router resources",
-            "line": " src/router.js:216"
+            "line": " src/router.js:237"
         }
     ]
 }
