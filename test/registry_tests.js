@@ -74,5 +74,14 @@ describe("Registry", function () {
 
       expect(obj.service).to.eql({ foo: "bar" });
     });
+
+    it("injects, an object with a given property name", function () {
+      const obj = { bar: "baz" };
+
+      registry.register("service:foo", { foo: "bar" });
+      registry.inject(obj, "service:foo", "fooService");
+
+      expect(obj.fooService).to.eql({ foo: "bar" });
+    });
   });
 });

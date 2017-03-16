@@ -29,18 +29,20 @@ export default class Registry {
    *
    * @param context
    * @param lookup
+   * @param propertyName
    * @todo: add propery option to specify the instance property name
    *
    * @returns {undefined}
    */
-  inject(context, lookup) {
+  inject(context, lookup, propertyName) {
     const obj = this.lookup(lookup);
     const [prop] = lookup.split(":");
+    const property = propertyName || prop;
 
     if (Object.prototype.hasOwnProperty.call(context, prop)) { return; }
 
     if (obj) {
-      Object.defineProperty(context, prop, {
+      Object.defineProperty(context, property, {
         enumerable: false,
         configurable: false,
         get() {
