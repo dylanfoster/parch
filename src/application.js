@@ -39,11 +39,12 @@ class Application {
     this.DEFAULT_CONTROLLER_LOOKUP_PATH = path.resolve(callerDirectory, "controllers");
     this.DEFAULT_MODEL_LOOKUP_PATH = path.resolve(callerDirectory, "models");
     options = this._configure(options);
-    this.logger = options.server.log;
+
     const registry = this.registry = new Registry();
 
     registry.register("config:main", options);
 
+    this._initialize("logger");
     this._initialize("server");
     this._initialize("loaders");
     this._initialize("model-manager");
@@ -87,8 +88,6 @@ class Application {
     config.database.models.dir = config.database.models.dir || this.DEFAULT_MODEL_LOOKUP_PATH;
     config.logging = config.logging || {};
     config.server = config.server || {};
-
-    config.server.log = config.server.log || Logger.create("application", config.logging);
     config.server.middlewares = config.server.middlewares || [];
 
     return config;
