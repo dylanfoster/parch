@@ -35,12 +35,11 @@ class Application {
     // who are you
     const caller = callsite()[1].getFileName();
     const callerDirectory = path.dirname(caller);
+    const registry = this.registry = new Registry();
 
     this.DEFAULT_CONTROLLER_LOOKUP_PATH = path.resolve(callerDirectory, "controllers");
     this.DEFAULT_MODEL_LOOKUP_PATH = path.resolve(callerDirectory, "models");
     options = this._configure(options);
-
-    const registry = this.registry = new Registry();
 
     registry.register("config:main", options);
 
