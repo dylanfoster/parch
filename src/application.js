@@ -50,10 +50,7 @@ class Application {
     this._initialize("models");
     this._initialize("middleware");
     this._initialize("router");
-
-    // TODO: backwards compat. deprecate here until the next major version
-    this.modelManager = registry.lookup("service:model-manager");
-    this.app = registry.lookup("service:server");
+    this._initialize("application");
   }
 
   /**

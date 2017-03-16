@@ -39,7 +39,7 @@ export default class Registry {
     const [prop] = lookup.split(":");
     const property = propertyName || prop;
 
-    if (Object.prototype.hasOwnProperty.call(context, prop)) { return; }
+    if (Object.prototype.hasOwnProperty.call(context, property)) { return; }
 
     if (obj) {
       Object.defineProperty(context, property, {
