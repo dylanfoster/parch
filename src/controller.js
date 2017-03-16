@@ -1,7 +1,6 @@
 "use strict";
 
 import errors from "restify-errors";
-import inflect from "inflect";
 
 import STATUS_CODES from "./utils/status_codes";
 import { setOwner } from "./containment";

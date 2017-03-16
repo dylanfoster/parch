@@ -5,6 +5,9 @@ import inflect from "inflect";
 import Route from "./route";
 import { getOwner, setOwner } from "./containment";
 
+const METHODS = {
+  DELETE: "delete"
+};
 const restActionMapper = new Map([
     ["index", "get"],
     ["show", "get"],
@@ -19,9 +22,6 @@ const restPathMapper = new Map([
     ["update", "/:id"],
     ["destroy", "/:id"]
 ]);
-const METHODS = {
-  DELETE: "delete"
-};
 
 /**
  * Manages routing
@@ -68,7 +68,11 @@ class Router {
    */
   namespace(namespace, routes) {
     for (const route of routes) {
-      const fullPath = this._buildRoute(this.namespacePrefix, namespace, route.path);
+      const fullPath = this._buildRoute(
+        this.namespacePrefix,
+        namespace,
+        route.path
+      );
 
       this.route(fullPath, {
         using: route.using,
@@ -128,9 +132,7 @@ class Router {
     let method = options.method;
     const handlers = this._generateControllerHandlers(controller, actionName);
 
-    if (method === METHODS.DELETE) {
-      method = "del";
-    }
+    if (method === METHODS.DELETE) { method = "del"; }
 
     app[method](path, handlers);
   }
@@ -156,6 +158,8 @@ class Router {
    * @method _generateControllerHandlers
    * @param {Object} controller
    * @param {String} action controller method
+   * @todo: move hooks to controller instance methods and just call them
+   *
    * @return {Array} handlers
    */
   _generateControllerHandlers(controller, action) {
@@ -188,6 +192,7 @@ class Router {
    * @method _getPathSegment
    * @param resource
    * @param action
+   *
    * @returns {String} pathSegment
    */
   _getPathSegment(resource, action) {

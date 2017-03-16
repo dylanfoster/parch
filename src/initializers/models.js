@@ -1,8 +1,6 @@
 "use strict";
 
 module.exports = {
-  name: "models",
-
   initialize(applicaiton, registry) {
     const modelManager = registry.lookup("service:model-manager");
     const modelLoader = registry.lookup("loader:model");
@@ -21,5 +19,7 @@ module.exports = {
     models.forEach(model => registry.register(`model:${model.name.toLowerCase()}`, model));
 
     return models;
-  }
+  },
+
+  name: "models"
 };

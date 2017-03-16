@@ -30,7 +30,6 @@ export default class Registry {
    * @param context
    * @param lookup
    * @param propertyName
-   * @todo: add propery option to specify the instance property name
    *
    * @returns {undefined}
    */
@@ -45,9 +44,7 @@ export default class Registry {
       Object.defineProperty(context, property, {
         enumerable: false,
         configurable: false,
-        get() {
-          return obj;
-        },
+        get() { return obj; },
         set() {}
       });
     }
@@ -59,6 +56,7 @@ export default class Registry {
    * lookup
    *
    * @param name
+   *
    * @returns {undefined}
    */
   lookup(name) {
@@ -98,6 +96,7 @@ export default class Registry {
    * _getLookupDirectory
    *
    * @param lookup
+   *
    * @returns {undefined}
    */
   _getLookupDirectory(lookup) {
@@ -109,6 +108,7 @@ export default class Registry {
    *
    * @param lookup
    * @param name
+   *
    * @returns {undefined}
    */
   _loadModule(lookup, name) {

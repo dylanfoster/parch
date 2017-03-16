@@ -5,7 +5,6 @@ import path from "path";
 import callsite from "callsite";
 import includeAll from "include-all";
 
-import Logger from "./logger";
 import Registry from "./registry";
 
 const DEFAULT_CONNECTION_SETTINGS = {
@@ -61,7 +60,7 @@ class Application {
    * @return {Object} restify application instance
    */
   getApp() {
-    return this.app;
+    return this.registry.lookup("service:server");
   }
 
   /**

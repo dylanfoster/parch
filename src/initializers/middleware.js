@@ -18,10 +18,6 @@ const DEFAULT_MIDDLEWARES = [
 ];
 
 module.exports = {
-  name: "middleware",
-
-  middleware: DEFAULT_MIDDLEWARES,
-
   initialize(application, registry) {
     const config = registry.lookup("config:main");
     const middlewares = _.union(this.middleware, config.server.middlewares);
@@ -49,5 +45,9 @@ module.exports = {
       req.log.info({ req, res, err });
     });
     middlewares.forEach(middlware => { app.use(middlware); });
-  }
-}
+  },
+
+  middleware: DEFAULT_MIDDLEWARES,
+
+  name: "middleware"
+};
