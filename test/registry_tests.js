@@ -25,6 +25,16 @@ describe("Registry", function () {
 
       expect(registry.lookup("service:foo")).to.be.an.instanceof(Foo);
     });
+
+    it("doesn't overwrite existing instances", function () {
+      const foo = { bar: "baz" };
+
+      registry.register("service:foo", foo, { singleton: true });
+
+      expect(function () {
+        registry.register("service:foo", "bar");
+      }).to.throw("Cannot re-register singleton object");
+    });
   });
 
   describe("#lookup", function () {
@@ -43,7 +53,7 @@ describe("Registry", function () {
     });
 
     it("finds and returns an object by reference", function () {
-      registry._registry.set("service:foo", { foo: "bar" });
+      registry.register("service:foo", { foo: "bar" });
 
       expect(registry.lookup("service:foo")).to.eql({ foo: "bar" });
     });

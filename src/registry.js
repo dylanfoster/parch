@@ -63,11 +63,11 @@ export default class Registry {
     const [moduleLookup, moduleName] = name.split(":");
     let obj = this._registry.get(name);
 
-    if (obj) { return obj; }
+    if (obj) { return obj.instance; }
 
     obj = this._loadModule(moduleLookup, moduleName);
 
-    this._registry.set(name, obj);
+    this.register(name, obj);
 
     return obj;
   }
@@ -83,13 +83,30 @@ export default class Registry {
    * @returns {undefined}
    */
   register(name, Obj, options = {}) {
-    const { instantiate } = options;
+    const { instantiate, singleton } = options;
+    let obj = this._registry.get(name);
 
-    if (instantiate) {
-      return this._registry.set(name, new Obj());
+    if (obj && obj.singleton) {
+      throw new Error("Cannot re-register singleton object");
     }
 
-    return this._registry.set(name, Obj);
+    obj = {};
+
+    if (instantiate) {
+      obj.instance = new Obj();
+      obj.singleton = singleton;
+
+      this._registry.set(name, obj);
+
+      return obj;
+    }
+
+    obj.instance = Obj;
+    obj.singleton = singleton;
+
+    this._registry.set(name, obj);
+
+    return obj;
   }
 
   /**
