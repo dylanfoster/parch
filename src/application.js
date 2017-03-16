@@ -42,7 +42,6 @@ class Application {
     options = this._configure(options);
 
     registry.register("config:main", options);
-
     this._initialize("logger");
     this._initialize("server");
     this._initialize("loaders");
