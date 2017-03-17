@@ -27,7 +27,7 @@ const loader = {
 };
 const registry = application.registry;
 
-export {
+export default {
   application,
   loader,
   modelManager,
