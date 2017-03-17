@@ -92,9 +92,6 @@
                                         <a href="../classes/Application.html">Application</a>
                                     </li>
                                     <li>
-                                        <a href="../classes/containment.html">containment</a>
-                                    </li>
-                                    <li>
                                         <a href="../classes/Controller.html">Controller</a>
                                     </li>
                                     <li>
@@ -102,9 +99,6 @@
                                     </li>
                                     <li>
                                         <a href="../classes/ModelManager.html">ModelManager</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Registry.html">Registry</a>
                                     </li>
                                     <li>
                                         <a href="../classes/Route.html">Route</a>
@@ -135,11 +129,7 @@
 import inflect from &quot;inflect&quot;;
 
 import Route from &quot;./route&quot;;
-import { getOwner, setOwner } from &quot;./containment&quot;;
 
-const METHODS = {
-  DELETE: &quot;delete&quot;
-};
 const restActionMapper = new Map([
     [&quot;index&quot;, &quot;get&quot;],
     [&quot;show&quot;, &quot;get&quot;],
@@ -154,26 +144,29 @@ const restPathMapper = new Map([
     [&quot;update&quot;, &quot;/:id&quot;],
     [&quot;destroy&quot;, &quot;/:id&quot;]
 ]);
+const METHODS = {
+  DELETE: &quot;delete&quot;
+};
 
 /**
  * Manages routing
  *
  * @class Router
- * @constructor
  */
 class Router {
   /**
    * constructor
    *
    * @constructor
-   * @param {Object} registry {{#crossLink &quot;Registry&quot;}}module registry{{/crossLink}}
+   * @param settings
+   * @param settings.app restify app instance
+   * @param settings.loader module loader
    */
-  constructor(registry) {
-    setOwner(this, registry);
-
-    const config = registry.lookup(&quot;config:main&quot;);
-
-    this.namespacePrefix = config.namespace || &quot;&quot;;
+  constructor(settings) {
+    this.app = settings.app;
+    this.controllers = new Map();
+    this.loader = settings.loader;
+    this.namespacePrefix = settings.namespace || &quot;&quot;;
     this._loadControllers();
   }
 
@@ -182,24 +175,20 @@ class Router {
    * Uses {{#crossLink &quot;Router/_buildRoute:method&quot;}}_buildRoute{{/crossLink}} to
    * normalize the path
    *
-   * @method namespace
-   * @param {String} namespace the namespace to bind to, with or without leading slash
-   * @param {Array[Object]} routes array of routes to bind to the namespace
-   * @since 0.9.0
-   * @example
    *     Router.map(function () {
    *       this.namespace(&quot;/users/:userId&quot;, [
    *         { path: &quot;/setProfileImage&quot;, using: &quot;user:setImage&quot;, method: &quot;post&quot; }
    *       ])
    *     });
+   *
+   * @method namespace
+   * @param {String} namespace the namespace to bind to, with or without leading slash
+   * @param {Array[Object]} routes array of routes to bind to the namespace
+   * @since 0.9.0
    */
   namespace(namespace, routes) {
     for (const route of routes) {
-      const fullPath = this._buildRoute(
-        this.namespacePrefix,
-        namespace,
-        route.path
-      );
+      const fullPath = this._buildRoute(this.namespacePrefix, namespace, route.path);
 
       this.route(fullPath, {
         using: route.using,
@@ -213,20 +202,20 @@ class Router {
    * Uses {{#crossLink &quot;Router/_buildRoute:method&quot;}}_buildRoute{{/crossLink}} to
    * normalize the path
    *
+   *     Router.map(function () {
+   *       this.resource(&quot;user&quot;);
+   *     });
+   *
    * @method resource
    * @param {String} name the resource name in singular form
    * @param {Object} options resource mapping options
    * @param {String} options.namespace mount the resource endpoint under a namespace
    *
    *     this.resource(&quot;user&quot;, { namespace: &quot;api&quot; })
-   * @example
-   *     Router.map(function () {
-   *       this.resource(&quot;user&quot;);
-   *     });
    */
   resource(name, options = {}) {
     name = inflect.singularize(name);
-    const controller = getOwner(this).lookup(&#x60;controller:${name}&#x60;);
+    const controller = this.controllers.get(name);
 
     for (const [action] of restActionMapper) {
       this._mapControllerAction(name, controller, action, options);
@@ -238,6 +227,10 @@ class Router {
    * Uses {{#crossLink &quot;Router/_buildRoute:method&quot;}}_buildRoute{{/crossLink}} to
    * normalize the path
    *
+   *     Router.map(function () {
+   *       this.route(&quot;/user/foo&quot;, { using: &quot;users:foo&quot;, method: &quot;get&quot; });
+   *     });
+   *
    * @method route
    * @param {String} path the route path (e.g. /foo/bar)
    * @param {Object} options
@@ -247,32 +240,29 @@ class Router {
    * @param {String} options.method http method
    *
    *     this.route(&quot;/foo/bar&quot;, { method: &quot;get&quot; });
-   * @example
-   *     Router.map(function () {
-   *       this.route(&quot;/user/foo&quot;, { using: &quot;users:foo&quot;, method: &quot;get&quot; });
-   *     });
    */
   route(path, options) {
-    const app = getOwner(this).lookup(&quot;service:server&quot;);
     const [controllerName, actionName] = options.using.split(&quot;:&quot;);
-    const controller = getOwner(this).lookup(&#x60;controller:${controllerName}&#x60;);
+    const controller = this.controllers.get(controllerName);
     let method = options.method;
     const handlers = this._generateControllerHandlers(controller, actionName);
 
-    if (method === METHODS.DELETE) { method = &quot;del&quot;; }
+    if (method === METHODS.DELETE) {
+      method = &quot;del&quot;;
+    }
 
-    app[method](path, handlers);
+    this.app[method](path, handlers);
   }
 
   /**
    * Consistently builds a route from a set of path segments using
    * {{#crossLink &quot;Route&quot;}}Route{{/crossLink}}
    *
+   *     router._buildRoute(&quot;foo&quot;, &quot;/bar&quot; &quot;baz/&quot;);
+   *
    * @method _buildRoute
    * @private
    * @return {Object} route object with path property
-   * @example
-   *     router._buildRoute(&quot;foo&quot;, &quot;/bar&quot; &quot;baz/&quot;);
    */
   _buildRoute() {
     return new Route(...arguments);
@@ -285,8 +275,6 @@ class Router {
    * @method _generateControllerHandlers
    * @param {Object} controller
    * @param {String} action controller method
-   * @todo: move hooks to controller instance methods and just call them
-   *
    * @return {Array} handlers
    */
   _generateControllerHandlers(controller, action) {
@@ -310,42 +298,17 @@ class Router {
   }
 
   /**
-   * Generates a path segment from a given resource name
-   *
-   * @private
-   * @method _getPathSegment
-   * @param resource
-   * @param action
-   * @returns {String} pathSegment
-   * @example
-   *     router._getPathSegment(&quot;foo&quot;, &quot;show&quot;);
-   *     // :fooId
-   */
-  _getPathSegment(resource, action) {
-    const restPathSegment = restPathMapper.get(action);
-    const resourceSegmentString = &#x60;${resource}Id&#x60;;
-
-    return inflect.camelize(
-      restPathSegment.replace(&quot;id&quot;, resourceSegmentString)
-    );
-  }
-
-  /**
    * loads controllers from the loader
    *
    * @private
    * @method _loadControllers
    */
   _loadControllers() {
-    const controllerLoader = getOwner(this).lookup(&quot;loader:controller&quot;);
-    const { modules: controllers } = controllerLoader;
+    const controllers = this.loader.controllers.modules;
+    const loader = this.loader;
 
     Object.keys(controllers).forEach(controller =&gt; {
-      const Klass = controllers[controller];
-      const instance = new Klass(getOwner(this));
-      const instanceName = inflect.singularize(instance.name);
-
-      getOwner(this).register(&#x60;controller:${instanceName}&#x60;, instance);
+      this.controllers.set(controller, new controllers[controller]({ loader }));
     });
   }
 
@@ -360,21 +323,20 @@ class Router {
    * @param {Object} options mapping options
    */
   _mapControllerAction(resource, controller, action, options) {
-    const app = getOwner(this).lookup(&quot;service:server&quot;);
-    const handlers = this._generateControllerHandlers(controller, action);
     const method = restActionMapper.get(action);
     const namespace = options.namespace || &quot;&quot;;
     const singularResource = inflect.singularize(resource);
     const pluralResource = inflect.pluralize(singularResource);
-    const pathSegment = this._getPathSegment(singularResource, action);
+    const pathSegment = restPathMapper.get(action);
     const resourcePath = this._buildRoute(
       this.namespacePrefix,
       namespace,
       pluralResource,
       pathSegment
     );
+    const handlers = this._generateControllerHandlers(controller, action);
 
-    app[method](resourcePath, handlers);
+    this.app[method](resourcePath, handlers);
   }
 
   /**
@@ -385,8 +347,8 @@ class Router {
    * @param {Function} callback called with the router instance
    * @return {undefined}
    */
-  static map(registry, callback) {
-    const router = new Router(registry);
+  static map(settings, callback) {
+    const router = new Router(settings);
 
     callback.call(router);
     return router;

@@ -45,13 +45,13 @@ class Controller {
   /**
    * Builds, validates and saves a model instance.
    *
-   * @method createRecord
-   * @param {Object} data the model data to create the instance with
-   * @return {Promise<Model, Error>} the model instance
-   * @example
    *     return this.createRecord({ firstname: 'bar' }).then(record => {
    *
    *     });
+   *
+   * @method createRecord
+   * @param {Object} data the model data to create the instance with
+   * @return {Promise<Model, Error>} the model instance
    */
   createRecord(data) {
     if (!data) {
@@ -79,13 +79,13 @@ class Controller {
   /**
    * Destroy a model instance and remove it from the db
    *
-   * @method destroyRecord
-   * @param {Number} id the id of the resource to destroy
-   * @return {Promise<undefined, Error}
-   * @example
    *     return this.destroyRecord(1).then(() => {
    *
    *     });
+   *
+   * @method destroyRecord
+   * @param {Number} id the id of the resource to destroy
+   * @return {Promise<undefined, Error}
    */
   destroyRecord(id) {
     return this.findOne(id).then(record => record.destroy());
@@ -94,14 +94,6 @@ class Controller {
   /**
    * Find all records.
    *
-   * @method findAll
-   * @param {Object} where sequelize where clause
-   * @param {Object} options <a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
-   *   sequelize finder options
-   * </a>
-   * @see http://docs.sequelizejs.com/en/v3/docs/querying/#where
-   * @return {Promise<Model[], Error} an array of model instance
-   * @example
    *     return this.findAll().then(records => {
    *
    *     })
@@ -121,6 +113,14 @@ class Controller {
    *
    *     });
    *
+   * @method findAll
+   * @param {Object} where sequelize where clause
+   * @param {Object} options <a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
+   *   sequelize finder options
+   * </a>
+   * @see http://docs.sequelizejs.com/en/v3/docs/querying/#where
+   *
+   * @return {Promise<Model[], Error} an array of model instance
    */
   findAll(where, options = {}) {
     const query = { where };
@@ -133,13 +133,6 @@ class Controller {
   /**
    * Find a single instance by id
    *
-   * @method findOne
-   * @param {Number} id the id of the instance to search for
-   * @param {Object} options <a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
-   *   sequelize finder options
-   * </a>
-   * @return {Promise<Model, Error>}
-   * @example
    *     return this.findOne(1).then(record => {
    *
    *     });
@@ -151,6 +144,13 @@ class Controller {
    *     }).then(user => {
    *
    *     });
+   *
+   * @method findOne
+   * @param {Number} id the id of the instance to search for
+   * @param {Object} options <a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
+   *   sequelize finder options
+   * </a>
+   * @return {Promise<Model, Error>}
    */
   findOne(id, options = {}) {
     const query = { where: { id }};
@@ -172,14 +172,14 @@ class Controller {
   /**
    * Update a single record
    *
+   *     return this.updateRecord(1, { firstName: 'foo' }).then(record => {
+   *
+   *     });
+   *
    * @method updateRecord
    * @param {Number} id the id of the record to update
    * @param {Object} data the data to update on the record
    * @return {Promise<Model, Error>}
-   * @example
-   *     return this.updateRecord(1, { firstName: 'foo' }).then(record => {
-   *
-   *     });
    */
   updateRecord(id, data) {
     if (!data) {

@@ -34,9 +34,6 @@ class ModelManager {
   /**
    * Adds a model to internal cache
    *
-   * @method addModel
-   * @param {Object} Model parch model class
-   * @example
    *     class FooModel extends parch.Model {
    *       constructor(options) {
    *         super(options);
@@ -50,6 +47,9 @@ class ModelManager {
    *     }
    *
    *     modelManager.addModel(Model);
+   *
+   * @method addModel
+   * @param {Object} Model parch model class
    */
   addModel(Model) {
     const instance = new Model();

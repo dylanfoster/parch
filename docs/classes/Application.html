@@ -92,9 +92,6 @@
                                         <a href="../classes/Application.html">Application</a>
                                     </li>
                                     <li>
-                                        <a href="../classes/containment.html">containment</a>
-                                    </li>
-                                    <li>
                                         <a href="../classes/Controller.html">Controller</a>
                                     </li>
                                     <li>
@@ -102,9 +99,6 @@
                                     </li>
                                     <li>
                                         <a href="../classes/ModelManager.html">ModelManager</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Registry.html">Registry</a>
                                     </li>
                                     <li>
                                         <a href="../classes/Route.html">Route</a>
@@ -128,7 +122,7 @@
 
 <div class="page-header">
     <h1> <i class="fa fa-bookmark-o" aria-hidden="true"></i> Application Class
-            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L18" target="_blank">
+            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L34" target="_blank">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
     </h1>
@@ -142,7 +136,7 @@
 
 
         <div class="foundat">
-            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L18">src/application.js:18</a>
+            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L34">src/application.js:34</a>
         </div>
 </div>
 
@@ -196,15 +190,11 @@
 
                       <ul class="index-list methods">
                               <li class="index-item method private">
-                                  <a href="#method__configure">_configure</a>
+                                  <a href="#method__addModels">_addModels</a>
 
                               </li>
                               <li class="index-item method private">
-                                  <a href="#method__getProjectDirectory">_getProjectDirectory</a>
-
-                              </li>
-                              <li class="index-item method private">
-                                  <a href="#method__initialize">_initialize</a>
+                                  <a href="#method__associateModels">_associateModels</a>
 
                               </li>
                               <li class="index-item method">
@@ -224,83 +214,14 @@
 
               <div id="tab_methods" role="tabpanel" class="tab-pane">
                   <div class="item-list">
-  <div id="method__configure" class="method item private">
+  <div id="method__addModels" class="method item private">
   	<span class="method-signature">
   	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method__configure"></a>
-  		_configure
-  	</span>
-  
-  		<div class="args">
-  			<span class="paren">(</span><ul class="args-list inline commas">
-  				<li class="arg">
-  						<code>config</code>
-  				</li>
-  			</ul><span class="paren">)</span>
-  		</div>
-  		<span class="returns-inline">
-  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-  		</span>
-  	</span>
-  
-  
-  
-  		<span class="flag private">private</span>
-  
-  
-  
-  
-  	<div class="meta">
-  				<p>
-  				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L81">src/application.js:81</a>
-  		</p>
-  
-  
-  
-  	</div>
-  
-  	<div class="description"><p>Normalizes constructor options</p>
-  </div>
-  
-  		<div class="params">
-  			<h4>Parameters:</h4>
-  
-  			<ul class="params-list">
-  				<li class="param">
-  						<code class="param-name">config</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-  
-  
-  					<div class="param-description"><p>user passed config options</p>
-  </div>
-  
-  				</li>
-  			</ul>
-  		</div>
-  
-  		<div class="returns">
-  			<h4>Returns:</h4>
-  
-  			<div class="returns-description">
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-  					<p>final config option</p>
-  
-  			</div>
-  		</div>
-  
-  </div>
-  <div id="method__getProjectDirectory" class="method item private">
-  	<span class="method-signature">
-  	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method__getProjectDirectory"></a>
-  		_getProjectDirectory
+  		<a class="fa fa-link toc-anchor" href="#method__addModels"></a>
+  		_addModels
   	</span>
   
   		<span class="paren">()</span>
-  		<span class="returns-inline">
-  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-  		</span>
   	</span>
   
   
@@ -313,42 +234,28 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L104">src/application.js:104</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L145">src/application.js:145</a>
   		</p>
   
   
   
   	</div>
   
-  	<div class="description"><p>Returns the project directory (cwd) from which Application is being instantiated</p>
+  	<div class="description"><p>Loads the models into the model manager using
+  <a href="../classes/ModelManager.html#method_addModel" class="crosslink">ModelManager#addModel</a></p>
   </div>
   
   
-  		<div class="returns">
-  			<h4>Returns:</h4>
-  
-  			<div class="returns-description">
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
-  					<p>directory</p>
-  
-  			</div>
-  		</div>
   
   </div>
-  <div id="method__initialize" class="method item private">
+  <div id="method__associateModels" class="method item private">
   	<span class="method-signature">
   	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method__initialize"></a>
-  		_initialize
+  		<a class="fa fa-link toc-anchor" href="#method__associateModels"></a>
+  		_associateModels
   	</span>
   
-  		<div class="args">
-  			<span class="paren">(</span><ul class="args-list inline commas">
-  				<li class="arg">
-  						<code>name</code>
-  				</li>
-  			</ul><span class="paren">)</span>
-  		</div>
+  		<span class="paren">()</span>
   	</span>
   
   
@@ -361,29 +268,16 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L118">src/application.js:118</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L160">src/application.js:160</a>
   		</p>
   
   
   
   	</div>
   
-  	<div class="description"><p>Run an initializer by name</p>
+  	<div class="description"><p>runs associations for each model</p>
   </div>
   
-  		<div class="params">
-  			<h4>Parameters:</h4>
-  
-  			<ul class="params-list">
-  				<li class="param">
-  						<code class="param-name">name</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-  
-  
-  
-  				</li>
-  			</ul>
-  		</div>
   
   
   </div>
@@ -409,7 +303,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L55">src/application.js:55</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L121">src/application.js:121</a>
   		</p>
   
   
@@ -459,7 +353,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L67">src/application.js:67</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L132">src/application.js:132</a>
   		</p>
   
   

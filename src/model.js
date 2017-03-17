@@ -45,14 +45,6 @@ class Model {
   /**
    * Model definition
    *
-   * <a href="http://docs.sequelizejs.com/en/v3/docs/models-definition/#data-types">
-   *   see http://docs.sequelizejs.com/en/v3/docs/models-definition/#data-types
-   * </a>
-   *
-   * @method define
-   * @param {Object} DataTypes sequelize DataTypes Object
-   * @see http://docs.sequelizejs.com/en/v3/docs/models-definition/#data-types
-   * @example
    *     define(DataTypes) {
    *       const user = {
    *         username: {
@@ -63,6 +55,14 @@ class Model {
    *
    *       return user;
    *     }
+   *
+   * <a href="http://docs.sequelizejs.com/en/v3/docs/models-definition/#data-types">
+   *   see http://docs.sequelizejs.com/en/v3/docs/models-definition/#data-types
+   * </a>
+   *
+   * @method define
+   * @param {Object} DataTypes sequelize DataTypes Object
+   * @see http://docs.sequelizejs.com/en/v3/docs/models-definition/#data-types
    */
   define() {
     throw new Error("Models must supply a 'define' method");

@@ -92,9 +92,6 @@
                                         <a href="../classes/Application.html">Application</a>
                                     </li>
                                     <li>
-                                        <a href="../classes/containment.html">containment</a>
-                                    </li>
-                                    <li>
                                         <a href="../classes/Controller.html">Controller</a>
                                     </li>
                                     <li>
@@ -102,9 +99,6 @@
                                     </li>
                                     <li>
                                         <a href="../classes/ModelManager.html">ModelManager</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Registry.html">Registry</a>
                                     </li>
                                     <li>
                                         <a href="../classes/Route.html">Route</a>
@@ -128,7 +122,7 @@
 
 <div class="page-header">
     <h1> <i class="fa fa-bookmark-o" aria-hidden="true"></i> Controller Class
-            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L9" target="_blank">
+            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L8" target="_blank">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
     </h1>
@@ -142,7 +136,7 @@
 
 
         <div class="foundat">
-            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L9">src/controller.js:9</a>
+            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L8">src/controller.js:8</a>
         </div>
 </div>
 
@@ -252,7 +246,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L45">src/controller.js:45</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L35">src/controller.js:35</a>
   		</p>
   
   
@@ -260,6 +254,9 @@
   	</div>
   
   	<div class="description"><p>Builds, validates and saves a model instance.</p>
+  <pre class="code prettyprint"><code>return this.createRecord({ firstname: 'bar' }).then(record =&gt; {
+  
+  });</code></pre>
   </div>
   
   		<div class="params">
@@ -288,16 +285,6 @@
   			</div>
   		</div>
   
-  		<div class="example">
-  			<h4>Example:</h4>
-  
-  			<div class="example-content">
-  				<pre class="code prettyprint"><code>return this.createRecord({ firstname: 'bar' }).then(record =&gt; {
-  
-  });</code></pre>
-  
-  			</div>
-  		</div>
   </div>
   <div id="method_destroyRecord" class="method item">
   	<span class="method-signature">
@@ -327,7 +314,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L79">src/controller.js:79</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L69">src/controller.js:69</a>
   		</p>
   
   
@@ -335,6 +322,9 @@
   	</div>
   
   	<div class="description"><p>Destroy a model instance and remove it from the db</p>
+  <pre class="code prettyprint"><code>return this.destroyRecord(1).then(() =&gt; {
+  
+  });</code></pre>
   </div>
   
   		<div class="params">
@@ -361,16 +351,6 @@
   			</div>
   		</div>
   
-  		<div class="example">
-  			<h4>Example:</h4>
-  
-  			<div class="example-content">
-  				<pre class="code prettyprint"><code>return this.destroyRecord(1).then(() =&gt; {
-  
-  });</code></pre>
-  
-  			</div>
-  		</div>
   </div>
   <div id="method_findAll" class="method item">
   	<span class="method-signature">
@@ -403,7 +383,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L94">src/controller.js:94</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L84">src/controller.js:84</a>
   		</p>
   
   
@@ -411,6 +391,22 @@
   	</div>
   
   	<div class="description"><p>Find all records.</p>
+  <pre class="code prettyprint"><code>return this.findAll().then(records =&gt; {
+  
+  })
+  </code></pre>
+  <p>You can optionally pass in a where clause</p>
+  <pre class="code prettyprint"><code>return this.findAll({ username: 'john' }).then(user =&gt; {
+  
+  });
+  </code></pre>
+  <p>As well as any finder options</p>
+  <pre class="code prettyprint"><code>return this.findAll(null, {
+    attributes: ["title"],
+    include: [this.models.User]
+  }).then(user =&gt; {
+  
+  });</code></pre>
   </div>
   
   		<div class="params">
@@ -449,30 +445,6 @@
   			</div>
   		</div>
   
-  		<div class="example">
-  			<h4>Example:</h4>
-  
-  			<div class="example-content">
-  				<pre class="code prettyprint"><code>return this.findAll().then(records =&gt; {
-  
-  })
-  </code></pre>
-  <p>You can optionally pass in a where clause</p>
-  <pre class="code prettyprint"><code>return this.findAll({ username: 'john' }).then(user =&gt; {
-  
-  });
-  </code></pre>
-  <p>As well as any finder options</p>
-  <pre class="code prettyprint"><code>return this.findAll(null, {
-    attributes: ["title"],
-    include: [this.models.User]
-  }).then(user =&gt; {
-  
-  });
-  </code></pre>
-  
-  			</div>
-  		</div>
   </div>
   <div id="method_findOne" class="method item">
   	<span class="method-signature">
@@ -505,7 +477,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L133">src/controller.js:133</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L123">src/controller.js:123</a>
   		</p>
   
   
@@ -513,6 +485,16 @@
   	</div>
   
   	<div class="description"><p>Find a single instance by id</p>
+  <pre class="code prettyprint"><code>return this.findOne(1).then(record =&gt; {
+  
+  });
+  </code></pre>
+  <p>The same options apply to findOne</p>
+  <pre class="code prettyprint"><code>return this.findOne(1, {
+    attributes: ["firstName"]
+  }).then(user =&gt; {
+  
+  });</code></pre>
   </div>
   
   		<div class="params">
@@ -549,23 +531,6 @@
   			</div>
   		</div>
   
-  		<div class="example">
-  			<h4>Example:</h4>
-  
-  			<div class="example-content">
-  				<pre class="code prettyprint"><code>return this.findOne(1).then(record =&gt; {
-  
-  });
-  </code></pre>
-  <p>The same options apply to findOne</p>
-  <pre class="code prettyprint"><code>return this.findOne(1, {
-    attributes: ["firstName"]
-  }).then(user =&gt; {
-  
-  });</code></pre>
-  
-  			</div>
-  		</div>
   </div>
   <div id="method_updateRecord" class="method item">
   	<span class="method-signature">
@@ -598,7 +563,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L172">src/controller.js:172</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L162">src/controller.js:162</a>
   		</p>
   
   
@@ -606,6 +571,9 @@
   	</div>
   
   	<div class="description"><p>Update a single record</p>
+  <pre class="code prettyprint"><code>return this.updateRecord(1, { firstName: 'foo' }).then(record =&gt; {
+  
+  });</code></pre>
   </div>
   
   		<div class="params">
@@ -641,16 +609,6 @@
   			</div>
   		</div>
   
-  		<div class="example">
-  			<h4>Example:</h4>
-  
-  			<div class="example-content">
-  				<pre class="code prettyprint"><code>return this.updateRecord(1, { firstName: 'foo' }).then(record =&gt; {
-  
-  });</code></pre>
-  
-  			</div>
-  		</div>
   </div>
                   </div>
               </div>

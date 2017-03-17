@@ -92,9 +92,6 @@
                                         <a href="../classes/Application.html">Application</a>
                                     </li>
                                     <li>
-                                        <a href="../classes/containment.html">containment</a>
-                                    </li>
-                                    <li>
                                         <a href="../classes/Controller.html">Controller</a>
                                     </li>
                                     <li>
@@ -102,9 +99,6 @@
                                     </li>
                                     <li>
                                         <a href="../classes/ModelManager.html">ModelManager</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Registry.html">Registry</a>
                                     </li>
                                     <li>
                                         <a href="../classes/Route.html">Route</a>
@@ -136,54 +130,44 @@ import errors from &quot;restify-errors&quot;;
 import inflect from &quot;inflect&quot;;
 
 import STATUS_CODES from &quot;./utils/status_codes&quot;;
-import { setOwner } from &quot;./containment&quot;;
 
 /**
  * Base controller
  *
  * @module parch
  * @class Controller
- * @constructor
- * @todo add default restfull methods (index, show, etc)
- * @todo implement store and deprecate controller based finders
  */
 class Controller {
   get name() {
-    return inflect.singularize(
-      this.constructor.name.split(/controller/i)[0].toLowerCase()
-    );
+    return this.constructor.name.split(/controller/i)[0].toLowerCase();
   }
 
   /**
    * @constructor
    *
-   * @param {Object} registry module registry
-   * @param {Object} options configuration options
-   * @param {String} options.model override the default model name
+   * @param {Object} settings controller settings
+   * @param {Object} settings.loader loader for controllers and models
    */
-  constructor(registry, options = {}) {
-    setOwner(this, registry);
-
+  constructor(settings) {
     this.errors = errors;
-    this.models = registry.lookup(&quot;service:model-manager&quot;).models;
+    this.loader = settings.loader;
+    this.models = this.loader.models;
 
-    const modelName = options.model || this.name;
-
-    // TODO: move to store service
-    registry.inject(this, &#x60;model:${modelName}&#x60;);
+    this.modelName = settings.model || this.name;
+    this.model = this.models[this.modelName] || this.models[inflect.capitalize(this.modelName)];
     this.STATUS_CODES = STATUS_CODES;
   }
 
   /**
    * Builds, validates and saves a model instance.
    *
-   * @method createRecord
-   * @param {Object} data the model data to create the instance with
-   * @return {Promise&lt;Model, Error&gt;} the model instance
-   * @example
    *     return this.createRecord({ firstname: &#x27;bar&#x27; }).then(record =&gt; {
    *
    *     });
+   *
+   * @method createRecord
+   * @param {Object} data the model data to create the instance with
+   * @return {Promise&lt;Model, Error&gt;} the model instance
    */
   createRecord(data) {
     if (!data) {
@@ -211,13 +195,13 @@ class Controller {
   /**
    * Destroy a model instance and remove it from the db
    *
-   * @method destroyRecord
-   * @param {Number} id the id of the resource to destroy
-   * @return {Promise&lt;undefined, Error}
-   * @example
    *     return this.destroyRecord(1).then(() =&gt; {
    *
    *     });
+   *
+   * @method destroyRecord
+   * @param {Number} id the id of the resource to destroy
+   * @return {Promise&lt;undefined, Error}
    */
   destroyRecord(id) {
     return this.findOne(id).then(record =&gt; record.destroy());
@@ -226,14 +210,6 @@ class Controller {
   /**
    * Find all records.
    *
-   * @method findAll
-   * @param {Object} where sequelize where clause
-   * @param {Object} options &lt;a href=&quot;http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance&quot; target=&quot;_blank&quot;&gt;
-   *   sequelize finder options
-   * &lt;/a&gt;
-   * @see http://docs.sequelizejs.com/en/v3/docs/querying/#where
-   * @return {Promise&lt;Model[], Error} an array of model instance
-   * @example
    *     return this.findAll().then(records =&gt; {
    *
    *     })
@@ -253,6 +229,14 @@ class Controller {
    *
    *     });
    *
+   * @method findAll
+   * @param {Object} where sequelize where clause
+   * @param {Object} options &lt;a href=&quot;http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance&quot; target=&quot;_blank&quot;&gt;
+   *   sequelize finder options
+   * &lt;/a&gt;
+   * @see http://docs.sequelizejs.com/en/v3/docs/querying/#where
+   *
+   * @return {Promise&lt;Model[], Error} an array of model instance
    */
   findAll(where, options = {}) {
     const query = { where };
@@ -265,13 +249,6 @@ class Controller {
   /**
    * Find a single instance by id
    *
-   * @method findOne
-   * @param {Number} id the id of the instance to search for
-   * @param {Object} options &lt;a href=&quot;http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance&quot; target=&quot;_blank&quot;&gt;
-   *   sequelize finder options
-   * &lt;/a&gt;
-   * @return {Promise&lt;Model, Error&gt;}
-   * @example
    *     return this.findOne(1).then(record =&gt; {
    *
    *     });
@@ -283,6 +260,13 @@ class Controller {
    *     }).then(user =&gt; {
    *
    *     });
+   *
+   * @method findOne
+   * @param {Number} id the id of the instance to search for
+   * @param {Object} options &lt;a href=&quot;http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance&quot; target=&quot;_blank&quot;&gt;
+   *   sequelize finder options
+   * &lt;/a&gt;
+   * @return {Promise&lt;Model, Error&gt;}
    */
   findOne(id, options = {}) {
     const query = { where: { id }};
@@ -304,14 +288,14 @@ class Controller {
   /**
    * Update a single record
    *
+   *     return this.updateRecord(1, { firstName: &#x27;foo&#x27; }).then(record =&gt; {
+   *
+   *     });
+   *
    * @method updateRecord
    * @param {Number} id the id of the record to update
    * @param {Object} data the data to update on the record
    * @return {Promise&lt;Model, Error&gt;}
-   * @example
-   *     return this.updateRecord(1, { firstName: &#x27;foo&#x27; }).then(record =&gt; {
-   *
-   *     });
    */
   updateRecord(id, data) {
     if (!data) {

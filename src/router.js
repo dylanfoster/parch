@@ -27,7 +27,6 @@ const restPathMapper = new Map([
  * Manages routing
  *
  * @class Router
- * @constructor
  */
 class Router {
   /**
@@ -41,6 +40,11 @@ class Router {
 
     const config = registry.lookup("config:main");
 
+    this.loader = {
+      controllers: registry.lookup("loader:controller"),
+      models: registry.lookup("service:model-manager").models
+    };
+
     this.namespacePrefix = config.namespace || "";
     this._loadControllers();
   }
@@ -50,16 +54,16 @@ class Router {
    * Uses {{#crossLink "Router/_buildRoute:method"}}_buildRoute{{/crossLink}} to
    * normalize the path
    *
-   * @method namespace
-   * @param {String} namespace the namespace to bind to, with or without leading slash
-   * @param {Array[Object]} routes array of routes to bind to the namespace
-   * @since 0.9.0
-   * @example
    *     Router.map(function () {
    *       this.namespace("/users/:userId", [
    *         { path: "/setProfileImage", using: "user:setImage", method: "post" }
    *       ])
    *     });
+   *
+   * @method namespace
+   * @param {String} namespace the namespace to bind to, with or without leading slash
+   * @param {Array[Object]} routes array of routes to bind to the namespace
+   * @since 0.9.0
    */
   namespace(namespace, routes) {
     for (const route of routes) {
@@ -81,16 +85,16 @@ class Router {
    * Uses {{#crossLink "Router/_buildRoute:method"}}_buildRoute{{/crossLink}} to
    * normalize the path
    *
+   *     Router.map(function () {
+   *       this.resource("user");
+   *     });
+   *
    * @method resource
    * @param {String} name the resource name in singular form
    * @param {Object} options resource mapping options
    * @param {String} options.namespace mount the resource endpoint under a namespace
    *
    *     this.resource("user", { namespace: "api" })
-   * @example
-   *     Router.map(function () {
-   *       this.resource("user");
-   *     });
    */
   resource(name, options = {}) {
     name = inflect.singularize(name);
@@ -106,6 +110,10 @@ class Router {
    * Uses {{#crossLink "Router/_buildRoute:method"}}_buildRoute{{/crossLink}} to
    * normalize the path
    *
+   *     Router.map(function () {
+   *       this.route("/user/foo", { using: "users:foo", method: "get" });
+   *     });
+   *
    * @method route
    * @param {String} path the route path (e.g. /foo/bar)
    * @param {Object} options
@@ -115,10 +123,6 @@ class Router {
    * @param {String} options.method http method
    *
    *     this.route("/foo/bar", { method: "get" });
-   * @example
-   *     Router.map(function () {
-   *       this.route("/user/foo", { using: "users:foo", method: "get" });
-   *     });
    */
   route(path, options) {
     const app = getOwner(this).lookup("service:server");
@@ -136,11 +140,11 @@ class Router {
    * Consistently builds a route from a set of path segments using
    * {{#crossLink "Route"}}Route{{/crossLink}}
    *
+   *     router._buildRoute("foo", "/bar" "baz/");
+   *
    * @method _buildRoute
    * @private
    * @return {Object} route object with path property
-   * @example
-   *     router._buildRoute("foo", "/bar" "baz/");
    */
   _buildRoute() {
     return new Route(...arguments);
@@ -180,14 +184,15 @@ class Router {
   /**
    * Generates a path segment from a given resource name
    *
+   *     router._getPathSegment("foo", "show");
+   *     // :fooId
+   *
    * @private
    * @method _getPathSegment
    * @param resource
    * @param action
+   *
    * @returns {String} pathSegment
-   * @example
-   *     router._getPathSegment("foo", "show");
-   *     // :fooId
    */
   _getPathSegment(resource, action) {
     const restPathSegment = restPathMapper.get(action);

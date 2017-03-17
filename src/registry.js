@@ -9,9 +9,9 @@ const LOOKUP_MAP = {
 };
 
 /**
- * Manages module registration for cross boundary use (DI)
+ * Registry
  *
- * @class Registry
+ * @class
  * @constructor
  */
 export default class Registry {
@@ -22,21 +22,23 @@ export default class Registry {
   /**
    * Inject an object into another object
    *
+   *     registry.inject(object, "service:store");
+   *     // object.store
+   *
+   *     registry.inject(object, "service:model-manager", "modelManager");
+   *     // object.modelManager
+   *
    * @method inject
    * @param {Object} context the object to inject onto
    * @param {String} lookup name by which to look search for the injection in the registry
    * @param {String} propertyName optional property name of the newly injected object
+   *
    * @returns {Object} context
-   * @example
-   *     registry.inject(object, "service:store");
-   *     // object.store
-   *     registry.inject(object, "service:model-manager", "modelManager");
-   *     // object.modelManager
    */
   inject(context, lookup, propertyName) {
-    const hasBeenRegistered = this._registry.has(lookup);
+    const hasBeenInjected = this._registry.has(lookup);
 
-    assert(hasBeenRegistered, `Attempted to inject unknown object '${lookup}'`);
+    assert(hasBeenInjected, `Attempted to inject unknown object '${lookup}'`);
 
     const obj = this.lookup(lookup);
     const [prop] = lookup.split(":");
@@ -63,10 +65,8 @@ export default class Registry {
    *
    * @method lookup
    * @param {String} name colon delimited lookup string "service:foo"
+   *
    * @returns {Object}
-   * @example
-   *     const foo = registry.lookup("service:foo");
-   *     // { foo: "bar" }
    */
   lookup(name) {
     const [moduleLookup, moduleName] = name.split(":");
@@ -93,9 +93,8 @@ export default class Registry {
    * @param {Object} options register options
    * @param {Boolean} options.instantiate instantiate the object when registering it
    * @param {Boolean} options.singleton only allow one registration of this name/object
-   * @returns {Object} the registered object
-   * @example
-   *     registry.register("service:foo", { foo: "bar" });
+   *
+   * @returns {undefined}
    */
   register(name, Obj, options = {}) {
     const { instantiate, singleton } = options;
@@ -142,8 +141,10 @@ export default class Registry {
    * name of the module (e.g. 'model-manager') which is underscored
    *
    * @method _loadModule
+   *
    * @param {String} lookup string name of object we're looking for (e.g. 'module')
    * @param {String} name string module name
+   *
    * @returns {Object} required module
    */
   _loadModule(lookup, name) {
