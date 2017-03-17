@@ -107,7 +107,7 @@ export default class Registry {
     obj = {};
 
     if (instantiate) {
-      obj.instance = new Obj();
+      obj.instance = new Obj(this);
       obj.singleton = singleton;
 
       this._registry.set(name, obj);
