@@ -77,7 +77,7 @@ describe("Application", function () {
 
     it("starts the application", function () {
       return application.start().then(() => {
-        expect(mockRestify.listen).to.have.been.calledWith(5000);
+        expect(mockRestify.listen).to.have.been.calledWith(3000);
       });
     });
   });
