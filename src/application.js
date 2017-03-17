@@ -79,11 +79,13 @@ class Application {
   }
 
   /**
-   * _configure
+   * Normalizes constructor options
    *
-   * @param config
+   * @method _configure
+   * @private
+   * @param {Object} config user passed config options
    *
-   * @returns {undefined}
+   * @returns {Object} final config option
    */
   _configure(config) {
     config.controllers = config.controllers || {};
@@ -100,9 +102,11 @@ class Application {
   }
 
   /**
-   * _getProjectDirectory
+   * Returns the project directory (cwd) from which Application is being instantiated
+   * @method _getProjectDirectory
+   * @private
    *
-   * @returns {undefined}
+   * @returns {String} directory
    */
   _getProjectDirectory() {
     const caller = callsite()[2].getFileName();
@@ -112,11 +116,12 @@ class Application {
   }
 
   /**
-   * _initialize
+   * Run an initializer by name
    *
-   * @param name
+   * @method _initialize
+   * @private
    *
-   * @returns {undefined}
+   * @param {String} name
    */
   _initialize(name) {
     const initializers = includeAll({

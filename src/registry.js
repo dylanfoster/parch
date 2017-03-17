@@ -20,7 +20,7 @@ export default class Registry {
   }
 
   /**
-   * inject
+   * Inject an object into another object
    *
    *     registry.inject(object, "service:store");
    *     // object.store
@@ -28,11 +28,12 @@ export default class Registry {
    *     registry.inject(object, "service:model-manager", "modelManager");
    *     // object.modelManager
    *
-   * @param context
-   * @param lookup
-   * @param propertyName
+   * @method inject
+   * @param {Object} context the object to inject onto
+   * @param {String} lookup name by which to look search for the injection in the registry
+   * @param {String} propertyName optional property name of the newly injected object
    *
-   * @returns {undefined}
+   * @returns {Object} context
    */
   inject(context, lookup, propertyName) {
     const hasBeenInjected = this._registry.has(lookup);
@@ -58,11 +59,14 @@ export default class Registry {
   }
 
   /**
-   * lookup
+   * Find an object in the registry. If the object isn't found in the registry
+   * lookup will attempt to find it by requiring it in. If the require fails
+   * the lookup fails
    *
-   * @param name
+   * @method lookup
+   * @param {String} name colon delimited lookup string "service:foo"
    *
-   * @returns {undefined}
+   * @returns {Object}
    */
   lookup(name) {
     const [moduleLookup, moduleName] = name.split(":");
@@ -72,18 +76,23 @@ export default class Registry {
 
     obj = this._loadModule(moduleLookup, moduleName);
 
+    assert(obj, `Attempted to lookup unknown module '${moduleName}'`);
+
     this.register(name, obj);
 
     return obj;
   }
 
   /**
-   * register
+   * Register an object in the registry by name. If the name exists and it was
+   * registered with the { singleton: true } option, an error will be thrown.
    *
-   * @param name
-   * @param Obj
-   * @param options={}
-   * @todo: guard against overwrites with singleton option
+   * @method register
+   * @param {String} name the name by which to register the object
+   * @param {Object} Obj the object to store in the registry
+   * @param {Object} options register options
+   * @param {Boolean} options.instantiate instantiate the object when registering it
+   * @param {Boolean} options.singleton only allow one registration of this name/object
    *
    * @returns {undefined}
    */
@@ -115,28 +124,41 @@ export default class Registry {
   }
 
   /**
-   * _getLookupDirectory
+   * Get the lookup directory for internal modules
+   * @method _getLookupDirectory
+   * @param {String} lookup string name of object we're looking for (e.g. 'module')
+   * @private
    *
-   * @param lookup
-   *
-   * @returns {undefined}
+   * @returns {String} directory
    */
   _getLookupDirectory(lookup) {
     return LOOKUP_MAP[lookup];
   }
 
   /**
-   * _loadModule
+   * Attempts to load modules by requiring them in locally. Lookup directory is
+   * determined by the type of object we're loading (e.g. 'module' => ./) and the
+   * name of the module (e.g. 'model-manager') which is underscored
    *
-   * @param lookup
-   * @param name
+   * @method _loadModule
    *
-   * @returns {undefined}
+   * @param {String} lookup string name of object we're looking for (e.g. 'module')
+   * @param {String} name string module name
+   *
+   * @returns {Object} required module
    */
   _loadModule(lookup, name) {
-    const modules = includeAll({
-      dirname: this._getLookupDirectory(lookup)
-    });
+    let modules;
+
+    try {
+      modules = includeAll({ dirname: this._getLookupDirectory(lookup) });
+    } catch (err) {
+      if (err.message.match(/dirname/i)) {
+        throw new Error(`Attempted to lookup unknown module '${name}'`);
+      }
+
+      throw err;
+    }
 
     // TODO: this will need to be configurable somehow (or better regex)
     const key = `${inflect.underscore(name)}.js`;

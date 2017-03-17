@@ -3,21 +3,23 @@
 const containmentMap = new WeakMap();
 
 /**
- * getOwner
+ * @method getOwner
  *
- * @param child
- * @returns {undefined}
+ * @param {Object} child object from which to fetch the parent
+ *
+ * @returns {Object} parent (owner)
  */
 export const getOwner = function getOwner(child) {
   return containmentMap.get(child);
 };
 
 /**
- * setOwner
+ * Set the owner object of the child object
  *
- * @param child
- * @param parent
- * @returns {undefined}
+ * @method setOwner
+ *
+ * @param {Object} child child object
+ * @param {Object} parent parent (owner) object
  */
 export const setOwner = function setOwner(child, parent) {
   containmentMap.set(child, parent);

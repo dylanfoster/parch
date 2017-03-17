@@ -50,7 +50,6 @@ class ModelManager {
    *
    * @method addModel
    * @param {Object} Model parch model class
-   * @todo: check for existence before adding (i.e. caching)
    */
   addModel(Model) {
     const instance = new Model();

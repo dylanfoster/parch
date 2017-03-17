@@ -64,6 +64,18 @@ describe("Registry", function () {
 
       expect(manager.models).to.eql({});
     });
+
+    it("throws an error if the module cannot be found", function () {
+      expect(function () {
+        registry.lookup("module:not-found");
+      }).to.throw("Attempted to lookup unknown module 'not-found'");
+    });
+
+    it("throws an error if the lookup mapping doesn't exist", function () {
+      expect(function () {
+        registry.lookup("service:not-found");
+      }).to.throw("Attempted to lookup unknown module 'not-found'");
+    });
   });
 
   describe("#inject", function () {
