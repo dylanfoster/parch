@@ -9,7 +9,7 @@
     "changelog": "conventional-changelog -s -p angular -i CHANGELOG.md",
     "docs": "yuidoc . -o docs",
     "lint": "eslint ./src ./test",
-    "prepare-release": "./scripts/prepare-release",
+    "prepare-release": "curl -sL https://gist.githubusercontent.com/dylanfoster/35b06db9aaa9237da77eff4a8eec0a22/raw/83ec714ec64f7ec36c5004588aa259354fc87b51/prepare-release.sh | bash -s",
     "prepublish": "npm run build",
     "test": "NODE_ENV=test mocha --recursive --compilers js:babel-register",
     "test:cover": "npm run coverage",
