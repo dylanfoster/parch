@@ -22,6 +22,8 @@ describe("Application", function () {
   let application;
 
   describe("#map", function () {
+    this.timeout(2200);
+
     beforeEach(function () {
       application = new Application({
         controllers: {
@@ -53,6 +55,8 @@ describe("Application", function () {
   });
 
   describe("#start", function () {
+    this.timeout(2200);
+
     const mockRestify = restify.createServer();
 
     beforeEach(function () {
@@ -78,6 +82,8 @@ describe("Application", function () {
   });
 
   describe("authentication", function () {
+    this.timeout(2200);
+
     beforeEach(function () {
       application = new Application({
         authentication: {
