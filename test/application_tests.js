@@ -1,5 +1,7 @@
 "use strict";
 
+require("events").EventEmitter.defaultMaxListeners = Infinity;
+
 import fs from "fs";
 import path from "path";
 
