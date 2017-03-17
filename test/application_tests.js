@@ -56,7 +56,7 @@ describe("Application", function () {
   });
 
   describe("#start", function () {
-    this.timeout(8000);
+    this.timeout(20000);
 
     const mockRestify = restify.createServer();
 
@@ -219,9 +219,9 @@ describe("Application", function () {
 
             try {
               log = JSON.parse(line);
-            } catch (err) {
+            } catch (err3) {
               console.log(fileData.toString().split("\n"));
-              throw err;
+              throw err3;
             }
 
             expect(log.res.statusCode).to.eql(200);
