@@ -22,7 +22,7 @@ describe("Application", function () {
   let application;
 
   describe("#map", function () {
-    this.timeout(10000);
+    this.timeout(20000);
 
     beforeEach(function () {
       application = new Application({
@@ -83,7 +83,7 @@ describe("Application", function () {
   });
 
   describe("authentication", function () {
-    this.timeout(10000);
+    this.timeout(20000);
 
     beforeEach(function (done) {
       application = new Application({
