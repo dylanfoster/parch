@@ -10,7 +10,7 @@
     "docs": "yuidoc . -o docs",
     "lint": "eslint ./src ./test",
     "prepare-release": "./scripts/prepare-release",
-    "prepublish": "npm test && npm run build",
+    "prepublish": "npm run build",
     "test": "NODE_ENV=test mocha --recursive --compilers js:babel-register",
     "test:cover": "npm run coverage",
     "watch": "chokidar 'src/**' 'test/**/*.js' -c 'npm test' --initial"
