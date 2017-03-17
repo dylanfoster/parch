@@ -31,13 +31,14 @@ class Application {
    * @return {undefined}
    */
   constructor(options = {}) {
-    // who are you
-    const caller = callsite()[1].getFileName();
-    const callerDirectory = path.dirname(caller);
+    const projectDirectory = this._getProjectDirectory();
     const registry = this.registry = new Registry();
 
-    this.DEFAULT_CONTROLLER_LOOKUP_PATH = path.resolve(callerDirectory, "controllers");
-    this.DEFAULT_MODEL_LOOKUP_PATH = path.resolve(callerDirectory, "models");
+    this.DEFAULT_CONTROLLER_LOOKUP_PATH = path.resolve(
+      projectDirectory,
+      "controllers"
+    );
+    this.DEFAULT_MODEL_LOOKUP_PATH = path.resolve(projectDirectory, "models");
     options = this._configure(options);
 
     registry.register("config:main", options);
@@ -68,6 +69,7 @@ class Application {
    *
    * @method start
    * @param {Number} port the port to listen on. Default: 3000
+   *
    * @return {Promise<undefined, Error>}
    */
   start(port = DEFAULT_LISTEN_PORT) {
@@ -76,6 +78,13 @@ class Application {
     });
   }
 
+  /**
+   * _configure
+   *
+   * @param config
+   *
+   * @returns {undefined}
+   */
   _configure(config) {
     config.controllers = config.controllers || {};
     config.controllers.dir = config.controllers.dir || this.DEFAULT_CONTROLLER_LOOKUP_PATH;
@@ -90,6 +99,25 @@ class Application {
     return config;
   }
 
+  /**
+   * _getProjectDirectory
+   *
+   * @returns {undefined}
+   */
+  _getProjectDirectory() {
+    const caller = callsite()[2].getFileName();
+    const projectDirectory = path.dirname(caller);
+
+    return projectDirectory;
+  }
+
+  /**
+   * _initialize
+   *
+   * @param name
+   *
+   * @returns {undefined}
+   */
   _initialize(name) {
     const initializers = includeAll({
       dirname: __dirname

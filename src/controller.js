@@ -1,6 +1,7 @@
 "use strict";
 
 import errors from "restify-errors";
+import inflect from "inflect";
 
 import STATUS_CODES from "./utils/status_codes";
 import { setOwner } from "./containment";
@@ -10,10 +11,15 @@ import { setOwner } from "./containment";
  *
  * @module parch
  * @class Controller
+ * @constructor
+ * @todo add default restfull methods (index, show, etc)
+ * @todo implement store and deprecate controller based finders
  */
 class Controller {
   get name() {
-    return this.constructor.name.split(/controller/i)[0].toLowerCase();
+    return inflect.singularize(
+      this.constructor.name.split(/controller/i)[0].toLowerCase()
+    );
   }
 
   /**
@@ -30,13 +36,8 @@ class Controller {
 
     const modelName = options.model || this.name;
 
-    // TODO: move failover into registry
     // TODO: move to store service
-    try {
-      registry.inject(this, `model:${modelName}`);
-    } catch (err) {
-    }
-
+    registry.inject(this, `model:${modelName}`);
     this.STATUS_CODES = STATUS_CODES;
   }
 

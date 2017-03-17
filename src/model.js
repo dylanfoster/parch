@@ -1,5 +1,7 @@
 "use strict";
 
+import inflect from "inflect";
+
 /**
  * Base model
  *
@@ -8,7 +10,9 @@
  */
 class Model {
   get name() {
-    return this.constructor.name.split(/model/i)[0];
+    return inflect.singularize(
+      this.constructor.name.split(/model/i)[0]
+    );
   }
 
   /**

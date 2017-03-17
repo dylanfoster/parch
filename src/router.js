@@ -46,6 +46,7 @@ class Router {
       controllers: registry.lookup("loader:controller"),
       models: registry.lookup("service:model-manager").models
     };
+
     this.namespacePrefix = config.namespace || "";
     this._loadControllers();
   }

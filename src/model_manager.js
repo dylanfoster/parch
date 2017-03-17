@@ -53,15 +53,15 @@ class ModelManager {
    * @todo: check for existence before adding (i.e. caching)
    */
   addModel(Model) {
-    const _model = new Model();
-    const modelAttributes = _model.define(this.Sequelize);
+    const instance = new Model();
+    const modelAttributes = instance.define(this.Sequelize);
     const model = this.sequelize.define(
-      _model.name,
+      instance.name,
       modelAttributes,
-      _model.options
+      instance.options
     );
 
-    model.associate = _model.associate;
+    model.associate = instance.associate;
     this.models[model.name] = model;
   }
 
