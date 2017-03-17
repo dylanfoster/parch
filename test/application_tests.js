@@ -83,7 +83,7 @@ describe("Application", function () {
   });
 
   describe("authentication", function () {
-    this.timeout(25000);
+    this.timeout(30000);
 
     beforeEach(function (done) {
       application = new Application({
