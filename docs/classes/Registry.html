@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Controller - Parch</title>
+    <title>Registry - Parch</title>
     <meta name="description" content="Restify + Sequelize">
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
@@ -127,8 +127,8 @@
 
 
 <div class="page-header">
-    <h1> <i class="fa fa-bookmark-o" aria-hidden="true"></i> Controller Class
-            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L9" target="_blank">
+    <h1> <i class="fa fa-bookmark-o" aria-hidden="true"></i> Registry Class
+            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L11" target="_blank">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
     </h1>
@@ -142,14 +142,47 @@
 
 
         <div class="foundat">
-            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L9">src/controller.js:9</a>
+            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L11">src/registry.js:11</a>
         </div>
 </div>
 
 
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_Registry" class="method item">
+	<span class="method-signature">
+	<span class="name anchorable-toc">
+		<a class="fa fa-link toc-anchor" href="#method_Registry"></a>
+		Registry
+	</span>
+
+		<span class="paren">()</span>
+	</span>
+
+
+
+
+
+
+
+	<div class="meta">
+				<p>
+				Defined in
+		<a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L11">src/registry.js:11</a>
+		</p>
+
+
+
+	</div>
+
+
+
+
+</div>
+    </div>
 
   <div class="class-description">
-  <p>Base controller</p>
+  <p>Manages module registration for cross boundary use (DI)</p>
 
   </div>
 
@@ -195,24 +228,24 @@
                       <h3>Methods</h3>
 
                       <ul class="index-list methods">
-                              <li class="index-item method">
-                                  <a href="#method_createRecord">createRecord</a>
+                              <li class="index-item method private">
+                                  <a href="#method__getLookupDirectory">_getLookupDirectory</a>
 
                               </li>
                               <li class="index-item method">
-                                  <a href="#method_destroyRecord">destroyRecord</a>
+                                  <a href="#method__loadModule">_loadModule</a>
 
                               </li>
                               <li class="index-item method">
-                                  <a href="#method_findAll">findAll</a>
+                                  <a href="#method_inject">inject</a>
 
                               </li>
                               <li class="index-item method">
-                                  <a href="#method_findOne">findOne</a>
+                                  <a href="#method_lookup">lookup</a>
 
                               </li>
                               <li class="index-item method">
-                                  <a href="#method_updateRecord">updateRecord</a>
+                                  <a href="#method_register">register</a>
 
                               </li>
                       </ul>
@@ -224,22 +257,91 @@
 
               <div id="tab_methods" role="tabpanel" class="tab-pane">
                   <div class="item-list">
-  <div id="method_createRecord" class="method item">
+  <div id="method__getLookupDirectory" class="method item private">
   	<span class="method-signature">
   	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_createRecord"></a>
-  		createRecord
+  		<a class="fa fa-link toc-anchor" href="#method__getLookupDirectory"></a>
+  		_getLookupDirectory
   	</span>
   
   		<div class="args">
   			<span class="paren">(</span><ul class="args-list inline commas">
   				<li class="arg">
-  						<code>data</code>
+  						<code>lookup</code>
   				</li>
   			</ul><span class="paren">)</span>
   		</div>
   		<span class="returns-inline">
-  			<span class="type">Promise<Model, Error></span>
+  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  		</span>
+  	</span>
+  
+  
+  
+  		<span class="flag private">private</span>
+  
+  
+  
+  
+  	<div class="meta">
+  				<p>
+  				Defined in
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L127">src/registry.js:127</a>
+  		</p>
+  
+  
+  
+  	</div>
+  
+  	<div class="description"><p>Get the lookup directory for internal modules</p>
+  </div>
+  
+  		<div class="params">
+  			<h4>Parameters:</h4>
+  
+  			<ul class="params-list">
+  				<li class="param">
+  						<code class="param-name">lookup</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  
+  					<div class="param-description"><p>string name of object we're looking for (e.g. 'module')</p>
+  </div>
+  
+  				</li>
+  			</ul>
+  		</div>
+  
+  		<div class="returns">
+  			<h4>Returns:</h4>
+  
+  			<div class="returns-description">
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+  					<p>directory</p>
+  
+  			</div>
+  		</div>
+  
+  </div>
+  <div id="method__loadModule" class="method item">
+  	<span class="method-signature">
+  	<span class="name anchorable-toc">
+  		<a class="fa fa-link toc-anchor" href="#method__loadModule"></a>
+  		_loadModule
+  	</span>
+  
+  		<div class="args">
+  			<span class="paren">(</span><ul class="args-list inline commas">
+  				<li class="arg">
+  						<code>lookup</code>
+  				</li>
+  				<li class="arg">
+  						<code>name</code>
+  				</li>
+  			</ul><span class="paren">)</span>
+  		</div>
+  		<span class="returns-inline">
+  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
   		</span>
   	</span>
   
@@ -252,14 +354,16 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L45">src/controller.js:45</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L139">src/registry.js:139</a>
   		</p>
   
   
   
   	</div>
   
-  	<div class="description"><p>Builds, validates and saves a model instance.</p>
+  	<div class="description"><p>Attempts to load modules by requiring them in locally. Lookup directory is
+  determined by the type of object we're loading (e.g. 'module' =&gt; ./) and the
+  name of the module (e.g. 'model-manager') which is underscored</p>
   </div>
   
   		<div class="params">
@@ -267,11 +371,109 @@
   
   			<ul class="params-list">
   				<li class="param">
-  						<code class="param-name">data</code>
+  						<code class="param-name">lookup</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  
+  					<div class="param-description"><p>string name of object we're looking for (e.g. 'module')</p>
+  </div>
+  
+  				</li>
+  				<li class="param">
+  						<code class="param-name">name</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  
+  					<div class="param-description"><p>string module name</p>
+  </div>
+  
+  				</li>
+  			</ul>
+  		</div>
+  
+  		<div class="returns">
+  			<h4>Returns:</h4>
+  
+  			<div class="returns-description">
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+  					<p>required module</p>
+  
+  			</div>
+  		</div>
+  
+  </div>
+  <div id="method_inject" class="method item">
+  	<span class="method-signature">
+  	<span class="name anchorable-toc">
+  		<a class="fa fa-link toc-anchor" href="#method_inject"></a>
+  		inject
+  	</span>
+  
+  		<div class="args">
+  			<span class="paren">(</span><ul class="args-list inline commas">
+  				<li class="arg">
+  						<code>context</code>
+  				</li>
+  				<li class="arg">
+  						<code>lookup</code>
+  				</li>
+  				<li class="arg">
+  						<code>propertyName</code>
+  				</li>
+  			</ul><span class="paren">)</span>
+  		</div>
+  		<span class="returns-inline">
+  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  		</span>
+  	</span>
+  
+  
+  
+  
+  
+  
+  
+  	<div class="meta">
+  				<p>
+  				Defined in
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L22">src/registry.js:22</a>
+  		</p>
+  
+  
+  
+  	</div>
+  
+  	<div class="description"><p>Inject an object into another object</p>
+  </div>
+  
+  		<div class="params">
+  			<h4>Parameters:</h4>
+  
+  			<ul class="params-list">
+  				<li class="param">
+  						<code class="param-name">context</code>
   						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
   
   
-  					<div class="param-description"><p>the model data to create the instance with</p>
+  					<div class="param-description"><p>the object to inject onto</p>
+  </div>
+  
+  				</li>
+  				<li class="param">
+  						<code class="param-name">lookup</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  
+  					<div class="param-description"><p>name by which to look search for the injection in the registry</p>
+  </div>
+  
+  				</li>
+  				<li class="param">
+  						<code class="param-name">propertyName</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  
+  					<div class="param-description"><p>optional property name of the newly injected object</p>
   </div>
   
   				</li>
@@ -282,8 +484,8 @@
   			<h4>Returns:</h4>
   
   			<div class="returns-description">
-  						<span class="type">Promise<Model, Error></span>:
-  					<p>the model instance</p>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+  					<p>context</p>
   
   			</div>
   		</div>
@@ -292,29 +494,30 @@
   			<h4>Example:</h4>
   
   			<div class="example-content">
-  				<pre class="code prettyprint"><code>return this.createRecord({ firstname: 'bar' }).then(record =&gt; {
-  
-  });</code></pre>
+  				<pre class="code prettyprint"><code>registry.inject(object, "service:store");
+  // object.store
+  registry.inject(object, "service:model-manager", "modelManager");
+  // object.modelManager</code></pre>
   
   			</div>
   		</div>
   </div>
-  <div id="method_destroyRecord" class="method item">
+  <div id="method_lookup" class="method item">
   	<span class="method-signature">
   	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_destroyRecord"></a>
-  		destroyRecord
+  		<a class="fa fa-link toc-anchor" href="#method_lookup"></a>
+  		lookup
   	</span>
   
   		<div class="args">
   			<span class="paren">(</span><ul class="args-list inline commas">
   				<li class="arg">
-  						<code>id</code>
+  						<code>name</code>
   				</li>
   			</ul><span class="paren">)</span>
   		</div>
   		<span class="returns-inline">
-  			<span class="type">Promise<undefined, Error</span>
+  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
   		</span>
   	</span>
   
@@ -327,14 +530,16 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L79">src/controller.js:79</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L59">src/registry.js:59</a>
   		</p>
   
   
   
   	</div>
   
-  	<div class="description"><p>Destroy a model instance and remove it from the db</p>
+  	<div class="description"><p>Find an object in the registry. If the object isn't found in the registry
+  lookup will attempt to find it by requiring it in. If the require fails
+  the lookup fails</p>
   </div>
   
   		<div class="params">
@@ -342,11 +547,11 @@
   
   			<ul class="params-list">
   				<li class="param">
-  						<code class="param-name">id</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+  						<code class="param-name">name</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
   
   
-  					<div class="param-description"><p>the id of the resource to destroy</p>
+  					<div class="param-description"><p>colon delimited lookup string "service:foo"</p>
   </div>
   
   				</li>
@@ -357,7 +562,7 @@
   			<h4>Returns:</h4>
   
   			<div class="returns-description">
-  						<span class="type">Promise<undefined, Error</span>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
   			</div>
   		</div>
   
@@ -365,24 +570,26 @@
   			<h4>Example:</h4>
   
   			<div class="example-content">
-  				<pre class="code prettyprint"><code>return this.destroyRecord(1).then(() =&gt; {
-  
-  });</code></pre>
+  				<pre class="code prettyprint"><code>const foo = registry.lookup("service:foo");
+  // { foo: "bar" }</code></pre>
   
   			</div>
   		</div>
   </div>
-  <div id="method_findAll" class="method item">
+  <div id="method_register" class="method item">
   	<span class="method-signature">
   	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_findAll"></a>
-  		findAll
+  		<a class="fa fa-link toc-anchor" href="#method_register"></a>
+  		register
   	</span>
   
   		<div class="args">
   			<span class="paren">(</span><ul class="args-list inline commas">
   				<li class="arg">
-  						<code>where</code>
+  						<code>name</code>
+  				</li>
+  				<li class="arg">
+  						<code>Obj</code>
   				</li>
   				<li class="arg">
   						<code>options</code>
@@ -390,7 +597,7 @@
   			</ul><span class="paren">)</span>
   		</div>
   		<span class="returns-inline">
-  			<span class="type">Promise<Model, Error[]</span>
+  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
   		</span>
   	</span>
   
@@ -403,14 +610,15 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L94">src/controller.js:94</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L86">src/registry.js:86</a>
   		</p>
   
   
   
   	</div>
   
-  	<div class="description"><p>Find all records.</p>
+  	<div class="description"><p>Register an object in the registry by name. If the name exists and it was
+  registered with the { singleton: true } option, an error will be thrown.</p>
   </div>
   
   		<div class="params">
@@ -418,11 +626,20 @@
   
   			<ul class="params-list">
   				<li class="param">
-  						<code class="param-name">where</code>
+  						<code class="param-name">name</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  
+  					<div class="param-description"><p>the name by which to register the object</p>
+  </div>
+  
+  				</li>
+  				<li class="param">
+  						<code class="param-name">Obj</code>
   						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
   
   
-  					<div class="param-description"><p>sequelize where clause</p>
+  					<div class="param-description"><p>the object to store in the registry</p>
   </div>
   
   				</li>
@@ -431,10 +648,27 @@
   						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
   
   
-  					<div class="param-description"><a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
-    sequelize finder options
-  </a></div>
+  					<div class="param-description"><p>register options</p>
+  </div>
   
+  						<ul class="params-list">
+  							<li class="param">
+  									<code class="param-name">instantiate</code>
+  									<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+  
+  								<div class="param-description"><p>instantiate the object when registering it</p>
+  </div>
+  
+  							</li>
+  							<li class="param">
+  									<code class="param-name">singleton</code>
+  									<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+  
+  								<div class="param-description"><p>only allow one registration of this name/object</p>
+  </div>
+  
+  							</li>
+  						</ul>
   				</li>
   			</ul>
   		</div>
@@ -443,8 +677,8 @@
   			<h4>Returns:</h4>
   
   			<div class="returns-description">
-  						<span class="type">Promise<Model, Error[]</span>:
-  					<p>an array of model instance</p>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+  					<p>the registered object</p>
   
   			</div>
   		</div>
@@ -453,201 +687,7 @@
   			<h4>Example:</h4>
   
   			<div class="example-content">
-  				<pre class="code prettyprint"><code>return this.findAll().then(records =&gt; {
-  
-  })
-  </code></pre>
-  <p>You can optionally pass in a where clause</p>
-  <pre class="code prettyprint"><code>return this.findAll({ username: 'john' }).then(user =&gt; {
-  
-  });
-  </code></pre>
-  <p>As well as any finder options</p>
-  <pre class="code prettyprint"><code>return this.findAll(null, {
-    attributes: ["title"],
-    include: [this.models.User]
-  }).then(user =&gt; {
-  
-  });
-  </code></pre>
-  
-  			</div>
-  		</div>
-  </div>
-  <div id="method_findOne" class="method item">
-  	<span class="method-signature">
-  	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_findOne"></a>
-  		findOne
-  	</span>
-  
-  		<div class="args">
-  			<span class="paren">(</span><ul class="args-list inline commas">
-  				<li class="arg">
-  						<code>id</code>
-  				</li>
-  				<li class="arg">
-  						<code>options</code>
-  				</li>
-  			</ul><span class="paren">)</span>
-  		</div>
-  		<span class="returns-inline">
-  			<span class="type">Promise<Model, Error></span>
-  		</span>
-  	</span>
-  
-  
-  
-  
-  
-  
-  
-  	<div class="meta">
-  				<p>
-  				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L133">src/controller.js:133</a>
-  		</p>
-  
-  
-  
-  	</div>
-  
-  	<div class="description"><p>Find a single instance by id</p>
-  </div>
-  
-  		<div class="params">
-  			<h4>Parameters:</h4>
-  
-  			<ul class="params-list">
-  				<li class="param">
-  						<code class="param-name">id</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-  
-  
-  					<div class="param-description"><p>the id of the instance to search for</p>
-  </div>
-  
-  				</li>
-  				<li class="param">
-  						<code class="param-name">options</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-  
-  
-  					<div class="param-description"><a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
-    sequelize finder options
-  </a></div>
-  
-  				</li>
-  			</ul>
-  		</div>
-  
-  		<div class="returns">
-  			<h4>Returns:</h4>
-  
-  			<div class="returns-description">
-  						<span class="type">Promise<Model, Error></span>
-  			</div>
-  		</div>
-  
-  		<div class="example">
-  			<h4>Example:</h4>
-  
-  			<div class="example-content">
-  				<pre class="code prettyprint"><code>return this.findOne(1).then(record =&gt; {
-  
-  });
-  </code></pre>
-  <p>The same options apply to findOne</p>
-  <pre class="code prettyprint"><code>return this.findOne(1, {
-    attributes: ["firstName"]
-  }).then(user =&gt; {
-  
-  });</code></pre>
-  
-  			</div>
-  		</div>
-  </div>
-  <div id="method_updateRecord" class="method item">
-  	<span class="method-signature">
-  	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_updateRecord"></a>
-  		updateRecord
-  	</span>
-  
-  		<div class="args">
-  			<span class="paren">(</span><ul class="args-list inline commas">
-  				<li class="arg">
-  						<code>id</code>
-  				</li>
-  				<li class="arg">
-  						<code>data</code>
-  				</li>
-  			</ul><span class="paren">)</span>
-  		</div>
-  		<span class="returns-inline">
-  			<span class="type">Promise<Model, Error></span>
-  		</span>
-  	</span>
-  
-  
-  
-  
-  
-  
-  
-  	<div class="meta">
-  				<p>
-  				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L172">src/controller.js:172</a>
-  		</p>
-  
-  
-  
-  	</div>
-  
-  	<div class="description"><p>Update a single record</p>
-  </div>
-  
-  		<div class="params">
-  			<h4>Parameters:</h4>
-  
-  			<ul class="params-list">
-  				<li class="param">
-  						<code class="param-name">id</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-  
-  
-  					<div class="param-description"><p>the id of the record to update</p>
-  </div>
-  
-  				</li>
-  				<li class="param">
-  						<code class="param-name">data</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-  
-  
-  					<div class="param-description"><p>the data to update on the record</p>
-  </div>
-  
-  				</li>
-  			</ul>
-  		</div>
-  
-  		<div class="returns">
-  			<h4>Returns:</h4>
-  
-  			<div class="returns-description">
-  						<span class="type">Promise<Model, Error></span>
-  			</div>
-  		</div>
-  
-  		<div class="example">
-  			<h4>Example:</h4>
-  
-  			<div class="example-content">
-  				<pre class="code prettyprint"><code>return this.updateRecord(1, { firstName: 'foo' }).then(record =&gt; {
-  
-  });</code></pre>
+  				<pre class="code prettyprint"><code>registry.register("service:foo", { foo: "bar" });</code></pre>
   
   			</div>
   		</div>

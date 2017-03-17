@@ -92,6 +92,9 @@
                                         <a href="../classes/Application.html">Application</a>
                                     </li>
                                     <li>
+                                        <a href="../classes/containment.html">containment</a>
+                                    </li>
+                                    <li>
                                         <a href="../classes/Controller.html">Controller</a>
                                     </li>
                                     <li>
@@ -99,6 +102,9 @@
                                     </li>
                                     <li>
                                         <a href="../classes/ModelManager.html">ModelManager</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/Registry.html">Registry</a>
                                     </li>
                                     <li>
                                         <a href="../classes/Route.html">Route</a>
@@ -122,7 +128,7 @@
 
 <div class="page-header">
     <h1> <i class="fa fa-bookmark-o" aria-hidden="true"></i> ModelManager Class
-            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/model_manager.js#L5" target="_blank">
+            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/model_manager.js#L6" target="_blank">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
     </h1>
@@ -136,7 +142,7 @@
 
 
         <div class="foundat">
-            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/model_manager.js#L5">src/model_manager.js:5</a>
+            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/model_manager.js#L6">src/model_manager.js:6</a>
         </div>
 </div>
 
@@ -227,7 +233,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/model_manager.js#L30">src/model_manager.js:30</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/model_manager.js#L34">src/model_manager.js:34</a>
   		</p>
   
   
@@ -235,19 +241,6 @@
   	</div>
   
   	<div class="description"><p>Adds a model to internal cache</p>
-  <pre class="code prettyprint"><code>class FooModel extends parch.Model {
-    constructor(options) {
-      super(options);
-    }
-  
-    associate(Foo, models) {
-    }
-  
-    define(DataTypes) {
-    }
-  }
-  
-  modelManager.addModel(Model);</code></pre>
   </div>
   
   		<div class="params">
@@ -267,6 +260,26 @@
   		</div>
   
   
+  		<div class="example">
+  			<h4>Example:</h4>
+  
+  			<div class="example-content">
+  				<pre class="code prettyprint"><code>class FooModel extends parch.Model {
+    constructor(options) {
+      super(options);
+    }
+  
+    associate(Foo, models) {
+    }
+  
+    define(DataTypes) {
+    }
+  }
+  
+  modelManager.addModel(Model);</code></pre>
+  
+  			</div>
+  		</div>
   </div>
                   </div>
               </div>

@@ -5,9 +5,11 @@ YUI.add("yuidoc-meta", function(Y) {
         "Controller",
         "Model",
         "ModelManager",
+        "Registry",
         "Route",
         "RouteSegment",
-        "Router"
+        "Router",
+        "containment"
     ],
     "modules": [
         "parch"

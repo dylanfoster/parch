@@ -92,6 +92,9 @@
                                         <a href="../classes/Application.html">Application</a>
                                     </li>
                                     <li>
+                                        <a href="../classes/containment.html">containment</a>
+                                    </li>
+                                    <li>
                                         <a href="../classes/Controller.html">Controller</a>
                                     </li>
                                     <li>
@@ -99,6 +102,9 @@
                                     </li>
                                     <li>
                                         <a href="../classes/ModelManager.html">ModelManager</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/Registry.html">Registry</a>
                                     </li>
                                     <li>
                                         <a href="../classes/Route.html">Route</a>
@@ -127,6 +133,7 @@
 &quot;use strict&quot;;
 
 import Sequelize from &quot;sequelize&quot;;
+import { setOwner } from &quot;./containment&quot;;
 
 /**
  * Manages all models
@@ -140,8 +147,11 @@ class ModelManager {
    * @param {Object} settings
    * @param {Object} settings.connection
    */
-  constructor(settings) {
-    const connection = settings.connection;
+  constructor(registry) {
+    const config = registry.lookup(&quot;config:main&quot;);
+    const { database: { connection }} = config;
+
+    setOwner(this, registry);
 
     this._models = {};
     this.Sequelize = Sequelize;
@@ -156,6 +166,9 @@ class ModelManager {
   /**
    * Adds a model to internal cache
    *
+   * @method addModel
+   * @param {Object} Model parch model class
+   * @example
    *     class FooModel extends parch.Model {
    *       constructor(options) {
    *         super(options);
@@ -169,21 +182,17 @@ class ModelManager {
    *     }
    *
    *     modelManager.addModel(Model);
-   *
-   * @method addModel
-   * @param {Object} Model parch model class
-   * @todo: check for existence before adding (i.e. caching)
    */
   addModel(Model) {
-    const _model = new Model();
-    const modelAttributes = _model.define(this.Sequelize);
+    const instance = new Model();
+    const modelAttributes = instance.define(this.Sequelize);
     const model = this.sequelize.define(
-      _model.name,
+      instance.name,
       modelAttributes,
-      _model.options
+      instance.options
     );
 
-    model.associate = _model.associate;
+    model.associate = instance.associate;
     this.models[model.name] = model;
   }
 
