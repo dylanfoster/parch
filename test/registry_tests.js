@@ -85,13 +85,21 @@ describe("Registry", function () {
       expect(obj.service).to.eql({ foo: "bar" });
     });
 
-    it("injects, an object with a given property name", function () {
+    it("injects an object with a given property name", function () {
       const obj = { bar: "baz" };
 
       registry.register("service:foo", { foo: "bar" });
       registry.inject(obj, "service:foo", "fooService");
 
       expect(obj.fooService).to.eql({ foo: "bar" });
+    });
+
+    it("throws an error if the object hasn't been registered", function () {
+      const obj = { bar: "baz" };
+
+      expect(function () {
+        registry.inject(obj, "service:foo");
+      }).to.throw("Attempted to inject unknown object 'service:foo'");
     });
   });
 });

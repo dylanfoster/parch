@@ -1,5 +1,6 @@
 "use strict";
 
+import { ok as assert } from "assert";
 import includeAll from "include-all";
 import inflect from "inflect";
 
@@ -34,6 +35,10 @@ export default class Registry {
    * @returns {undefined}
    */
   inject(context, lookup, propertyName) {
+    const hasBeenInjected = this._registry.has(lookup);
+
+    assert(hasBeenInjected, `Attempted to inject unknown object '${lookup}'`);
+
     const obj = this.lookup(lookup);
     const [prop] = lookup.split(":");
     const property = propertyName || prop;
