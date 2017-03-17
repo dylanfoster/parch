@@ -22,7 +22,7 @@ describe("Application", function () {
   let application;
 
   describe("#map", function () {
-    this.timeout(2500);
+    this.timeout(3000);
 
     beforeEach(function () {
       application = new Application({
@@ -55,7 +55,7 @@ describe("Application", function () {
   });
 
   describe("#start", function () {
-    this.timeout(2500);
+    this.timeout(3000);
 
     const mockRestify = restify.createServer();
 
@@ -82,7 +82,7 @@ describe("Application", function () {
   });
 
   describe("authentication", function () {
-    this.timeout(2500);
+    this.timeout(3000);
 
     beforeEach(function () {
       application = new Application({
