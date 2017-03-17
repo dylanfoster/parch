@@ -127,11 +127,16 @@ class Application {
     const initializers = includeAll({
       dirname: __dirname
     }).initializers;
+    const logger = this.logger;
 
     // TODO: throw an error if the initializer is missing
     const [initializer] = Object.keys(initializers).filter(
       init => initializers[init].name === name
     );
+
+    if (logger) {
+      logger.info(`Running initializer '${name}'`);
+    }
 
     return initializers[initializer].initialize(this, this.registry);
   }
