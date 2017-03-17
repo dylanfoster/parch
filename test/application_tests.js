@@ -195,11 +195,25 @@ describe("Application", function () {
           fs.readdir(loggingDir, (err2, files) => {
             if (err2) { return done(err2); }
 
-            const log = JSON.parse(
-              fs.readFileSync(path.join(loggingDir, files.filter(file =>
-                file.match(/\.log/)
-              )[0])).toString()
-            );
+            const file = files.filter(f => f.match(/\.log/));
+            let log;
+
+            expect(file).to.be.ok;
+            expect(file).to.have.length.gt(0);
+
+            const fileData = fs.readFileSync(path.resolve(loggingDir, file[0]));
+            const lines = fileData
+              .toString()
+              .split("\n")
+              .filter(line => line.length);
+            const line = lines[lines.length - 1];
+
+            try {
+              log = JSON.parse(line);
+            } catch (err) {
+              console.log(fileData.toString().split("\n"));
+              throw err;
+            }
 
             expect(log.res.statusCode).to.eql(200);
 
