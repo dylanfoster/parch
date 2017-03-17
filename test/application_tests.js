@@ -156,7 +156,7 @@ describe("Application", function () {
     });
   });
 
-  describe("logging", function () {
+  describe.skip("logging", function () {
     let loggingDir, messages, writable;
 
     beforeEach(function () {
