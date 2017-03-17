@@ -33,9 +33,7 @@ class Router {
    * constructor
    *
    * @constructor
-   * @param settings
-   * @param settings.app restify app instance
-   * @param settings.loader module loader
+   * @param {Object} registry {{#crossLink "Registry"}}module registry{{/crossLink}}
    */
   constructor(registry) {
     setOwner(this, registry);

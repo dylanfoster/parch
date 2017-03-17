@@ -22,7 +22,7 @@ describe("Application", function () {
   let application;
 
   describe("#map", function () {
-    this.timeout(3000);
+    this.timeout(5000);
 
     beforeEach(function () {
       application = new Application({
@@ -56,7 +56,7 @@ describe("Application", function () {
   });
 
   describe("#start", function () {
-    this.timeout(3000);
+    this.timeout(5000);
 
     const mockRestify = restify.createServer();
 
@@ -77,13 +77,13 @@ describe("Application", function () {
 
     it("starts the application", function () {
       return application.start().then(() => {
-        expect(mockRestify.listen).to.have.been.calledWith(3000);
+        expect(mockRestify.listen).to.have.been.calledWith(5000);
       });
     });
   });
 
   describe("authentication", function () {
-    this.timeout(3000);
+    this.timeout(5000);
 
     beforeEach(function (done) {
       application = new Application({
