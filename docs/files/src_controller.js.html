@@ -92,6 +92,9 @@
                                         <a href="../classes/Application.html">Application</a>
                                     </li>
                                     <li>
+                                        <a href="../classes/containment.html">containment</a>
+                                    </li>
+                                    <li>
                                         <a href="../classes/Controller.html">Controller</a>
                                     </li>
                                     <li>
@@ -99,6 +102,9 @@
                                     </li>
                                     <li>
                                         <a href="../classes/ModelManager.html">ModelManager</a>
+                                    </li>
+                                    <li>
+                                        <a href="../classes/Registry.html">Registry</a>
                                     </li>
                                     <li>
                                         <a href="../classes/Route.html">Route</a>
@@ -130,31 +136,41 @@ import errors from &quot;restify-errors&quot;;
 import inflect from &quot;inflect&quot;;
 
 import STATUS_CODES from &quot;./utils/status_codes&quot;;
+import { setOwner } from &quot;./containment&quot;;
 
 /**
  * Base controller
  *
  * @module parch
  * @class Controller
+ * @constructor
+ * @todo add default restfull methods (index, show, etc)
+ * @todo implement store and deprecate controller based finders
  */
 class Controller {
   get name() {
-    return this.constructor.name.split(/controller/i)[0].toLowerCase();
+    return inflect.singularize(
+      this.constructor.name.split(/controller/i)[0].toLowerCase()
+    );
   }
 
   /**
    * @constructor
    *
-   * @param {Object} settings controller settings
-   * @param {Object} settings.loader loader for controllers and models
+   * @param {Object} registry module registry
+   * @param {Object} options configuration options
+   * @param {String} options.model override the default model name
    */
-  constructor(settings) {
-    this.errors = errors;
-    this.loader = settings.loader;
-    this.models = this.loader.models;
+  constructor(registry, options = {}) {
+    setOwner(this, registry);
 
-    this.modelName = settings.model || this.name;
-    this.model = this.models[this.modelName] || this.models[inflect.capitalize(this.modelName)];
+    this.errors = errors;
+    this.models = registry.lookup(&quot;service:model-manager&quot;).models;
+
+    const modelName = options.model || this.name;
+
+    // TODO: move to store service
+    registry.inject(this, &#x60;model:${modelName}&#x60;);
     this.STATUS_CODES = STATUS_CODES;
   }
 

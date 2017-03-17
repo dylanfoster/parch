@@ -24,6 +24,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/containment.js": {
+            "name": "src/containment.js",
+            "modules": {},
+            "classes": {
+                "containment": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/controller.js": {
             "name": "src/controller.js",
             "modules": {},
@@ -54,6 +63,15 @@
             "modules": {},
             "classes": {
                 "ModelManager": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/registry.js": {
+            "name": "src/registry.js",
+            "modules": {},
+            "classes": {
+                "Registry": 1
             },
             "fors": {},
             "namespaces": {}
@@ -100,9 +118,11 @@
             "elements": {},
             "classes": {
                 "Application": 1,
+                "containment": 1,
                 "Controller": 1,
                 "Model": 1,
                 "ModelManager": 1,
+                "Registry": 1,
                 "Route": 1,
                 "RouteSegment": 1,
                 "Router": 1
@@ -111,8 +131,15 @@
             "namespaces": {},
             "tag": "module",
             "file": "src/router.js",
-            "line": 25,
-            "description": "Base application"
+            "line": 26,
+            "description": "Base application",
+            "is_constructor": 1,
+            "todo": [
+                "add default restfull methods (index",
+                "show",
+                "etc)",
+                "implement store and deprecate controller based finders"
+            ]
         }
     },
     "classes": {
@@ -127,8 +154,21 @@
             "module": "parch",
             "namespace": "",
             "file": "src/application.js",
-            "line": 34,
+            "line": 18,
             "description": "Base application"
+        },
+        "containment": {
+            "name": "containment",
+            "shortname": "containment",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "parch",
+            "namespace": "",
+            "file": "src/containment.js",
+            "line": 26
         },
         "Controller": {
             "name": "Controller",
@@ -141,7 +181,7 @@
             "module": "parch",
             "namespace": "",
             "file": "src/controller.js",
-            "line": 8,
+            "line": 9,
             "description": "Base controller"
         },
         "Model": {
@@ -155,7 +195,7 @@
             "module": "parch",
             "namespace": "",
             "file": "src/model.js",
-            "line": 3,
+            "line": 5,
             "description": "Base model"
         },
         "ModelManager": {
@@ -169,8 +209,22 @@
             "module": "parch",
             "namespace": "",
             "file": "src/model_manager.js",
-            "line": 5,
+            "line": 6,
             "description": "Manages all models"
+        },
+        "Registry": {
+            "name": "Registry",
+            "shortname": "Registry",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "parch",
+            "namespace": "",
+            "file": "src/registry.js",
+            "line": 11,
+            "is_constructor": 1
         },
         "Route": {
             "name": "Route",
@@ -211,7 +265,7 @@
             "module": "parch",
             "namespace": "",
             "file": "src/router.js",
-            "line": 25,
+            "line": 26,
             "description": "Manages routing"
         }
     },
@@ -245,7 +299,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 43,
+            "line": 27,
             "is_constructor": 1,
             "params": [
                 {
@@ -262,10 +316,13 @@
         },
         {
             "file": "src/application.js",
-            "line": 121,
+            "line": 55,
             "description": "Get the restify application instance",
             "itemtype": "method",
             "name": "getApp",
+            "todo": [
+                ": deprecate"
+            ],
             "return": {
                 "description": "restify application instance",
                 "type": "Object"
@@ -275,7 +332,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 132,
+            "line": 66,
             "description": "starts listening on the defined port",
             "itemtype": "method",
             "name": "start",
@@ -295,40 +352,119 @@
         },
         {
             "file": "src/application.js",
-            "line": 145,
-            "description": "Loads the models into the model manager using\n{{#crossLink \"ModelManager/addModel:method\"}}ModelManager#addModel{{/crossLink}}",
+            "line": 79,
+            "description": "Normalizes constructor options",
+            "itemtype": "method",
+            "name": "_configure",
             "access": "private",
             "tagname": "",
-            "itemtype": "method",
-            "name": "_addModels",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "user passed config options",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "final config option",
+                "type": "Object"
+            },
             "class": "Application",
             "module": "parch"
         },
         {
             "file": "src/application.js",
-            "line": 160,
-            "description": "runs associations for each model",
+            "line": 101,
+            "description": "Returns the project directory (cwd) from which Application is being instantiated",
+            "itemtype": "method",
+            "name": "_getProjectDirectory",
             "access": "private",
             "tagname": "",
-            "itemtype": "method",
-            "name": "_associateModels",
+            "return": {
+                "description": "directory",
+                "type": "String"
+            },
             "class": "Application",
             "module": "parch"
         },
         {
+            "file": "src/application.js",
+            "line": 115,
+            "description": "Run an initializer by name",
+            "itemtype": "method",
+            "name": "_initialize",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "Application",
+            "module": "parch"
+        },
+        {
+            "file": "src/containment.js",
+            "line": 5,
+            "description": "Get the owner of an object",
+            "itemtype": "method",
+            "name": "getOwner",
+            "params": [
+                {
+                    "name": "child",
+                    "description": "object from which to fetch the parent",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "parent (owner)",
+                "type": "Object"
+            },
+            "class": "containment",
+            "module": "parch"
+        },
+        {
+            "file": "src/containment.js",
+            "line": 15,
+            "description": "Set the owner object of the child object",
+            "itemtype": "method",
+            "name": "setOwner",
+            "params": [
+                {
+                    "name": "child",
+                    "description": "child object",
+                    "type": "Object"
+                },
+                {
+                    "name": "parent",
+                    "description": "parent (owner) object",
+                    "type": "Object"
+                }
+            ],
+            "class": "containment",
+            "module": "parch"
+        },
+        {
             "file": "src/controller.js",
-            "line": 19,
+            "line": 25,
             "is_constructor": 1,
             "params": [
                 {
-                    "name": "settings",
-                    "description": "controller settings",
+                    "name": "registry",
+                    "description": "module registry",
+                    "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "configuration options",
                     "type": "Object",
                     "props": [
                         {
-                            "name": "loader",
-                            "description": "loader for controllers and models",
-                            "type": "Object"
+                            "name": "model",
+                            "description": "override the default model name",
+                            "type": "String"
                         }
                     ]
                 }
@@ -338,7 +474,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 35,
+            "line": 45,
             "description": "Builds, validates and saves a model instance.\n\n    return this.createRecord({ firstname: 'bar' }).then(record => {\n\n    });",
             "itemtype": "method",
             "name": "createRecord",
@@ -358,7 +494,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 69,
+            "line": 79,
             "description": "Destroy a model instance and remove it from the db\n\n    return this.destroyRecord(1).then(() => {\n\n    });",
             "itemtype": "method",
             "name": "destroyRecord",
@@ -378,7 +514,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 84,
+            "line": 94,
             "description": "Find all records.\n\n    return this.findAll().then(records => {\n\n    })\n\nYou can optionally pass in a where clause\n\n    return this.findAll({ username: 'john' }).then(user => {\n\n    });\n\nAs well as any finder options\n\n    return this.findAll(null, {\n      attributes: [\"title\"],\n      include: [this.models.User]\n    }).then(user => {\n\n    });",
             "itemtype": "method",
             "name": "findAll",
@@ -406,7 +542,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 123,
+            "line": 133,
             "description": "Find a single instance by id\n\n    return this.findOne(1).then(record => {\n\n    });\n\nThe same options apply to findOne\n\n    return this.findOne(1, {\n      attributes: [\"firstName\"]\n    }).then(user => {\n\n    });",
             "itemtype": "method",
             "name": "findOne",
@@ -431,7 +567,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 162,
+            "line": 172,
             "description": "Update a single record\n\n    return this.updateRecord(1, { firstName: 'foo' }).then(record => {\n\n    });",
             "itemtype": "method",
             "name": "updateRecord",
@@ -456,7 +592,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 183,
+            "line": 193,
             "description": "HACK: if this is a sequelize validation error, we transform it, otherwise\nwe can't be totally sure so just throw it up the stack",
             "class": "Controller",
             "module": "parch"
@@ -470,7 +606,7 @@
         },
         {
             "file": "src/model.js",
-            "line": 14,
+            "line": 18,
             "is_constructor": 1,
             "params": [
                 {
@@ -478,6 +614,9 @@
                     "description": "sequelize model options",
                     "type": "Object"
                 }
+            ],
+            "todo": [
+                ": set owner and inject this model and all models (from manager)"
             ],
             "see": [
                 "http://docs.sequelizejs.com/en/v3/docs/models-definition/#configuration"
@@ -487,7 +626,7 @@
         },
         {
             "file": "src/model.js",
-            "line": 25,
+            "line": 30,
             "description": "Model options get passed directly to sequelize model definition. The main\ndifference is the separation of model constructor options and model\nattribute definitions.\n\n<a href=\"http://docs.sequelizejs.com/en/v3/docs/models-definition/\">\n  see http://docs.sequelizejs.com/en/v3/docs/models-definition/\n</a>",
             "itemtype": "property",
             "name": "options",
@@ -500,7 +639,7 @@
         },
         {
             "file": "src/model.js",
-            "line": 40,
+            "line": 45,
             "description": "Model definition\n\n    define(DataTypes) {\n      const user = {\n        username: {\n          allowNull: false\n          type: DataTypes.STRING\n        }\n      };\n\n      return user;\n    }\n\n<a href=\"http://docs.sequelizejs.com/en/v3/docs/models-definition/#data-types\">\n  see http://docs.sequelizejs.com/en/v3/docs/models-definition/#data-types\n</a>",
             "itemtype": "method",
             "name": "define",
@@ -519,7 +658,7 @@
         },
         {
             "file": "src/model_manager.js",
-            "line": 11,
+            "line": 12,
             "is_constructor": 1,
             "params": [
                 {
@@ -540,7 +679,7 @@
         },
         {
             "file": "src/model_manager.js",
-            "line": 30,
+            "line": 34,
             "description": "Adds a model to internal cache\n\n    class FooModel extends parch.Model {\n      constructor(options) {\n        super(options);\n      }\n\n      associate(Foo, models) {\n      }\n\n      define(DataTypes) {\n      }\n    }\n\n    modelManager.addModel(Model);",
             "itemtype": "method",
             "name": "addModel",
@@ -551,10 +690,146 @@
                     "type": "Object"
                 }
             ],
-            "todo": [
-                ": check for existence before adding (i.e. caching)"
-            ],
             "class": "ModelManager",
+            "module": "parch"
+        },
+        {
+            "file": "src/registry.js",
+            "line": 20,
+            "description": "Inject an object into another object\n\n    registry.inject(object, \"service:store\");\n    // object.store\n\n    registry.inject(object, \"service:model-manager\", \"modelManager\");\n    // object.modelManager",
+            "itemtype": "method",
+            "name": "inject",
+            "params": [
+                {
+                    "name": "context",
+                    "description": "the object to inject onto",
+                    "type": "Object"
+                },
+                {
+                    "name": "lookup",
+                    "description": "name by which to look search for the injection in the registry",
+                    "type": "String"
+                },
+                {
+                    "name": "propertyName",
+                    "description": "optional property name of the newly injected object",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "context",
+                "type": "Object"
+            },
+            "class": "Registry",
+            "module": "parch"
+        },
+        {
+            "file": "src/registry.js",
+            "line": 58,
+            "description": "Find an object in the registry. If the object isn't found in the registry\nlookup will attempt to find it by requiring it in. If the require fails\nthe lookup fails\n\n    registry.lookup(\"service:foo\");",
+            "itemtype": "method",
+            "name": "lookup",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "colon delimited lookup string \"service:foo\"",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "Registry",
+            "module": "parch"
+        },
+        {
+            "file": "src/registry.js",
+            "line": 84,
+            "description": "Register an object in the registry by name. If the name exists and it was\nregistered with the { singleton: true } option, an error will be thrown.\n\n    registry.register(\"service:foo\", { foo: \"bar\" });",
+            "itemtype": "method",
+            "name": "register",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "the name by which to register the object",
+                    "type": "String"
+                },
+                {
+                    "name": "Obj",
+                    "description": "the object to store in the registry",
+                    "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "register options",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "instantiate",
+                            "description": "instantiate the object when registering it",
+                            "type": "Boolean"
+                        },
+                        {
+                            "name": "singleton",
+                            "description": "only allow one registration of this name/object",
+                            "type": "Boolean"
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "Obj",
+                "type": "Object"
+            },
+            "class": "Registry",
+            "module": "parch"
+        },
+        {
+            "file": "src/registry.js",
+            "line": 125,
+            "description": "Get the lookup directory for internal modules",
+            "itemtype": "method",
+            "name": "_getLookupDirectory",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "lookup",
+                    "description": "string name of object we're looking for (e.g. 'module')",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "directory",
+                "type": "String"
+            },
+            "class": "Registry",
+            "module": "parch"
+        },
+        {
+            "file": "src/registry.js",
+            "line": 136,
+            "description": "Attempts to load modules by requiring them in locally. Lookup directory is\ndetermined by the type of object we're loading (e.g. 'module' => ./) and the\nname of the module (e.g. 'model-manager') which is underscored",
+            "itemtype": "method",
+            "name": "_loadModule",
+            "params": [
+                {
+                    "name": "lookup",
+                    "description": "string name of object we're looking for (e.g. 'module')",
+                    "type": "String"
+                },
+                {
+                    "name": "name",
+                    "description": "string module name",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "required module",
+                "type": "Object"
+            },
+            "class": "Registry",
             "module": "parch"
         },
         {
@@ -652,23 +927,14 @@
         },
         {
             "file": "src/router.js",
-            "line": 31,
+            "line": 32,
             "description": "constructor",
             "is_constructor": 1,
             "params": [
                 {
-                    "name": "settings",
-                    "description": "",
-                    "props": [
-                        {
-                            "name": "app",
-                            "description": "restify app instance"
-                        },
-                        {
-                            "name": "loader",
-                            "description": "module loader"
-                        }
-                    ]
+                    "name": "registry",
+                    "description": "{{#crossLink \"Registry\"}}module registry{{/crossLink}}",
+                    "type": "Object"
                 }
             ],
             "class": "Router",
@@ -676,7 +942,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 47,
+            "line": 52,
             "description": "Bind a set of routes to a namespace.\nUses {{#crossLink \"Router/_buildRoute:method\"}}_buildRoute{{/crossLink}} to\nnormalize the path\n\n    Router.map(function () {\n      this.namespace(\"/users/:userId\", [\n        { path: \"/setProfileImage\", using: \"user:setImage\", method: \"post\" }\n      ])\n    });",
             "itemtype": "method",
             "name": "namespace",
@@ -698,7 +964,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 74,
+            "line": 83,
             "description": "Register a resource and wire up restful endpoints.\nUses {{#crossLink \"Router/_buildRoute:method\"}}_buildRoute{{/crossLink}} to\nnormalize the path\n\n    Router.map(function () {\n      this.resource(\"user\");\n    });",
             "itemtype": "method",
             "name": "resource",
@@ -726,7 +992,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 99,
+            "line": 108,
             "description": "Register a single route.\nUses {{#crossLink \"Router/_buildRoute:method\"}}_buildRoute{{/crossLink}} to\nnormalize the path\n\n    Router.map(function () {\n      this.route(\"/user/foo\", { using: \"users:foo\", method: \"get\" });\n    });",
             "itemtype": "method",
             "name": "route",
@@ -759,7 +1025,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 131,
+            "line": 139,
             "description": "Consistently builds a route from a set of path segments using\n{{#crossLink \"Route\"}}Route{{/crossLink}}\n\n    router._buildRoute(\"foo\", \"/bar\" \"baz/\");",
             "itemtype": "method",
             "name": "_buildRoute",
@@ -774,7 +1040,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 145,
+            "line": 153,
             "description": "generates main route handler plus pre and post hooks",
             "access": "private",
             "tagname": "",
@@ -792,6 +1058,9 @@
                     "type": "String"
                 }
             ],
+            "todo": [
+                ": move hooks to controller instance methods and just call them"
+            ],
             "return": {
                 "description": "handlers",
                 "type": "Array"
@@ -801,7 +1070,32 @@
         },
         {
             "file": "src/router.js",
-            "line": 174,
+            "line": 184,
+            "description": "Generates a path segment from a given resource name\n\n    router._getPathSegment(\"foo\", \"show\");\n    // :fooId",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "_getPathSegment",
+            "params": [
+                {
+                    "name": "resource",
+                    "description": ""
+                },
+                {
+                    "name": "action",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "pathSegment",
+                "type": "String"
+            },
+            "class": "Router",
+            "module": "parch"
+        },
+        {
+            "file": "src/router.js",
+            "line": 206,
             "description": "loads controllers from the loader",
             "access": "private",
             "tagname": "",
@@ -812,7 +1106,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 189,
+            "line": 225,
             "description": "maps a resource controller action and route",
             "access": "private",
             "tagname": "",
@@ -845,7 +1139,7 @@
         },
         {
             "file": "src/router.js",
-            "line": 216,
+            "line": 253,
             "description": "configures router resources",
             "static": 1,
             "params": [
@@ -870,6 +1164,42 @@
     ],
     "warnings": [
         {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/application.js:79"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/application.js:101"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/containment.js:5"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/registry.js:20"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/registry.js:58"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/registry.js:84"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/registry.js:125"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/registry.js:136"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/router.js:184"
+        },
+        {
             "message": "Missing item type\nGenerate a unique slug.",
             "line": " docs/assets/vendor/github-slugger/slugger.js:12"
         },
@@ -879,15 +1209,15 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/application.js:43"
+            "line": " src/application.js:27"
         },
         {
             "message": "Missing item type",
-            "line": " src/controller.js:19"
+            "line": " src/controller.js:25"
         },
         {
             "message": "Missing item type\nHACK: if this is a sequelize validation error, we transform it, otherwise\nwe can't be totally sure so just throw it up the stack",
-            "line": " src/controller.js:183"
+            "line": " src/controller.js:193"
         },
         {
             "message": "Missing item type\nHACK: Babel no longer exports [default], though I'm pretty sure I have\nthat transform installed so....¯\\_(ツ)_/¯",
@@ -895,11 +1225,11 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/model.js:14"
+            "line": " src/model.js:18"
         },
         {
             "message": "Missing item type",
-            "line": " src/model_manager.js:11"
+            "line": " src/model_manager.js:12"
         },
         {
             "message": "Missing item type\nThe constructor takes an unknown number of string segments and\nconverts them to a path",
@@ -911,11 +1241,11 @@
         },
         {
             "message": "Missing item type\nconstructor",
-            "line": " src/router.js:31"
+            "line": " src/router.js:32"
         },
         {
             "message": "Missing item type\nconfigures router resources",
-            "line": " src/router.js:216"
+            "line": " src/router.js:253"
         }
     ]
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Route - Parch</title>
+    <title>containment - Parch</title>
     <meta name="description" content="Restify + Sequelize">
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
@@ -127,8 +127,8 @@
 
 
 <div class="page-header">
-    <h1> <i class="fa fa-bookmark-o" aria-hidden="true"></i> Route Class
-            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/route.js#L5" target="_blank">
+    <h1> <i class="fa fa-bookmark-o" aria-hidden="true"></i> containment Class
+            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/containment.js#L26" target="_blank">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
     </h1>
@@ -142,25 +142,20 @@
 
 
         <div class="foundat">
-            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/route.js#L5">src/route.js:5</a>
+            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/containment.js#L26">src/containment.js:26</a>
         </div>
 </div>
 
 
 
-  <div class="class-description">
-  <p>Builds a consistent route path from a set of path segments</p>
-<pre class="code prettyprint"><code>new Route("foo", "/bar", "baz/"); =&gt; { path: "/foo/bar/baz" segments: [RouteSegment, RouteSegment, RouteSegment] }</code></pre>
-
-  </div>
 
 <div>
     <div class="page-section">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation" class="active"><a href="#tab_index" aria-controls="tab_index" role="tab" data-toggle="tab">Index</a></li>
+            <li role="presentation"><a href="#tab_methods" aria-controls="tab_methods" role="tab" data-toggle="tab">Methods</a></li>
 
-            <li role="presentation"><a href="#tab_properties" aria-controls="tab_properties" role="tab" data-toggle="tab">Properties</a></li>
 
 
         </ul>
@@ -192,86 +187,160 @@
               </form>
 
           <div id="tab_index" role="tabpanel" class="tab-pane active" >
+                  <div class="index-section methods">
+                      <h3>Methods</h3>
 
-                  <div class="index-section properties">
-                      <h3>Properties</h3>
-
-                      <ul class="index-list properties">
-                              <li class="index-item property">
-                                  <a href="#property_path">path</a>
+                      <ul class="index-list methods">
+                              <li class="index-item method">
+                                  <a href="#method_getOwner">getOwner</a>
 
                               </li>
-                              <li class="index-item property">
-                                  <a href="#property_segments">segments</a>
+                              <li class="index-item method">
+                                  <a href="#method_setOwner">setOwner</a>
 
                               </li>
                       </ul>
                   </div>
 
 
+
           </div>
 
-
-              <div id="tab_properties" role="tabpanel" class="tab-pane">
+              <div id="tab_methods" role="tabpanel" class="tab-pane">
                   <div class="item-list">
-  <div id="property_path" class="property item">
-      <h3 class="name anchorable-toc">
-          <a class="fa fa-link toc-anchor" href="#property_path"></a>
-          path
-      </h3>
-      <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  <div id="method_getOwner" class="method item">
+  	<span class="method-signature">
+  	<span class="name anchorable-toc">
+  		<a class="fa fa-link toc-anchor" href="#method_getOwner"></a>
+  		getOwner
+  	</span>
+  
+  		<div class="args">
+  			<span class="paren">(</span><ul class="args-list inline commas">
+  				<li class="arg">
+  						<code>child</code>
+  				</li>
+  			</ul><span class="paren">)</span>
+  		</div>
+  		<span class="returns-inline">
+  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  		</span>
+  	</span>
   
   
   
   
   
-      <div class="meta">
-                  <p>
-                  Defined in
-          <a href="https://github.com/dylanfoster/parch/blob/0/src/route.js#L25">src/route.js:25</a>
-          </p>
   
   
-      </div>
+  	<div class="meta">
+  				<p>
+  				Defined in
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/containment.js#L5">src/containment.js:5</a>
+  		</p>
   
-      <div class="description">
-          <p>The path is the fully built path from segments e.g. /foo/bar/baz</p>
-  
-      </div>
   
   
+  	</div>
+  
+  	<div class="description"><p>Get the owner of an object</p>
+  </div>
+  
+  		<div class="params">
+  			<h4>Parameters:</h4>
+  
+  			<ul class="params-list">
+  				<li class="param">
+  						<code class="param-name">child</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  
+  
+  					<div class="param-description"><p>object from which to fetch the parent</p>
+  </div>
+  
+  				</li>
+  			</ul>
+  		</div>
+  
+  		<div class="returns">
+  			<h4>Returns:</h4>
+  
+  			<div class="returns-description">
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+  					<p>parent (owner)</p>
+  
+  			</div>
+  		</div>
   
   </div>
-  <div id="property_segments" class="property item">
-      <h3 class="name anchorable-toc">
-          <a class="fa fa-link toc-anchor" href="#property_segments"></a>
-          segments
-      </h3>
-      <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+  <div id="method_setOwner" class="method item">
+  	<span class="method-signature">
+  	<span class="name anchorable-toc">
+  		<a class="fa fa-link toc-anchor" href="#method_setOwner"></a>
+  		setOwner
+  	</span>
+  
+  		<div class="args">
+  			<span class="paren">(</span><ul class="args-list inline commas">
+  				<li class="arg">
+  						<code>child</code>
+  				</li>
+  				<li class="arg">
+  						<code>parent</code>
+  				</li>
+  			</ul><span class="paren">)</span>
+  		</div>
+  	</span>
   
   
   
   
   
-      <div class="meta">
-                  <p>
-                  Defined in
-          <a href="https://github.com/dylanfoster/parch/blob/0/src/route.js#L31">src/route.js:31</a>
-          </p>
   
   
-      </div>
+  	<div class="meta">
+  				<p>
+  				Defined in
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/containment.js#L15">src/containment.js:15</a>
+  		</p>
   
-      <div class="description">
-          <p>All segments that make up this route. Consists of an array of RouteSegments</p>
   
-      </div>
   
+  	</div>
+  
+  	<div class="description"><p>Set the owner object of the child object</p>
+  </div>
+  
+  		<div class="params">
+  			<h4>Parameters:</h4>
+  
+  			<ul class="params-list">
+  				<li class="param">
+  						<code class="param-name">child</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  
+  
+  					<div class="param-description"><p>child object</p>
+  </div>
+  
+  				</li>
+  				<li class="param">
+  						<code class="param-name">parent</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  
+  
+  					<div class="param-description"><p>parent (owner) object</p>
+  </div>
+  
+  				</li>
+  			</ul>
+  		</div>
   
   
   </div>
                   </div>
               </div>
+
 
 
       </div>

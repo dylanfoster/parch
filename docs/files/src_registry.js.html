@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Route - Parch</title>
+    <title>src/registry.js - Parch</title>
     <meta name="description" content="Restify + Sequelize">
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
@@ -124,158 +124,178 @@
                 <div class="apidocs">
                     <div id="docs-main">
                         <div class="content">
-
-
 <div class="page-header">
-    <h1> <i class="fa fa-bookmark-o" aria-hidden="true"></i> Route Class
-            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/route.js#L5" target="_blank">
-              <i class="fa fa-pencil" aria-hidden="true"></i>
-            </a>
-    </h1>
+    <h1><i class="fa fa-file-code-o" aria-hidden="true"></i>  File</h1>
 </div>
 
+<div class="file">
+    <pre class="prettyprint linenums">
+&quot;use strict&quot;;
 
-<div class="content-meta">
+import { ok as assert } from &quot;assert&quot;;
+import includeAll from &quot;include-all&quot;;
+import inflect from &quot;inflect&quot;;
 
+const LOOKUP_MAP = {
+  module: __dirname
+};
 
-            Module: <a href="../modules/parch.html">parch</a>
+/**
+ * @class Registry
+ * @constructor
+ */
+export default class Registry {
+  constructor() {
+    this._registry = new Map();
+  }
 
+  /**
+   * Inject an object into another object
+   *
+   *     registry.inject(object, &quot;service:store&quot;);
+   *     // object.store
+   *
+   *     registry.inject(object, &quot;service:model-manager&quot;, &quot;modelManager&quot;);
+   *     // object.modelManager
+   *
+   * @method inject
+   * @param {Object} context the object to inject onto
+   * @param {String} lookup name by which to look search for the injection in the registry
+   * @param {String} propertyName optional property name of the newly injected object
+   * @returns {Object} context
+   */
+  inject(context, lookup, propertyName) {
+    const hasBeenInjected = this._registry.has(lookup);
 
-        <div class="foundat">
-            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/route.js#L5">src/route.js:5</a>
-        </div>
-</div>
+    assert(hasBeenInjected, &#x60;Attempted to inject unknown object &#x27;${lookup}&#x27;&#x60;);
 
+    const obj = this.lookup(lookup);
+    const [prop] = lookup.split(&quot;:&quot;);
+    const property = propertyName || prop;
 
+    if (Object.prototype.hasOwnProperty.call(context, property)) { return; }
 
-  <div class="class-description">
-  <p>Builds a consistent route path from a set of path segments</p>
-<pre class="code prettyprint"><code>new Route("foo", "/bar", "baz/"); =&gt; { path: "/foo/bar/baz" segments: [RouteSegment, RouteSegment, RouteSegment] }</code></pre>
+    if (obj) {
+      Object.defineProperty(context, property, {
+        enumerable: false,
+        configurable: false,
+        get() { return obj; },
+        set() {}
+      });
+    }
 
-  </div>
+    return context;
+  }
 
-<div>
-    <div class="page-section">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#tab_index" aria-controls="tab_index" role="tab" data-toggle="tab">Index</a></li>
+  /**
+   * Find an object in the registry. If the object isn&#x27;t found in the registry
+   * lookup will attempt to find it by requiring it in. If the require fails
+   * the lookup fails
+   *
+   *     registry.lookup(&quot;service:foo&quot;);
+   *
+   * @method lookup
+   * @param {String} name colon delimited lookup string &quot;service:foo&quot;
+   * @returns {Object}
+   */
+  lookup(name) {
+    const [moduleLookup, moduleName] = name.split(&quot;:&quot;);
+    let obj = this._registry.get(name);
 
-            <li role="presentation"><a href="#tab_properties" aria-controls="tab_properties" role="tab" data-toggle="tab">Properties</a></li>
+    if (obj) { return obj.instance; }
 
+    obj = this._loadModule(moduleLookup, moduleName);
 
-        </ul>
+    assert(obj, &#x60;Attempted to lookup unknown module &#x27;${moduleName}&#x27;&#x60;);
 
-        <!-- Tab panes -->
-        <div class="tab-content">
+    this.register(name, obj);
 
-              <form id="options-form" class="form-inline">
-                  Show:
-                  <label for="api-show-inherited" class="checkbox">
-                      <input type="checkbox" id="api-show-inherited" checked>
-                      Inherited
-                  </label>
-          
-                  <label for="api-show-protected" class="checkbox">
-                      <input type="checkbox" id="api-show-protected">
-                      Protected
-                  </label>
-          
-                  <label for="api-show-private" class="checkbox">
-                      <input type="checkbox" id="api-show-private">
-                      Private
-                  </label>
-                  <label for="api-show-deprecated" class="checkbox">
-                      <input type="checkbox" id="api-show-deprecated">
-                      Deprecated
-                  </label>
-          
-              </form>
+    return obj;
+  }
 
-          <div id="tab_index" role="tabpanel" class="tab-pane active" >
+  /**
+   * Register an object in the registry by name. If the name exists and it was
+   * registered with the { singleton: true } option, an error will be thrown.
+   *
+   *     registry.register(&quot;service:foo&quot;, { foo: &quot;bar&quot; });
+   *
+   * @method register
+   * @param {String} name the name by which to register the object
+   * @param {Object} Obj the object to store in the registry
+   * @param {Object} options register options
+   * @param {Boolean} options.instantiate instantiate the object when registering it
+   * @param {Boolean} options.singleton only allow one registration of this name/object
+   * @returns {Object} Obj
+   */
+  register(name, Obj, options = {}) {
+    const { instantiate, singleton } = options;
+    let obj = this._registry.get(name);
 
-                  <div class="index-section properties">
-                      <h3>Properties</h3>
+    if (obj &amp;&amp; obj.singleton) {
+      throw new Error(&quot;Cannot re-register singleton object&quot;);
+    }
 
-                      <ul class="index-list properties">
-                              <li class="index-item property">
-                                  <a href="#property_path">path</a>
+    obj = {};
 
-                              </li>
-                              <li class="index-item property">
-                                  <a href="#property_segments">segments</a>
+    if (instantiate) {
+      obj.instance = new Obj(this);
+      obj.singleton = singleton;
 
-                              </li>
-                      </ul>
-                  </div>
+      this._registry.set(name, obj);
 
+      return obj;
+    }
 
-          </div>
+    obj.instance = Obj;
+    obj.singleton = singleton;
 
+    this._registry.set(name, obj);
 
-              <div id="tab_properties" role="tabpanel" class="tab-pane">
-                  <div class="item-list">
-  <div id="property_path" class="property item">
-      <h3 class="name anchorable-toc">
-          <a class="fa fa-link toc-anchor" href="#property_path"></a>
-          path
-      </h3>
-      <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-  
-  
-  
-  
-  
-      <div class="meta">
-                  <p>
-                  Defined in
-          <a href="https://github.com/dylanfoster/parch/blob/0/src/route.js#L25">src/route.js:25</a>
-          </p>
-  
-  
-      </div>
-  
-      <div class="description">
-          <p>The path is the fully built path from segments e.g. /foo/bar/baz</p>
-  
-      </div>
-  
-  
-  
-  </div>
-  <div id="property_segments" class="property item">
-      <h3 class="name anchorable-toc">
-          <a class="fa fa-link toc-anchor" href="#property_segments"></a>
-          segments
-      </h3>
-      <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
-  
-  
-  
-  
-  
-      <div class="meta">
-                  <p>
-                  Defined in
-          <a href="https://github.com/dylanfoster/parch/blob/0/src/route.js#L31">src/route.js:31</a>
-          </p>
-  
-  
-      </div>
-  
-      <div class="description">
-          <p>All segments that make up this route. Consists of an array of RouteSegments</p>
-  
-      </div>
-  
-  
-  
-  </div>
-                  </div>
-              </div>
+    return obj;
+  }
 
+  /**
+   * Get the lookup directory for internal modules
+   * @method _getLookupDirectory
+   * @private
+   * @param {String} lookup string name of object we&#x27;re looking for (e.g. &#x27;module&#x27;)
+   * @returns {String} directory
+   */
+  _getLookupDirectory(lookup) {
+    return LOOKUP_MAP[lookup];
+  }
 
-      </div>
-    </div>
+  /**
+   * Attempts to load modules by requiring them in locally. Lookup directory is
+   * determined by the type of object we&#x27;re loading (e.g. &#x27;module&#x27; =&gt; ./) and the
+   * name of the module (e.g. &#x27;model-manager&#x27;) which is underscored
+   *
+   * @method _loadModule
+   * @param {String} lookup string name of object we&#x27;re looking for (e.g. &#x27;module&#x27;)
+   * @param {String} name string module name
+   * @returns {Object} required module
+   */
+  _loadModule(lookup, name) {
+    let modules;
+
+    try {
+      modules = includeAll({ dirname: this._getLookupDirectory(lookup) });
+    } catch (err) {
+      if (err.message.match(/dirname/i)) {
+        throw new Error(&#x60;Attempted to lookup unknown module &#x27;${name}&#x27;&#x60;);
+      }
+
+      throw err;
+    }
+
+    // TODO: this will need to be configurable somehow (or better regex)
+    const key = &#x60;${inflect.underscore(name)}.js&#x60;;
+
+    return modules[key];
+  }
+}
+
+    </pre>
 </div>
                         </div>
                     </div>

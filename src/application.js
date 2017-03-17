@@ -57,7 +57,6 @@ class Application {
    *
    * @method getApp
    * @todo: deprecate
-   *
    * @return {Object} restify application instance
    */
   getApp() {
@@ -69,7 +68,6 @@ class Application {
    *
    * @method start
    * @param {Number} port the port to listen on. Default: 3000
-   *
    * @return {Promise<undefined, Error>}
    */
   start(port = DEFAULT_LISTEN_PORT) {
@@ -84,7 +82,6 @@ class Application {
    * @method _configure
    * @private
    * @param {Object} config user passed config options
-   *
    * @returns {Object} final config option
    */
   _configure(config) {
@@ -103,9 +100,9 @@ class Application {
 
   /**
    * Returns the project directory (cwd) from which Application is being instantiated
+   *
    * @method _getProjectDirectory
    * @private
-   *
    * @returns {String} directory
    */
   _getProjectDirectory() {
@@ -120,7 +117,6 @@ class Application {
    *
    * @method _initialize
    * @private
-   *
    * @param {String} name
    */
   _initialize(name) {

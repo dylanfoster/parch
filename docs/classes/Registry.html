@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Application - Parch</title>
+    <title>Registry - Parch</title>
     <meta name="description" content="Restify + Sequelize">
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
@@ -127,8 +127,8 @@
 
 
 <div class="page-header">
-    <h1> <i class="fa fa-bookmark-o" aria-hidden="true"></i> Application Class
-            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L18" target="_blank">
+    <h1> <i class="fa fa-bookmark-o" aria-hidden="true"></i> Registry Class
+            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L11" target="_blank">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
     </h1>
@@ -142,16 +142,45 @@
 
 
         <div class="foundat">
-            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L18">src/application.js:18</a>
+            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L11">src/registry.js:11</a>
         </div>
 </div>
 
 
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_Registry" class="method item">
+	<span class="method-signature">
+	<span class="name anchorable-toc">
+		<a class="fa fa-link toc-anchor" href="#method_Registry"></a>
+		Registry
+	</span>
 
-  <div class="class-description">
-  <p>Base application</p>
+		<span class="paren">()</span>
+	</span>
 
-  </div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>
+				Defined in
+		<a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L11">src/registry.js:11</a>
+		</p>
+
+
+
+	</div>
+
+
+
+
+</div>
+    </div>
+
 
 <div>
     <div class="page-section">
@@ -196,23 +225,23 @@
 
                       <ul class="index-list methods">
                               <li class="index-item method private">
-                                  <a href="#method__configure">_configure</a>
-
-                              </li>
-                              <li class="index-item method private">
-                                  <a href="#method__getProjectDirectory">_getProjectDirectory</a>
-
-                              </li>
-                              <li class="index-item method private">
-                                  <a href="#method__initialize">_initialize</a>
+                                  <a href="#method__getLookupDirectory">_getLookupDirectory</a>
 
                               </li>
                               <li class="index-item method">
-                                  <a href="#method_getApp">getApp</a>
+                                  <a href="#method__loadModule">_loadModule</a>
 
                               </li>
                               <li class="index-item method">
-                                  <a href="#method_start">start</a>
+                                  <a href="#method_inject">inject</a>
+
+                              </li>
+                              <li class="index-item method">
+                                  <a href="#method_lookup">lookup</a>
+
+                              </li>
+                              <li class="index-item method">
+                                  <a href="#method_register">register</a>
 
                               </li>
                       </ul>
@@ -224,80 +253,20 @@
 
               <div id="tab_methods" role="tabpanel" class="tab-pane">
                   <div class="item-list">
-  <div id="method__configure" class="method item private">
+  <div id="method__getLookupDirectory" class="method item private">
   	<span class="method-signature">
   	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method__configure"></a>
-  		_configure
+  		<a class="fa fa-link toc-anchor" href="#method__getLookupDirectory"></a>
+  		_getLookupDirectory
   	</span>
   
   		<div class="args">
   			<span class="paren">(</span><ul class="args-list inline commas">
   				<li class="arg">
-  						<code>config</code>
+  						<code>lookup</code>
   				</li>
   			</ul><span class="paren">)</span>
   		</div>
-  		<span class="returns-inline">
-  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-  		</span>
-  	</span>
-  
-  
-  
-  		<span class="flag private">private</span>
-  
-  
-  
-  
-  	<div class="meta">
-  				<p>
-  				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L79">src/application.js:79</a>
-  		</p>
-  
-  
-  
-  	</div>
-  
-  	<div class="description"><p>Normalizes constructor options</p>
-  </div>
-  
-  		<div class="params">
-  			<h4>Parameters:</h4>
-  
-  			<ul class="params-list">
-  				<li class="param">
-  						<code class="param-name">config</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-  
-  
-  					<div class="param-description"><p>user passed config options</p>
-  </div>
-  
-  				</li>
-  			</ul>
-  		</div>
-  
-  		<div class="returns">
-  			<h4>Returns:</h4>
-  
-  			<div class="returns-description">
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-  					<p>final config option</p>
-  
-  			</div>
-  		</div>
-  
-  </div>
-  <div id="method__getProjectDirectory" class="method item private">
-  	<span class="method-signature">
-  	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method__getProjectDirectory"></a>
-  		_getProjectDirectory
-  	</span>
-  
-  		<span class="paren">()</span>
   		<span class="returns-inline">
   			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
   		</span>
@@ -313,16 +282,31 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L101">src/application.js:101</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L125">src/registry.js:125</a>
   		</p>
   
   
   
   	</div>
   
-  	<div class="description"><p>Returns the project directory (cwd) from which Application is being instantiated</p>
+  	<div class="description"><p>Get the lookup directory for internal modules</p>
   </div>
   
+  		<div class="params">
+  			<h4>Parameters:</h4>
+  
+  			<ul class="params-list">
+  				<li class="param">
+  						<code class="param-name">lookup</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  
+  					<div class="param-description"><p>string name of object we're looking for (e.g. 'module')</p>
+  </div>
+  
+  				</li>
+  			</ul>
+  		</div>
   
   		<div class="returns">
   			<h4>Returns:</h4>
@@ -335,66 +319,23 @@
   		</div>
   
   </div>
-  <div id="method__initialize" class="method item private">
+  <div id="method__loadModule" class="method item">
   	<span class="method-signature">
   	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method__initialize"></a>
-  		_initialize
+  		<a class="fa fa-link toc-anchor" href="#method__loadModule"></a>
+  		_loadModule
   	</span>
   
   		<div class="args">
   			<span class="paren">(</span><ul class="args-list inline commas">
   				<li class="arg">
+  						<code>lookup</code>
+  				</li>
+  				<li class="arg">
   						<code>name</code>
   				</li>
   			</ul><span class="paren">)</span>
   		</div>
-  	</span>
-  
-  
-  
-  		<span class="flag private">private</span>
-  
-  
-  
-  
-  	<div class="meta">
-  				<p>
-  				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L115">src/application.js:115</a>
-  		</p>
-  
-  
-  
-  	</div>
-  
-  	<div class="description"><p>Run an initializer by name</p>
-  </div>
-  
-  		<div class="params">
-  			<h4>Parameters:</h4>
-  
-  			<ul class="params-list">
-  				<li class="param">
-  						<code class="param-name">name</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-  
-  
-  
-  				</li>
-  			</ul>
-  		</div>
-  
-  
-  </div>
-  <div id="method_getApp" class="method item">
-  	<span class="method-signature">
-  	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_getApp"></a>
-  		getApp
-  	</span>
-  
-  		<span class="paren">()</span>
   		<span class="returns-inline">
   			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
   		</span>
@@ -409,44 +350,76 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L55">src/application.js:55</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L136">src/registry.js:136</a>
   		</p>
   
   
   
   	</div>
   
-  	<div class="description"><p>Get the restify application instance</p>
+  	<div class="description"><p>Attempts to load modules by requiring them in locally. Lookup directory is
+  determined by the type of object we're loading (e.g. 'module' =&gt; ./) and the
+  name of the module (e.g. 'model-manager') which is underscored</p>
   </div>
   
+  		<div class="params">
+  			<h4>Parameters:</h4>
+  
+  			<ul class="params-list">
+  				<li class="param">
+  						<code class="param-name">lookup</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  
+  					<div class="param-description"><p>string name of object we're looking for (e.g. 'module')</p>
+  </div>
+  
+  				</li>
+  				<li class="param">
+  						<code class="param-name">name</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  
+  					<div class="param-description"><p>string module name</p>
+  </div>
+  
+  				</li>
+  			</ul>
+  		</div>
   
   		<div class="returns">
   			<h4>Returns:</h4>
   
   			<div class="returns-description">
   						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-  					<p>restify application instance</p>
+  					<p>required module</p>
   
   			</div>
   		</div>
   
   </div>
-  <div id="method_start" class="method item">
+  <div id="method_inject" class="method item">
   	<span class="method-signature">
   	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_start"></a>
-  		start
+  		<a class="fa fa-link toc-anchor" href="#method_inject"></a>
+  		inject
   	</span>
   
   		<div class="args">
   			<span class="paren">(</span><ul class="args-list inline commas">
   				<li class="arg">
-  						<code>port</code>
+  						<code>context</code>
+  				</li>
+  				<li class="arg">
+  						<code>lookup</code>
+  				</li>
+  				<li class="arg">
+  						<code>propertyName</code>
   				</li>
   			</ul><span class="paren">)</span>
   		</div>
   		<span class="returns-inline">
-  			<span class="type">Promise<undefined, Error></span>
+  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
   		</span>
   	</span>
   
@@ -459,14 +432,19 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/application.js#L66">src/application.js:66</a>
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L20">src/registry.js:20</a>
   		</p>
   
   
   
   	</div>
   
-  	<div class="description"><p>starts listening on the defined port</p>
+  	<div class="description"><p>Inject an object into another object</p>
+  <pre class="code prettyprint"><code>registry.inject(object, "service:store");
+  // object.store
+  
+  registry.inject(object, "service:model-manager", "modelManager");
+  // object.modelManager</code></pre>
   </div>
   
   		<div class="params">
@@ -474,11 +452,29 @@
   
   			<ul class="params-list">
   				<li class="param">
-  						<code class="param-name">port</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+  						<code class="param-name">context</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
   
   
-  					<div class="param-description"><p>the port to listen on. Default: 3000</p>
+  					<div class="param-description"><p>the object to inject onto</p>
+  </div>
+  
+  				</li>
+  				<li class="param">
+  						<code class="param-name">lookup</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  
+  					<div class="param-description"><p>name by which to look search for the injection in the registry</p>
+  </div>
+  
+  				</li>
+  				<li class="param">
+  						<code class="param-name">propertyName</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  
+  					<div class="param-description"><p>optional property name of the newly injected object</p>
   </div>
   
   				</li>
@@ -489,7 +485,184 @@
   			<h4>Returns:</h4>
   
   			<div class="returns-description">
-  						<span class="type">Promise<undefined, Error></span>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+  					<p>context</p>
+  
+  			</div>
+  		</div>
+  
+  </div>
+  <div id="method_lookup" class="method item">
+  	<span class="method-signature">
+  	<span class="name anchorable-toc">
+  		<a class="fa fa-link toc-anchor" href="#method_lookup"></a>
+  		lookup
+  	</span>
+  
+  		<div class="args">
+  			<span class="paren">(</span><ul class="args-list inline commas">
+  				<li class="arg">
+  						<code>name</code>
+  				</li>
+  			</ul><span class="paren">)</span>
+  		</div>
+  		<span class="returns-inline">
+  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  		</span>
+  	</span>
+  
+  
+  
+  
+  
+  
+  
+  	<div class="meta">
+  				<p>
+  				Defined in
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L58">src/registry.js:58</a>
+  		</p>
+  
+  
+  
+  	</div>
+  
+  	<div class="description"><p>Find an object in the registry. If the object isn't found in the registry
+  lookup will attempt to find it by requiring it in. If the require fails
+  the lookup fails</p>
+  <pre class="code prettyprint"><code>registry.lookup("service:foo");</code></pre>
+  </div>
+  
+  		<div class="params">
+  			<h4>Parameters:</h4>
+  
+  			<ul class="params-list">
+  				<li class="param">
+  						<code class="param-name">name</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  
+  					<div class="param-description"><p>colon delimited lookup string "service:foo"</p>
+  </div>
+  
+  				</li>
+  			</ul>
+  		</div>
+  
+  		<div class="returns">
+  			<h4>Returns:</h4>
+  
+  			<div class="returns-description">
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  			</div>
+  		</div>
+  
+  </div>
+  <div id="method_register" class="method item">
+  	<span class="method-signature">
+  	<span class="name anchorable-toc">
+  		<a class="fa fa-link toc-anchor" href="#method_register"></a>
+  		register
+  	</span>
+  
+  		<div class="args">
+  			<span class="paren">(</span><ul class="args-list inline commas">
+  				<li class="arg">
+  						<code>name</code>
+  				</li>
+  				<li class="arg">
+  						<code>Obj</code>
+  				</li>
+  				<li class="arg">
+  						<code>options</code>
+  				</li>
+  			</ul><span class="paren">)</span>
+  		</div>
+  		<span class="returns-inline">
+  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  		</span>
+  	</span>
+  
+  
+  
+  
+  
+  
+  
+  	<div class="meta">
+  				<p>
+  				Defined in
+  		<a href="https://github.com/dylanfoster/parch/blob/0/src/registry.js#L84">src/registry.js:84</a>
+  		</p>
+  
+  
+  
+  	</div>
+  
+  	<div class="description"><p>Register an object in the registry by name. If the name exists and it was
+  registered with the { singleton: true } option, an error will be thrown.</p>
+  <pre class="code prettyprint"><code>registry.register("service:foo", { foo: "bar" });</code></pre>
+  </div>
+  
+  		<div class="params">
+  			<h4>Parameters:</h4>
+  
+  			<ul class="params-list">
+  				<li class="param">
+  						<code class="param-name">name</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+  
+  
+  					<div class="param-description"><p>the name by which to register the object</p>
+  </div>
+  
+  				</li>
+  				<li class="param">
+  						<code class="param-name">Obj</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  
+  
+  					<div class="param-description"><p>the object to store in the registry</p>
+  </div>
+  
+  				</li>
+  				<li class="param">
+  						<code class="param-name">options</code>
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+  
+  
+  					<div class="param-description"><p>register options</p>
+  </div>
+  
+  						<ul class="params-list">
+  							<li class="param">
+  									<code class="param-name">instantiate</code>
+  									<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+  
+  								<div class="param-description"><p>instantiate the object when registering it</p>
+  </div>
+  
+  							</li>
+  							<li class="param">
+  									<code class="param-name">singleton</code>
+  									<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+  
+  								<div class="param-description"><p>only allow one registration of this name/object</p>
+  </div>
+  
+  							</li>
+  						</ul>
+  				</li>
+  			</ul>
+  		</div>
+  
+  		<div class="returns">
+  			<h4>Returns:</h4>
+  
+  			<div class="returns-description">
+  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+  					<p>Obj</p>
+  
   			</div>
   		</div>
   

@@ -9,9 +9,7 @@ const LOOKUP_MAP = {
 };
 
 /**
- * Registry
- *
- * @class
+ * @class Registry
  * @constructor
  */
 export default class Registry {
@@ -32,7 +30,6 @@ export default class Registry {
    * @param {Object} context the object to inject onto
    * @param {String} lookup name by which to look search for the injection in the registry
    * @param {String} propertyName optional property name of the newly injected object
-   *
    * @returns {Object} context
    */
   inject(context, lookup, propertyName) {
@@ -63,9 +60,10 @@ export default class Registry {
    * lookup will attempt to find it by requiring it in. If the require fails
    * the lookup fails
    *
+   *     registry.lookup("service:foo");
+   *
    * @method lookup
    * @param {String} name colon delimited lookup string "service:foo"
-   *
    * @returns {Object}
    */
   lookup(name) {
@@ -87,14 +85,15 @@ export default class Registry {
    * Register an object in the registry by name. If the name exists and it was
    * registered with the { singleton: true } option, an error will be thrown.
    *
+   *     registry.register("service:foo", { foo: "bar" });
+   *
    * @method register
    * @param {String} name the name by which to register the object
    * @param {Object} Obj the object to store in the registry
    * @param {Object} options register options
    * @param {Boolean} options.instantiate instantiate the object when registering it
    * @param {Boolean} options.singleton only allow one registration of this name/object
-   *
-   * @returns {undefined}
+   * @returns {Object} Obj
    */
   register(name, Obj, options = {}) {
     const { instantiate, singleton } = options;
@@ -126,9 +125,8 @@ export default class Registry {
   /**
    * Get the lookup directory for internal modules
    * @method _getLookupDirectory
-   * @param {String} lookup string name of object we're looking for (e.g. 'module')
    * @private
-   *
+   * @param {String} lookup string name of object we're looking for (e.g. 'module')
    * @returns {String} directory
    */
   _getLookupDirectory(lookup) {
@@ -141,10 +139,8 @@ export default class Registry {
    * name of the module (e.g. 'model-manager') which is underscored
    *
    * @method _loadModule
-   *
    * @param {String} lookup string name of object we're looking for (e.g. 'module')
    * @param {String} name string module name
-   *
    * @returns {Object} required module
    */
   _loadModule(lookup, name) {
