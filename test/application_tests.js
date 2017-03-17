@@ -36,9 +36,10 @@ describe("Application", function () {
       });
     });
 
-    it("gets called with a Router instance", function () {
+    it("gets called with a Router instance", function (done) {
       application.map(function () {
         expect(this).to.have.property("resource");
+        done();
       });
     });
 
@@ -84,7 +85,7 @@ describe("Application", function () {
   describe("authentication", function () {
     this.timeout(3000);
 
-    beforeEach(function () {
+    beforeEach(function (done) {
       application = new Application({
         authentication: {
           unauthenticated: [/\/resetPassword/]
@@ -101,6 +102,8 @@ describe("Application", function () {
       application.map(function () {
         this.resource("user");
         this.route("/users/resetPassword", { using: "user:resetPassword", method: "post" });
+
+        done();
       });
     });
 

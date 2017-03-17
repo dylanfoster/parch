@@ -25,8 +25,9 @@ class Controller {
   /**
    * @constructor
    *
-   * @param {Object} settings controller settings
-   * @param {Object} settings.loader loader for controllers and models
+   * @param {Object} registry module registry
+   * @param {Object} options configuration options
+   * @param {String} options.model override the default model name
    */
   constructor(registry, options = {}) {
     setOwner(this, registry);
