@@ -4,6 +4,7 @@ import errors from "restify-errors";
 import inflect from "inflect";
 
 import STATUS_CODES from "./utils/status_codes";
+import deprecate from "./utils/deprecate";
 import { setOwner } from "./containment";
 
 /**
@@ -13,7 +14,7 @@ import { setOwner } from "./containment";
  * @class Controller
  * @constructor
  * @todo add default restfull methods (index, show, etc)
- * @todo implement store and deprecate controller based finders
+ * @todo implement store
  */
 class Controller {
   get name() {
@@ -54,6 +55,8 @@ class Controller {
    * @return {Promise<Model, Error>} the model instance
    */
   createRecord(data) {
+    deprecate(this, "createRecord", "2.0.0");
+
     if (!data) {
       const error = this.errors.BadRequestError;
       const message = "Missing or invalid POST body";
@@ -88,6 +91,8 @@ class Controller {
    * @return {Promise<undefined, Error}
    */
   destroyRecord(id) {
+    deprecate(this, "destroyRecord", "2.0.0");
+
     return this.findOne(id).then(record => record.destroy());
   }
 
@@ -123,6 +128,8 @@ class Controller {
    * @return {Promise<Model[], Error} an array of model instance
    */
   findAll(where, options = {}) {
+    deprecate(this, "findAll", "2.0.0");
+
     const query = { where };
 
     this._addOptionsToQuery(query, options);
@@ -153,6 +160,8 @@ class Controller {
    * @return {Promise<Model, Error>}
    */
   findOne(id, options = {}) {
+    deprecate(this, "findOne", "2.0.0");
+
     const query = { where: { id }};
 
     this._addOptionsToQuery(query, options);
@@ -182,6 +191,8 @@ class Controller {
    * @return {Promise<Model, Error>}
    */
   updateRecord(id, data) {
+    deprecate(this, "updateRecord", "2.0.0");
+
     if (!data) {
       const error = this.errors.BadRequestError;
       const message = "Missing or invalid PUT body";
