@@ -4,9 +4,8 @@ import { ok as assert } from "assert";
 
 import depd from "depd";
 
-const _deprecate = depd("[parch]");
-
 const BASE_MESSAGE = "is deprecated and will be removed in";
+const _deprecate = depd("parch");
 
 export default function deprecate(target, value, version) {
   const targetType = typeof target;
