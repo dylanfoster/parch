@@ -1,3 +1,13 @@
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/dylanfoster/parch/compare/1.0.0...v1.0.1) (2017-03-18)
+
+
+### Bug Fixes
+
+* export containment from main export ([3cf5b50](https://github.com/dylanfoster/parch/commit/3cf5b50))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/dylanfoster/parch/compare/0.12.0...v1.0.0) (2017-03-18)
 

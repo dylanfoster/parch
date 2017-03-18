@@ -5,6 +5,7 @@ const Controller = require("./lib/controller");
 const Model = require("./lib/model");
 const Route = require("./lib/route");
 const RouteSegment = require("./lib/route_segment");
+const containment = require("./lib/containment");
 
 /**
  * @module parch
@@ -14,5 +15,6 @@ module.exports = {
   Controller,
   Model,
   Route,
-  RouteSegment
+  RouteSegment,
+  containment
 };
