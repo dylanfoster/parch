@@ -3,633 +3,513 @@
 <head>
     <meta charset="utf-8">
     <title>Controller - Parch</title>
-    <meta name="description" content="Restify + Sequelize">
-    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
     <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../assets/css/theme.css">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700' rel='stylesheet' type='text/css'>
-    
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
 </head>
-<body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a href="../" class="navbar-brand">
-            <span>Parch</span>
-          </a>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            Parch
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>1.0.0</b>
+                </p>
+            </li>
         </div>
-
-        <div class="collapse navbar-collapse" id="nav">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/dylanfoster/parch" class="fa fa-github github"></a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div id="main-wrapper" class="row">
-        <div id="content-wrapper">
-            <ol class="panel-group" id="sidebar" role="tablist" aria-multiselectable="true">
-                <li class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="sidebar-search-heading">
-                        <h4 class="panel-title">
-                      <a role="button" data-toggle="collapse" href="#sidebar-search" aria-expanded="true" aria-controls="collapseOne">
-                        Search
-                      </a>
-                    </h4>
-                    </div>
-                    <div id="sidebar-search" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-search-heading">
-                        <div class="panel-body">
-                            <div id="api-tabview-filter">
-                                <input type="search" id="api-filter" placeholder="Search...">
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                    <li class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="sidebar-version-heading">
-                            <h4 class="panel-title">
-                                <a role="button" href="https://github.com/dylanfoster/parch/commits/0" target="_blank">
-                                  Tag: 0.12.0
-                                </a>
-                            </h4>
-                        </div>
-                    </li>
-                <li class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="sidebar-modules-heading">
-                        <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" href="#sidebar-modules" aria-expanded="true" aria-controls="collapseOne">
-                      Modules
-                    </a>
-                  </h4>
-                    </div>
-                    <div id="sidebar-modules" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-modules-heading">
-                        <div class="panel-body">
-                                <ol>
-                                        <li>
-                                            <a href="../modules/parch.html">parch</a>
-                                        </li>
-                                </ol>
-                        </div>
-                    </div>
-                </li>
-            
-                <li class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="sidebar-classes-heading">
-                        <h4 class="panel-title">
-                      <a role="button" data-toggle="collapse" href="#sidebar-classes" aria-expanded="true" aria-controls="collapseOne">
-                        Classes
-                      </a>
-                    </h4>
-                    </div>
-                    <div id="sidebar-classes" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-classes-heading">
-                        <div class="panel-body">
-                            <ol>
-                                    <li>
-                                        <a href="../classes/Application.html">Application</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Controller.html">Controller</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Model.html">Model</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/ModelManager.html">ModelManager</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Route.html">Route</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Router.html">Router</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/RouteSegment.html">RouteSegment</a>
-                                    </li>
-                            </ol>
-                        </div>
-                    </div>
-                </li>
-            </ol>
-            <div class="content-container">
-                <div class="apidocs">
-                    <div id="docs-main">
-                        <div class="content">
-
-
-<div class="page-header">
-    <h1> <i class="fa fa-bookmark-o" aria-hidden="true"></i> Controller Class
-            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L8" target="_blank">
-              <i class="fa fa-pencil" aria-hidden="true"></i>
-            </a>
-    </h1>
-</div>
-
-
-<div class="content-meta">
-
-
-            Module: <a href="../modules/parch.html">parch</a>
-
-
-        <div class="foundat">
-            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L8">src/controller.js:8</a>
-        </div>
-</div>
-
-
-
-  <div class="class-description">
-  <p>Base controller</p>
-
-  </div>
-
-<div>
-    <div class="page-section">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#tab_index" aria-controls="tab_index" role="tab" data-toggle="tab">Index</a></li>
-            <li role="presentation"><a href="#tab_methods" aria-controls="tab_methods" role="tab" data-toggle="tab">Methods</a></li>
-
-
-
-        </ul>
-
-        <!-- Tab panes -->
-        <div class="tab-content">
-
-              <form id="options-form" class="form-inline">
-                  Show:
-                  <label for="api-show-inherited" class="checkbox">
-                      <input type="checkbox" id="api-show-inherited" checked>
-                      Inherited
-                  </label>
-          
-                  <label for="api-show-protected" class="checkbox">
-                      <input type="checkbox" id="api-show-protected">
-                      Protected
-                  </label>
-          
-                  <label for="api-show-private" class="checkbox">
-                      <input type="checkbox" id="api-show-private">
-                      Private
-                  </label>
-                  <label for="api-show-deprecated" class="checkbox">
-                      <input type="checkbox" id="api-show-deprecated">
-                      Deprecated
-                  </label>
-          
-              </form>
-
-          <div id="tab_index" role="tabpanel" class="tab-pane active" >
-                  <div class="index-section methods">
-                      <h3>Methods</h3>
-
-                      <ul class="index-list methods">
-                              <li class="index-item method">
-                                  <a href="#method_createRecord">createRecord</a>
-
-                              </li>
-                              <li class="index-item method">
-                                  <a href="#method_destroyRecord">destroyRecord</a>
-
-                              </li>
-                              <li class="index-item method">
-                                  <a href="#method_findAll">findAll</a>
-
-                              </li>
-                              <li class="index-item method">
-                                  <a href="#method_findOne">findOne</a>
-
-                              </li>
-                              <li class="index-item method">
-                                  <a href="#method_updateRecord">updateRecord</a>
-
-                              </li>
-                      </ul>
-                  </div>
-
-
-
-          </div>
-
-              <div id="tab_methods" role="tabpanel" class="tab-pane">
-                  <div class="item-list">
-  <div id="method_createRecord" class="method item">
-  	<span class="method-signature">
-  	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_createRecord"></a>
-  		createRecord
-  	</span>
-  
-  		<div class="args">
-  			<span class="paren">(</span><ul class="args-list inline commas">
-  				<li class="arg">
-  						<code>data</code>
-  				</li>
-  			</ul><span class="paren">)</span>
-  		</div>
-  		<span class="returns-inline">
-  			<span class="type">Promise<Model, Error></span>
-  		</span>
-  	</span>
-  
-  
-  
-  
-  
-  
-  
-  	<div class="meta">
-  				<p>
-  				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L35">src/controller.js:35</a>
-  		</p>
-  
-  
-  
-  	</div>
-  
-  	<div class="description"><p>Builds, validates and saves a model instance.</p>
-  <pre class="code prettyprint"><code>return this.createRecord({ firstname: 'bar' }).then(record =&gt; {
-  
-  });</code></pre>
-  </div>
-  
-  		<div class="params">
-  			<h4>Parameters:</h4>
-  
-  			<ul class="params-list">
-  				<li class="param">
-  						<code class="param-name">data</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-  
-  
-  					<div class="param-description"><p>the model data to create the instance with</p>
-  </div>
-  
-  				</li>
-  			</ul>
-  		</div>
-  
-  		<div class="returns">
-  			<h4>Returns:</h4>
-  
-  			<div class="returns-description">
-  						<span class="type">Promise<Model, Error></span>:
-  					<p>the model instance</p>
-  
-  			</div>
-  		</div>
-  
-  </div>
-  <div id="method_destroyRecord" class="method item">
-  	<span class="method-signature">
-  	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_destroyRecord"></a>
-  		destroyRecord
-  	</span>
-  
-  		<div class="args">
-  			<span class="paren">(</span><ul class="args-list inline commas">
-  				<li class="arg">
-  						<code>id</code>
-  				</li>
-  			</ul><span class="paren">)</span>
-  		</div>
-  		<span class="returns-inline">
-  			<span class="type">Promise<undefined, Error</span>
-  		</span>
-  	</span>
-  
-  
-  
-  
-  
-  
-  
-  	<div class="meta">
-  				<p>
-  				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L69">src/controller.js:69</a>
-  		</p>
-  
-  
-  
-  	</div>
-  
-  	<div class="description"><p>Destroy a model instance and remove it from the db</p>
-  <pre class="code prettyprint"><code>return this.destroyRecord(1).then(() =&gt; {
-  
-  });</code></pre>
-  </div>
-  
-  		<div class="params">
-  			<h4>Parameters:</h4>
-  
-  			<ul class="params-list">
-  				<li class="param">
-  						<code class="param-name">id</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-  
-  
-  					<div class="param-description"><p>the id of the resource to destroy</p>
-  </div>
-  
-  				</li>
-  			</ul>
-  		</div>
-  
-  		<div class="returns">
-  			<h4>Returns:</h4>
-  
-  			<div class="returns-description">
-  						<span class="type">Promise<undefined, Error</span>
-  			</div>
-  		</div>
-  
-  </div>
-  <div id="method_findAll" class="method item">
-  	<span class="method-signature">
-  	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_findAll"></a>
-  		findAll
-  	</span>
-  
-  		<div class="args">
-  			<span class="paren">(</span><ul class="args-list inline commas">
-  				<li class="arg">
-  						<code>where</code>
-  				</li>
-  				<li class="arg">
-  						<code>options</code>
-  				</li>
-  			</ul><span class="paren">)</span>
-  		</div>
-  		<span class="returns-inline">
-  			<span class="type">Promise<Model, Error[]</span>
-  		</span>
-  	</span>
-  
-  
-  
-  
-  
-  
-  
-  	<div class="meta">
-  				<p>
-  				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L84">src/controller.js:84</a>
-  		</p>
-  
-  
-  
-  	</div>
-  
-  	<div class="description"><p>Find all records.</p>
-  <pre class="code prettyprint"><code>return this.findAll().then(records =&gt; {
-  
-  })
-  </code></pre>
-  <p>You can optionally pass in a where clause</p>
-  <pre class="code prettyprint"><code>return this.findAll({ username: 'john' }).then(user =&gt; {
-  
-  });
-  </code></pre>
-  <p>As well as any finder options</p>
-  <pre class="code prettyprint"><code>return this.findAll(null, {
-    attributes: ["title"],
-    include: [this.models.User]
-  }).then(user =&gt; {
-  
-  });</code></pre>
-  </div>
-  
-  		<div class="params">
-  			<h4>Parameters:</h4>
-  
-  			<ul class="params-list">
-  				<li class="param">
-  						<code class="param-name">where</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-  
-  
-  					<div class="param-description"><p>sequelize where clause</p>
-  </div>
-  
-  				</li>
-  				<li class="param">
-  						<code class="param-name">options</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-  
-  
-  					<div class="param-description"><a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
-    sequelize finder options
-  </a></div>
-  
-  				</li>
-  			</ul>
-  		</div>
-  
-  		<div class="returns">
-  			<h4>Returns:</h4>
-  
-  			<div class="returns-description">
-  						<span class="type">Promise<Model, Error[]</span>:
-  					<p>an array of model instance</p>
-  
-  			</div>
-  		</div>
-  
-  </div>
-  <div id="method_findOne" class="method item">
-  	<span class="method-signature">
-  	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_findOne"></a>
-  		findOne
-  	</span>
-  
-  		<div class="args">
-  			<span class="paren">(</span><ul class="args-list inline commas">
-  				<li class="arg">
-  						<code>id</code>
-  				</li>
-  				<li class="arg">
-  						<code>options</code>
-  				</li>
-  			</ul><span class="paren">)</span>
-  		</div>
-  		<span class="returns-inline">
-  			<span class="type">Promise<Model, Error></span>
-  		</span>
-  	</span>
-  
-  
-  
-  
-  
-  
-  
-  	<div class="meta">
-  				<p>
-  				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L123">src/controller.js:123</a>
-  		</p>
-  
-  
-  
-  	</div>
-  
-  	<div class="description"><p>Find a single instance by id</p>
-  <pre class="code prettyprint"><code>return this.findOne(1).then(record =&gt; {
-  
-  });
-  </code></pre>
-  <p>The same options apply to findOne</p>
-  <pre class="code prettyprint"><code>return this.findOne(1, {
-    attributes: ["firstName"]
-  }).then(user =&gt; {
-  
-  });</code></pre>
-  </div>
-  
-  		<div class="params">
-  			<h4>Parameters:</h4>
-  
-  			<ul class="params-list">
-  				<li class="param">
-  						<code class="param-name">id</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-  
-  
-  					<div class="param-description"><p>the id of the instance to search for</p>
-  </div>
-  
-  				</li>
-  				<li class="param">
-  						<code class="param-name">options</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-  
-  
-  					<div class="param-description"><a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
-    sequelize finder options
-  </a></div>
-  
-  				</li>
-  			</ul>
-  		</div>
-  
-  		<div class="returns">
-  			<h4>Returns:</h4>
-  
-  			<div class="returns-description">
-  						<span class="type">Promise<Model, Error></span>
-  			</div>
-  		</div>
-  
-  </div>
-  <div id="method_updateRecord" class="method item">
-  	<span class="method-signature">
-  	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_updateRecord"></a>
-  		updateRecord
-  	</span>
-  
-  		<div class="args">
-  			<span class="paren">(</span><ul class="args-list inline commas">
-  				<li class="arg">
-  						<code>id</code>
-  				</li>
-  				<li class="arg">
-  						<code>data</code>
-  				</li>
-  			</ul><span class="paren">)</span>
-  		</div>
-  		<span class="returns-inline">
-  			<span class="type">Promise<Model, Error></span>
-  		</span>
-  	</span>
-  
-  
-  
-  
-  
-  
-  
-  	<div class="meta">
-  				<p>
-  				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/controller.js#L162">src/controller.js:162</a>
-  		</p>
-  
-  
-  
-  	</div>
-  
-  	<div class="description"><p>Update a single record</p>
-  <pre class="code prettyprint"><code>return this.updateRecord(1, { firstName: 'foo' }).then(record =&gt; {
-  
-  });</code></pre>
-  </div>
-  
-  		<div class="params">
-  			<h4>Parameters:</h4>
-  
-  			<ul class="params-list">
-  				<li class="param">
-  						<code class="param-name">id</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-  
-  
-  					<div class="param-description"><p>the id of the record to update</p>
-  </div>
-  
-  				</li>
-  				<li class="param">
-  						<code class="param-name">data</code>
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-  
-  
-  					<div class="param-description"><p>the data to update on the record</p>
-  </div>
-  
-  				</li>
-  			</ul>
-  		</div>
-  
-  		<div class="returns">
-  			<h4>Returns:</h4>
-  
-  			<div class="returns-description">
-  						<span class="type">Promise<Model, Error></span>
-  			</div>
-  		</div>
-  
-  </div>
-                  </div>
-              </div>
-
-
-
-      </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Application", "classes/containment", "classes/Controller", "classes/Model", "classes/ModelManager", "classes/Registry", "classes/Route", "classes/Router", "classes/RouteSegment", "modules/parch"]'>
+        </form>
     </div>
 </div>
-                        </div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/Application.html">Application</a></li>
+                <li><a href="../classes/containment.html">containment</a></li>
+                <li><a href="../classes/Controller.html">Controller</a></li>
+                <li><a href="../classes/Model.html">Model</a></li>
+                <li><a href="../classes/ModelManager.html">ModelManager</a></li>
+                <li><a href="../classes/Registry.html">Registry</a></li>
+                <li><a href="../classes/Route.html">Route</a></li>
+                <li><a href="../classes/Router.html">Router</a></li>
+                <li><a href="../classes/RouteSegment.html">RouteSegment</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<div class="page-header">
+    <h1>Controller</h1>
+</div>
+
+
+
+	<div class="well well-small">
+            Module: <a href="../modules/parch.html">parch</a>
+    </div>
+
+
+
+<div class="yuidoc-class-description">
+<p>Base controller</p>
+
+</div>
+
+<!-- table of contents -->
+
+<div id="class-toc" class="page-section">
+	<h2>Table of Contents</h2>
+    <ul>
+		<li>
+			<strong>Methods</strong>
+			<ul>
+				<li><a href="#method-createRecord"><span class="im">createRecord</span>(<span class="ia">data</span>)</a></li>
+				<li><a href="#method-destroyRecord"><span class="im">destroyRecord</span>(<span class="ia">id</span>)</a></li>
+				<li><a href="#method-findAll"><span class="im">findAll</span>(<span class="ia">where</span><span class="ia">options</span>)</a></li>
+				<li><a href="#method-findOne"><span class="im">findOne</span>(<span class="ia">id</span><span class="ia">options</span>)</a></li>
+				<li><a href="#method-updateRecord"><span class="im">updateRecord</span>(<span class="ia">id</span><span class="ia">data</span>)</a></li>
+			</ul>
+		</li>
+
+
+
+	</ul>
+</div>
+
+<!-- details -->
+
+
+    <div id="methods" class="page-section">
+        <h2 class="off-left">Methods</h2>
+        <div class="item-list">
+<div id="method-createRecord" class="method item">
+	<div class="method-signature">
+	<span class="name"><code>createRecord</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code>data</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+		<span class="returns-inline">
+			<span class="type">Promise<Model, Error></span>
+		</span>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>
+				Defined in
+		<a href="../files/src_controller.js.html#l46"><code>src&#x2F;controller.js:46</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Builds, validates and saves a model instance.</p>
+<pre class="code prettyprint"><code>return this.createRecord({ firstname: 'bar' }).then(record =&gt; {
+
+});</code></pre>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name">data</code>
+						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+					<div class="param-description"><p>the model data to create the instance with</p>
+</div>
+
+				</li>
+			</ul>
+		</div>
+
+		<div class="returns">
+			<h4>Returns:</h4>
+
+			<div class="returns-description">
+						<span class="type">Promise<Model, Error></span>:
+					<p>the model instance</p>
+
+			</div>
+		</div>
+
+</div>
+<div id="method-destroyRecord" class="method item">
+	<div class="method-signature">
+	<span class="name"><code>destroyRecord</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code>id</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+		<span class="returns-inline">
+			<span class="type">Promise<undefined, Error</span>
+		</span>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>
+				Defined in
+		<a href="../files/src_controller.js.html#l82"><code>src&#x2F;controller.js:82</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Destroy a model instance and remove it from the db</p>
+<pre class="code prettyprint"><code>return this.destroyRecord(1).then(() =&gt; {
+
+});</code></pre>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name">id</code>
+						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+
+					<div class="param-description"><p>the id of the resource to destroy</p>
+</div>
+
+				</li>
+			</ul>
+		</div>
+
+		<div class="returns">
+			<h4>Returns:</h4>
+
+			<div class="returns-description">
+						<span class="type">Promise<undefined, Error</span>
+			</div>
+		</div>
+
+</div>
+<div id="method-findAll" class="method item">
+	<div class="method-signature">
+	<span class="name"><code>findAll</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code>where</code>
+				</li>
+				<li class="arg">
+						<code>options</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+		<span class="returns-inline">
+			<span class="type">Promise<Model, Error[]</span>
+		</span>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>
+				Defined in
+		<a href="../files/src_controller.js.html#l99"><code>src&#x2F;controller.js:99</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Find all records.</p>
+<pre class="code prettyprint"><code>return this.findAll().then(records =&gt; {
+
+})
+</code></pre>
+<p>You can optionally pass in a where clause</p>
+<pre class="code prettyprint"><code>return this.findAll({ username: 'john' }).then(user =&gt; {
+
+});
+</code></pre>
+<p>As well as any finder options</p>
+<pre class="code prettyprint"><code>return this.findAll(null, {
+  attributes: ["title"],
+  include: [this.models.User]
+}).then(user =&gt; {
+
+});</code></pre>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name">where</code>
+						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+					<div class="param-description"><p>sequelize where clause</p>
+</div>
+
+				</li>
+				<li class="param">
+						<code class="param-name">options</code>
+						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+					<div class="param-description"><a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
+  sequelize finder options
+</a></div>
+
+				</li>
+			</ul>
+		</div>
+
+		<div class="returns">
+			<h4>Returns:</h4>
+
+			<div class="returns-description">
+						<span class="type">Promise<Model, Error[]</span>:
+					<p>an array of model instance</p>
+
+			</div>
+		</div>
+
+</div>
+<div id="method-findOne" class="method item">
+	<div class="method-signature">
+	<span class="name"><code>findOne</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code>id</code>
+				</li>
+				<li class="arg">
+						<code>options</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+		<span class="returns-inline">
+			<span class="type">Promise<Model, Error></span>
+		</span>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>
+				Defined in
+		<a href="../files/src_controller.js.html#l140"><code>src&#x2F;controller.js:140</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Find a single instance by id</p>
+<pre class="code prettyprint"><code>return this.findOne(1).then(record =&gt; {
+
+});
+</code></pre>
+<p>The same options apply to findOne</p>
+<pre class="code prettyprint"><code>return this.findOne(1, {
+  attributes: ["firstName"]
+}).then(user =&gt; {
+
+});</code></pre>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name">id</code>
+						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+
+					<div class="param-description"><p>the id of the instance to search for</p>
+</div>
+
+				</li>
+				<li class="param">
+						<code class="param-name">options</code>
+						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+					<div class="param-description"><a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
+  sequelize finder options
+</a></div>
+
+				</li>
+			</ul>
+		</div>
+
+		<div class="returns">
+			<h4>Returns:</h4>
+
+			<div class="returns-description">
+						<span class="type">Promise<Model, Error></span>
+			</div>
+		</div>
+
+</div>
+<div id="method-updateRecord" class="method item">
+	<div class="method-signature">
+	<span class="name"><code>updateRecord</code></span>
+
+		<div class="args">
+			<span class="paren">(</span><ul class="args-list inline commas">
+				<li class="arg">
+						<code>id</code>
+				</li>
+				<li class="arg">
+						<code>data</code>
+				</li>
+			</ul><span class="paren">)</span>
+		</div>
+		<span class="returns-inline">
+			<span class="type">Promise<Model, Error></span>
+		</span>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>
+				Defined in
+		<a href="../files/src_controller.js.html#l181"><code>src&#x2F;controller.js:181</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Update a single record</p>
+<pre class="code prettyprint"><code>return this.updateRecord(1, { firstName: 'foo' }).then(record =&gt; {
+
+});</code></pre>
+</div>
+
+		<div class="params">
+			<h4>Parameters:</h4>
+
+			<ul class="params-list">
+				<li class="param">
+						<code class="param-name">id</code>
+						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+
+					<div class="param-description"><p>the id of the record to update</p>
+</div>
+
+				</li>
+				<li class="param">
+						<code class="param-name">data</code>
+						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+					<div class="param-description"><p>the data to update on the record</p>
+</div>
+
+				</li>
+			</ul>
+		</div>
+
+		<div class="returns">
+			<h4>Returns:</h4>
+
+			<div class="returns-description">
+						<span class="type">Promise<Model, Error></span>
+			</div>
+		</div>
+
+</div>
+        </div>
+    </div>
+
+
+
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="../assets/vendor/prettify/prettify-min.js"></script>
-    <script>prettyPrint();</script>
-    <script src="../assets/vendor/jquery/jquery.min.js"></script>
-    <script src="../assets/vendor/jquery-ui/jquery-ui.min.js"></script>
-    <script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
-    <script src="../assets/vendor/github-slugger/slugger.js"></script>
-    <script src="../assets/js/yuidoc-bootstrap.js"></script>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
 </body>
 </html>

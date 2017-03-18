@@ -3,374 +3,268 @@
 <head>
     <meta charset="utf-8">
     <title>RouteSegment - Parch</title>
-    <meta name="description" content="Restify + Sequelize">
-    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
     <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../assets/css/theme.css">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700' rel='stylesheet' type='text/css'>
-    
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
 </head>
-<body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a href="../" class="navbar-brand">
-            <span>Parch</span>
-          </a>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            Parch
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>1.0.0</b>
+                </p>
+            </li>
         </div>
-
-        <div class="collapse navbar-collapse" id="nav">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/dylanfoster/parch" class="fa fa-github github"></a></li>
-          </ul>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Application", "classes/containment", "classes/Controller", "classes/Model", "classes/ModelManager", "classes/Registry", "classes/Route", "classes/Router", "classes/RouteSegment", "modules/parch"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/Application.html">Application</a></li>
+                <li><a href="../classes/containment.html">containment</a></li>
+                <li><a href="../classes/Controller.html">Controller</a></li>
+                <li><a href="../classes/Model.html">Model</a></li>
+                <li><a href="../classes/ModelManager.html">ModelManager</a></li>
+                <li><a href="../classes/Registry.html">Registry</a></li>
+                <li><a href="../classes/Route.html">Route</a></li>
+                <li><a href="../classes/Router.html">Router</a></li>
+                <li><a href="../classes/RouteSegment.html">RouteSegment</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
         </div>
-      </div>
-    </nav>
-    <div id="main-wrapper" class="row">
-        <div id="content-wrapper">
-            <ol class="panel-group" id="sidebar" role="tablist" aria-multiselectable="true">
-                <li class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="sidebar-search-heading">
-                        <h4 class="panel-title">
-                      <a role="button" data-toggle="collapse" href="#sidebar-search" aria-expanded="true" aria-controls="collapseOne">
-                        Search
-                      </a>
-                    </h4>
-                    </div>
-                    <div id="sidebar-search" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-search-heading">
-                        <div class="panel-body">
-                            <div id="api-tabview-filter">
-                                <input type="search" id="api-filter" placeholder="Search...">
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                    <li class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="sidebar-version-heading">
-                            <h4 class="panel-title">
-                                <a role="button" href="https://github.com/dylanfoster/parch/commits/0" target="_blank">
-                                  Tag: 0.12.0
-                                </a>
-                            </h4>
-                        </div>
-                    </li>
-                <li class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="sidebar-modules-heading">
-                        <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" href="#sidebar-modules" aria-expanded="true" aria-controls="collapseOne">
-                      Modules
-                    </a>
-                  </h4>
-                    </div>
-                    <div id="sidebar-modules" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-modules-heading">
-                        <div class="panel-body">
-                                <ol>
-                                        <li>
-                                            <a href="../modules/parch.html">parch</a>
-                                        </li>
-                                </ol>
-                        </div>
-                    </div>
-                </li>
-            
-                <li class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="sidebar-classes-heading">
-                        <h4 class="panel-title">
-                      <a role="button" data-toggle="collapse" href="#sidebar-classes" aria-expanded="true" aria-controls="collapseOne">
-                        Classes
-                      </a>
-                    </h4>
-                    </div>
-                    <div id="sidebar-classes" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-classes-heading">
-                        <div class="panel-body">
-                            <ol>
-                                    <li>
-                                        <a href="../classes/Application.html">Application</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Controller.html">Controller</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Model.html">Model</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/ModelManager.html">ModelManager</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Route.html">Route</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Router.html">Router</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/RouteSegment.html">RouteSegment</a>
-                                    </li>
-                            </ol>
-                        </div>
-                    </div>
-                </li>
-            </ol>
-            <div class="content-container">
-                <div class="apidocs">
-                    <div id="docs-main">
-                        <div class="content">
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
 
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
 
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
 <div class="page-header">
-    <h1> <i class="fa fa-bookmark-o" aria-hidden="true"></i> RouteSegment Class
-            <a class="pull-right file-edit" href="https://github.com/dylanfoster/parch/blob/0/src/route_segment.js#L3" target="_blank">
-              <i class="fa fa-pencil" aria-hidden="true"></i>
-            </a>
-    </h1>
+    <h1>RouteSegment</h1>
 </div>
 
 
-<div class="content-meta">
 
-
+	<div class="well well-small">
             Module: <a href="../modules/parch.html">parch</a>
-
-
-        <div class="foundat">
-            Defined In: <a href="https://github.com/dylanfoster/parch/blob/0/src/route_segment.js#L3">src/route_segment.js:3</a>
-        </div>
-</div>
+    </div>
 
 
 
-  <div class="class-description">
-  <p>Represents a single route segment, providing a consistent output segment
+<div class="yuidoc-class-description">
+<p>Represents a single route segment, providing a consistent output segment
 regardless of trailing/leading slashes</p>
 <pre class="code prettyprint"><code>new RouteSegment("/foo"); =&gt; { path: "/foo", segment: "/foo" }
 new RouteSegment("foo"); =&gt; { path: "/foo", segment: "foo" }
 new RouteSegment("/foo/"); =&gt; { path: "/foo", segment: "/foo/" }
 new RouteSegment("foo/"); =&gt; { path: "/foo", segment: "foo/" }</code></pre>
 
-  </div>
-
-<div>
-    <div class="page-section">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#tab_index" aria-controls="tab_index" role="tab" data-toggle="tab">Index</a></li>
-            <li role="presentation"><a href="#tab_methods" aria-controls="tab_methods" role="tab" data-toggle="tab">Methods</a></li>
-
-
-
-        </ul>
-
-        <!-- Tab panes -->
-        <div class="tab-content">
-
-              <form id="options-form" class="form-inline">
-                  Show:
-                  <label for="api-show-inherited" class="checkbox">
-                      <input type="checkbox" id="api-show-inherited" checked>
-                      Inherited
-                  </label>
-          
-                  <label for="api-show-protected" class="checkbox">
-                      <input type="checkbox" id="api-show-protected">
-                      Protected
-                  </label>
-          
-                  <label for="api-show-private" class="checkbox">
-                      <input type="checkbox" id="api-show-private">
-                      Private
-                  </label>
-                  <label for="api-show-deprecated" class="checkbox">
-                      <input type="checkbox" id="api-show-deprecated">
-                      Deprecated
-                  </label>
-          
-              </form>
-
-          <div id="tab_index" role="tabpanel" class="tab-pane active" >
-                  <div class="index-section methods">
-                      <h3>Methods</h3>
-
-                      <ul class="index-list methods">
-                              <li class="index-item method">
-                                  <a href="#method__buildSegment">_buildSegment</a>
-
-                              </li>
-                              <li class="index-item method">
-                                  <a href="#method_hasLeadingSlash">hasLeadingSlash</a>
-
-                              </li>
-                              <li class="index-item method">
-                                  <a href="#method_hasTrailingSlash">hasTrailingSlash</a>
-
-                              </li>
-                      </ul>
-                  </div>
-
-
-
-          </div>
-
-              <div id="tab_methods" role="tabpanel" class="tab-pane">
-                  <div class="item-list">
-  <div id="method__buildSegment" class="method item">
-  	<span class="method-signature">
-  	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method__buildSegment"></a>
-  		_buildSegment
-  	</span>
-  
-  		<span class="paren">()</span>
-  		<span class="returns-inline">
-  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-  		</span>
-  	</span>
-  
-  
-  
-  
-  
-  
-  
-  	<div class="meta">
-  				<p>
-  				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/route_segment.js#L55">src/route_segment.js:55</a>
-  		</p>
-  
-  
-  
-  	</div>
-  
-  	<div class="description"><p>Builds a consistent path segment, regardless of slashes</p>
-  </div>
-  
-  
-  		<div class="returns">
-  			<h4>Returns:</h4>
-  
-  			<div class="returns-description">
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
-  					<p>path segment</p>
-  
-  			</div>
-  		</div>
-  
-  </div>
-  <div id="method_hasLeadingSlash" class="method item">
-  	<span class="method-signature">
-  	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_hasLeadingSlash"></a>
-  		hasLeadingSlash
-  	</span>
-  
-  		<span class="paren">()</span>
-  		<span class="returns-inline">
-  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-  		</span>
-  	</span>
-  
-  
-  
-  
-  
-  
-  
-  	<div class="meta">
-  				<p>
-  				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/route_segment.js#L25">src/route_segment.js:25</a>
-  		</p>
-  
-  
-  
-  	</div>
-  
-  	<div class="description"><p>Determines if a path segment contains a leading slash /</p>
-  <pre class="code prettyprint"><code>new RouteSegment("foo").hasLeadingSlash(); =&gt; false
-  new RouteSegment("foo/").hasLeadingSlash(); =&gt; false
-  new RouteSegment("/foo/").hasLeadingSlash(); =&gt; true
-  new RouteSegment("/foo").hasLeadingSlash(); =&gt; true</code></pre>
-  </div>
-  
-  
-  		<div class="returns">
-  			<h4>Returns:</h4>
-  
-  			<div class="returns-description">
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-  			</div>
-  		</div>
-  
-  </div>
-  <div id="method_hasTrailingSlash" class="method item">
-  	<span class="method-signature">
-  	<span class="name anchorable-toc">
-  		<a class="fa fa-link toc-anchor" href="#method_hasTrailingSlash"></a>
-  		hasTrailingSlash
-  	</span>
-  
-  		<span class="paren">()</span>
-  		<span class="returns-inline">
-  			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-  		</span>
-  	</span>
-  
-  
-  
-  
-  
-  
-  
-  	<div class="meta">
-  				<p>
-  				Defined in
-  		<a href="https://github.com/dylanfoster/parch/blob/0/src/route_segment.js#L40">src/route_segment.js:40</a>
-  		</p>
-  
-  
-  
-  	</div>
-  
-  	<div class="description"><p>Determines if a path segment contains a trailing slash /</p>
-  <pre class="code prettyprint"><code>new RouteSegment("foo").hasTrailingSlash(); =&gt; false
-  new RouteSegment("/foo").hasTrailingSlash(); =&gt; false
-  new RouteSegment("/foo/").hasTrailingSlash(); =&gt; true
-  new RouteSegment("foo/").hasTrailingSlash(); =&gt; true</code></pre>
-  </div>
-  
-  
-  		<div class="returns">
-  			<h4>Returns:</h4>
-  
-  			<div class="returns-description">
-  						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-  			</div>
-  		</div>
-  
-  </div>
-                  </div>
-              </div>
-
-
-
-      </div>
-    </div>
 </div>
-                        </div>
+
+<!-- table of contents -->
+
+<div id="class-toc" class="page-section">
+	<h2>Table of Contents</h2>
+    <ul>
+		<li>
+			<strong>Methods</strong>
+			<ul>
+				<li><a href="#method-_buildSegment"><span class="im">_buildSegment</span>()</a></li>
+				<li><a href="#method-hasLeadingSlash"><span class="im">hasLeadingSlash</span>()</a></li>
+				<li><a href="#method-hasTrailingSlash"><span class="im">hasTrailingSlash</span>()</a></li>
+			</ul>
+		</li>
+
+
+
+	</ul>
+</div>
+
+<!-- details -->
+
+
+    <div id="methods" class="page-section">
+        <h2 class="off-left">Methods</h2>
+        <div class="item-list">
+<div id="method-_buildSegment" class="method item">
+	<div class="method-signature">
+	<span class="name"><code>_buildSegment</code></span>
+
+		<span class="paren">()</span>
+		<span class="returns-inline">
+			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+		</span>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>
+				Defined in
+		<a href="../files/src_route_segment.js.html#l55"><code>src&#x2F;route_segment.js:55</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Builds a consistent path segment, regardless of slashes</p>
+</div>
+
+
+		<div class="returns">
+			<h4>Returns:</h4>
+
+			<div class="returns-description">
+						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+					<p>path segment</p>
+
+			</div>
+		</div>
+
+</div>
+<div id="method-hasLeadingSlash" class="method item">
+	<div class="method-signature">
+	<span class="name"><code>hasLeadingSlash</code></span>
+
+		<span class="paren">()</span>
+		<span class="returns-inline">
+			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+		</span>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>
+				Defined in
+		<a href="../files/src_route_segment.js.html#l25"><code>src&#x2F;route_segment.js:25</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Determines if a path segment contains a leading slash /</p>
+<pre class="code prettyprint"><code>new RouteSegment("foo").hasLeadingSlash(); =&gt; false
+new RouteSegment("foo/").hasLeadingSlash(); =&gt; false
+new RouteSegment("/foo/").hasLeadingSlash(); =&gt; true
+new RouteSegment("/foo").hasLeadingSlash(); =&gt; true</code></pre>
+</div>
+
+
+		<div class="returns">
+			<h4>Returns:</h4>
+
+			<div class="returns-description">
+						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+			</div>
+		</div>
+
+</div>
+<div id="method-hasTrailingSlash" class="method item">
+	<div class="method-signature">
+	<span class="name"><code>hasTrailingSlash</code></span>
+
+		<span class="paren">()</span>
+		<span class="returns-inline">
+			<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+		</span>
+	</div>
+
+
+
+
+
+
+	<div class="meta">
+				<p>
+				Defined in
+		<a href="../files/src_route_segment.js.html#l40"><code>src&#x2F;route_segment.js:40</code></a>
+		</p>
+
+
+
+	</div>
+
+	<div class="description"><p>Determines if a path segment contains a trailing slash /</p>
+<pre class="code prettyprint"><code>new RouteSegment("foo").hasTrailingSlash(); =&gt; false
+new RouteSegment("/foo").hasTrailingSlash(); =&gt; false
+new RouteSegment("/foo/").hasTrailingSlash(); =&gt; true
+new RouteSegment("foo/").hasTrailingSlash(); =&gt; true</code></pre>
+</div>
+
+
+		<div class="returns">
+			<h4>Returns:</h4>
+
+			<div class="returns-description">
+						<span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+			</div>
+		</div>
+
+</div>
+        </div>
+    </div>
+
+
+
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="../assets/vendor/prettify/prettify-min.js"></script>
-    <script>prettyPrint();</script>
-    <script src="../assets/vendor/jquery/jquery.min.js"></script>
-    <script src="../assets/vendor/jquery-ui/jquery-ui.min.js"></script>
-    <script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
-    <script src="../assets/vendor/github-slugger/slugger.js"></script>
-    <script src="../assets/js/yuidoc-bootstrap.js"></script>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
 </body>
 </html>

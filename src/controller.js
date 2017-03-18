@@ -4,31 +4,42 @@ import errors from "restify-errors";
 import inflect from "inflect";
 
 import STATUS_CODES from "./utils/status_codes";
+import deprecate from "./utils/deprecate";
+import { setOwner } from "./containment";
 
 /**
  * Base controller
  *
  * @module parch
  * @class Controller
+ * @constructor
+ * @todo add default restfull methods (index, show, etc)
+ * @todo implement store
  */
 class Controller {
   get name() {
-    return this.constructor.name.split(/controller/i)[0].toLowerCase();
+    return inflect.singularize(
+      this.constructor.name.split(/controller/i)[0].toLowerCase()
+    );
   }
 
   /**
    * @constructor
    *
-   * @param {Object} settings controller settings
-   * @param {Object} settings.loader loader for controllers and models
+   * @param {Object} registry module registry
+   * @param {Object} options configuration options
+   * @param {String} options.model override the default model name
    */
-  constructor(settings) {
-    this.errors = errors;
-    this.loader = settings.loader;
-    this.models = this.loader.models;
+  constructor(registry, options = {}) {
+    setOwner(this, registry);
 
-    this.modelName = settings.model || this.name;
-    this.model = this.models[this.modelName] || this.models[inflect.capitalize(this.modelName)];
+    this.errors = errors;
+    this.models = registry.lookup("service:model-manager").models;
+
+    const modelName = options.model || this.name;
+
+    // TODO: move to store service
+    registry.inject(this, `model:${modelName}`);
     this.STATUS_CODES = STATUS_CODES;
   }
 
@@ -44,6 +55,8 @@ class Controller {
    * @return {Promise<Model, Error>} the model instance
    */
   createRecord(data) {
+    deprecate(this, "createRecord", "2.0.0");
+
     if (!data) {
       const error = this.errors.BadRequestError;
       const message = "Missing or invalid POST body";
@@ -78,6 +91,8 @@ class Controller {
    * @return {Promise<undefined, Error}
    */
   destroyRecord(id) {
+    deprecate(this, "destroyRecord", "2.0.0");
+
     return this.findOne(id).then(record => record.destroy());
   }
 
@@ -113,6 +128,8 @@ class Controller {
    * @return {Promise<Model[], Error} an array of model instance
    */
   findAll(where, options = {}) {
+    deprecate(this, "findAll", "2.0.0");
+
     const query = { where };
 
     this._addOptionsToQuery(query, options);
@@ -143,6 +160,8 @@ class Controller {
    * @return {Promise<Model, Error>}
    */
   findOne(id, options = {}) {
+    deprecate(this, "findOne", "2.0.0");
+
     const query = { where: { id }};
 
     this._addOptionsToQuery(query, options);
@@ -172,6 +191,8 @@ class Controller {
    * @return {Promise<Model, Error>}
    */
   updateRecord(id, data) {
+    deprecate(this, "updateRecord", "2.0.0");
+
     if (!data) {
       const error = this.errors.BadRequestError;
       const message = "Missing or invalid PUT body";

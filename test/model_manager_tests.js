@@ -4,15 +4,14 @@ import path from "path";
 
 import { expect } from "chai";
 
-import ModelManager from "../src/model_manager";
 import UserModel from "./fixtures/models/user_model.js";
-import { connection } from "./fixtures";
+import { registry } from "./fixtures";
 
 describe("ModelManager", function () {
   let modelManager;
 
   beforeEach(function () {
-    modelManager = new ModelManager({ connection });
+    modelManager = registry.lookup("service:model-manager");
   });
 
   describe("#addModel", function () {

@@ -4,15 +4,14 @@ import { expect } from "chai";
 
 import FooModel from "./fixtures/models/foo_model";
 import Model from "../src/model";
-import ModelManager from "../src/model_manager";
-import { connection } from "./fixtures";
+import { registry } from "./fixtures";
 
 describe("Model", function () {
   let model, modelManager;
 
   beforeEach(function () {
     model = new Model();
-    modelManager = new ModelManager({ connection });
+    modelManager = registry.lookup("service:model-manager");
     modelManager.addModel(FooModel);
 
     return modelManager.sequelize.sync({ force: true });

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/registry.js - Parch</title>
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            Parch
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>1.0.0</b>
+                </p>
+            </li>
+        </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Application", "classes/containment", "classes/Controller", "classes/Model", "classes/ModelManager", "classes/Registry", "classes/Route", "classes/Router", "classes/RouteSegment", "modules/parch"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/Application.html">Application</a></li>
+                <li><a href="../classes/containment.html">containment</a></li>
+                <li><a href="../classes/Controller.html">Controller</a></li>
+                <li><a href="../classes/Model.html">Model</a></li>
+                <li><a href="../classes/ModelManager.html">ModelManager</a></li>
+                <li><a href="../classes/Registry.html">Registry</a></li>
+                <li><a href="../classes/Route.html">Route</a></li>
+                <li><a href="../classes/Router.html">Router</a></li>
+                <li><a href="../classes/RouteSegment.html">RouteSegment</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<div class="page-header">
+    <h1>src/registry.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
+&quot;use strict&quot;;
+
+import { ok as assert } from &quot;assert&quot;;
+import includeAll from &quot;include-all&quot;;
+import inflect from &quot;inflect&quot;;
+
+const LOOKUP_MAP = {
+  module: __dirname
+};
+
+/**
+ * @class Registry
+ * @constructor
+ */
+export default class Registry {
+  constructor() {
+    this._registry = new Map();
+  }
+
+  /**
+   * Inject an object into another object
+   *
+   *     registry.inject(object, &quot;service:store&quot;);
+   *     // object.store
+   *
+   *     registry.inject(object, &quot;service:model-manager&quot;, &quot;modelManager&quot;);
+   *     // object.modelManager
+   *
+   * @method inject
+   * @param {Object} context the object to inject onto
+   * @param {String} lookup name by which to look search for the injection in the registry
+   * @param {String} propertyName optional property name of the newly injected object
+   * @returns {Object} context
+   */
+  inject(context, lookup, propertyName) {
+    const hasBeenInjected = this._registry.has(lookup);
+
+    assert(hasBeenInjected, &#x60;Attempted to inject unknown object &#x27;${lookup}&#x27;&#x60;);
+
+    const obj = this.lookup(lookup);
+    const [prop] = lookup.split(&quot;:&quot;);
+    const property = propertyName || prop;
+
+    if (Object.prototype.hasOwnProperty.call(context, property)) { return; }
+
+    if (obj) {
+      Object.defineProperty(context, property, {
+        enumerable: false,
+        configurable: false,
+        get() { return obj; },
+        set() {}
+      });
+    }
+
+    return context;
+  }
+
+  /**
+   * Find an object in the registry. If the object isn&#x27;t found in the registry
+   * lookup will attempt to find it by requiring it in. If the require fails
+   * the lookup fails
+   *
+   *     registry.lookup(&quot;service:foo&quot;);
+   *
+   * @method lookup
+   * @param {String} name colon delimited lookup string &quot;service:foo&quot;
+   * @returns {Object}
+   */
+  lookup(name) {
+    const [moduleLookup, moduleName] = name.split(&quot;:&quot;);
+    let obj = this._registry.get(name);
+
+    if (obj) { return obj.instance; }
+
+    obj = this._loadModule(moduleLookup, moduleName);
+
+    assert(obj, &#x60;Attempted to lookup unknown module &#x27;${moduleName}&#x27;&#x60;);
+
+    this.register(name, obj);
+
+    return obj;
+  }
+
+  /**
+   * Register an object in the registry by name. If the name exists and it was
+   * registered with the { singleton: true } option, an error will be thrown.
+   *
+   *     registry.register(&quot;service:foo&quot;, { foo: &quot;bar&quot; });
+   *
+   * @method register
+   * @param {String} name the name by which to register the object
+   * @param {Object} Obj the object to store in the registry
+   * @param {Object} options register options
+   * @param {Boolean} options.instantiate instantiate the object when registering it
+   * @param {Boolean} options.singleton only allow one registration of this name/object
+   * @returns {Object} Obj
+   */
+  register(name, Obj, options = {}) {
+    const { instantiate, singleton } = options;
+    let obj = this._registry.get(name);
+
+    if (obj &amp;&amp; obj.singleton) {
+      throw new Error(&quot;Cannot re-register singleton object&quot;);
+    }
+
+    obj = {};
+
+    if (instantiate) {
+      obj.instance = new Obj(this);
+      obj.singleton = singleton;
+
+      this._registry.set(name, obj);
+
+      return obj;
+    }
+
+    obj.instance = Obj;
+    obj.singleton = singleton;
+
+    this._registry.set(name, obj);
+
+    return obj;
+  }
+
+  /**
+   * Get the lookup directory for internal modules
+   * @method _getLookupDirectory
+   * @private
+   * @param {String} lookup string name of object we&#x27;re looking for (e.g. &#x27;module&#x27;)
+   * @returns {String} directory
+   */
+  _getLookupDirectory(lookup) {
+    return LOOKUP_MAP[lookup];
+  }
+
+  /**
+   * Attempts to load modules by requiring them in locally. Lookup directory is
+   * determined by the type of object we&#x27;re loading (e.g. &#x27;module&#x27; =&gt; ./) and the
+   * name of the module (e.g. &#x27;model-manager&#x27;) which is underscored
+   *
+   * @method _loadModule
+   * @param {String} lookup string name of object we&#x27;re looking for (e.g. &#x27;module&#x27;)
+   * @param {String} name string module name
+   * @returns {Object} required module
+   */
+  _loadModule(lookup, name) {
+    let modules;
+
+    try {
+      modules = includeAll({ dirname: this._getLookupDirectory(lookup) });
+    } catch (err) {
+      if (err.message.match(/dirname/i)) {
+        throw new Error(&#x60;Attempted to lookup unknown module &#x27;${name}&#x27;&#x60;);
+      }
+
+      throw err;
+    }
+
+    // TODO: this will need to be configurable somehow (or better regex)
+    const key = &#x60;${inflect.underscore(name)}.js&#x60;;
+
+    return modules[key];
+  }
+}
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

@@ -1,9 +1,8 @@
 "use strict";
 
-class BarController {
-  constructor() {
-  }
+import Controller from "../../../src/controller";
 
+class BarController extends Controller {
   index(req, res, next) {
     res.send({ bars: [] });
   }

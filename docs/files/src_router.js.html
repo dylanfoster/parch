@@ -3,123 +3,83 @@
 <head>
     <meta charset="utf-8">
     <title>src/router.js - Parch</title>
-    <meta name="description" content="Restify + Sequelize">
-    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
     <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/css/lucid.css">
     <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../assets/css/theme.css">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700' rel='stylesheet' type='text/css'>
-    
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
 </head>
-<body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a href="../" class="navbar-brand">
-            <span>Parch</span>
-          </a>
+<body class="yui3-skin-sam">
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
+            Parch
+        </h1>
+	<div class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    API Docs for Version: <b>1.0.0</b>
+                </p>
+            </li>
         </div>
+        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Application", "classes/containment", "classes/Controller", "classes/Model", "classes/ModelManager", "classes/Registry", "classes/Route", "classes/Router", "classes/RouteSegment", "modules/parch"]'>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+<div>
+    <div id="sidebar">
+    <div id="classes">
+        <ul id="api-classes" class="nav nav-list">
+                <li><a href="../classes/Application.html">Application</a></li>
+                <li><a href="../classes/containment.html">containment</a></li>
+                <li><a href="../classes/Controller.html">Controller</a></li>
+                <li><a href="../classes/Model.html">Model</a></li>
+                <li><a href="../classes/ModelManager.html">ModelManager</a></li>
+                <li><a href="../classes/Registry.html">Registry</a></li>
+                <li><a href="../classes/Route.html">Route</a></li>
+                <li><a href="../classes/Router.html">Router</a></li>
+                <li><a href="../classes/RouteSegment.html">RouteSegment</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+        </div>
+        <div class="span9">
+    <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
 
-        <div class="collapse navbar-collapse" id="nav">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/dylanfoster/parch" class="fa fa-github github"></a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div id="main-wrapper" class="row">
-        <div id="content-wrapper">
-            <ol class="panel-group" id="sidebar" role="tablist" aria-multiselectable="true">
-                <li class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="sidebar-search-heading">
-                        <h4 class="panel-title">
-                      <a role="button" data-toggle="collapse" href="#sidebar-search" aria-expanded="true" aria-controls="collapseOne">
-                        Search
-                      </a>
-                    </h4>
-                    </div>
-                    <div id="sidebar-search" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-search-heading">
-                        <div class="panel-body">
-                            <div id="api-tabview-filter">
-                                <input type="search" id="api-filter" placeholder="Search...">
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                    <li class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="sidebar-version-heading">
-                            <h4 class="panel-title">
-                                <a role="button" href="https://github.com/dylanfoster/parch/commits/0" target="_blank">
-                                  Tag: 0.12.0
-                                </a>
-                            </h4>
-                        </div>
-                    </li>
-                <li class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="sidebar-modules-heading">
-                        <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" href="#sidebar-modules" aria-expanded="true" aria-controls="collapseOne">
-                      Modules
-                    </a>
-                  </h4>
-                    </div>
-                    <div id="sidebar-modules" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-modules-heading">
-                        <div class="panel-body">
-                                <ol>
-                                        <li>
-                                            <a href="../modules/parch.html">parch</a>
-                                        </li>
-                                </ol>
-                        </div>
-                    </div>
-                </li>
-            
-                <li class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="sidebar-classes-heading">
-                        <h4 class="panel-title">
-                      <a role="button" data-toggle="collapse" href="#sidebar-classes" aria-expanded="true" aria-controls="collapseOne">
-                        Classes
-                      </a>
-                    </h4>
-                    </div>
-                    <div id="sidebar-classes" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-classes-heading">
-                        <div class="panel-body">
-                            <ol>
-                                    <li>
-                                        <a href="../classes/Application.html">Application</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Controller.html">Controller</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Model.html">Model</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/ModelManager.html">ModelManager</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Route.html">Route</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/Router.html">Router</a>
-                                    </li>
-                                    <li>
-                                        <a href="../classes/RouteSegment.html">RouteSegment</a>
-                                    </li>
-                            </ol>
-                        </div>
-                    </div>
-                </li>
-            </ol>
-            <div class="content-container">
-                <div class="apidocs">
-                    <div id="docs-main">
-                        <div class="content">
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
 <div class="page-header">
-    <h1><i class="fa fa-file-code-o" aria-hidden="true"></i>  File</h1>
+    <h1>src/router.js <small>File</small></h1>
 </div>
 
 <div class="file">
@@ -129,7 +89,11 @@
 import inflect from &quot;inflect&quot;;
 
 import Route from &quot;./route&quot;;
+import { getOwner, setOwner } from &quot;./containment&quot;;
 
+const METHODS = {
+  DELETE: &quot;delete&quot;
+};
 const restActionMapper = new Map([
     [&quot;index&quot;, &quot;get&quot;],
     [&quot;show&quot;, &quot;get&quot;],
@@ -144,9 +108,6 @@ const restPathMapper = new Map([
     [&quot;update&quot;, &quot;/:id&quot;],
     [&quot;destroy&quot;, &quot;/:id&quot;]
 ]);
-const METHODS = {
-  DELETE: &quot;delete&quot;
-};
 
 /**
  * Manages routing
@@ -158,15 +119,19 @@ class Router {
    * constructor
    *
    * @constructor
-   * @param settings
-   * @param settings.app restify app instance
-   * @param settings.loader module loader
+   * @param {Object} registry {{#crossLink &quot;Registry&quot;}}module registry{{/crossLink}}
    */
-  constructor(settings) {
-    this.app = settings.app;
-    this.controllers = new Map();
-    this.loader = settings.loader;
-    this.namespacePrefix = settings.namespace || &quot;&quot;;
+  constructor(registry) {
+    setOwner(this, registry);
+
+    const config = registry.lookup(&quot;config:main&quot;);
+
+    this.loader = {
+      controllers: registry.lookup(&quot;loader:controller&quot;),
+      models: registry.lookup(&quot;service:model-manager&quot;).models
+    };
+
+    this.namespacePrefix = config.namespace || &quot;&quot;;
     this._loadControllers();
   }
 
@@ -188,7 +153,11 @@ class Router {
    */
   namespace(namespace, routes) {
     for (const route of routes) {
-      const fullPath = this._buildRoute(this.namespacePrefix, namespace, route.path);
+      const fullPath = this._buildRoute(
+        this.namespacePrefix,
+        namespace,
+        route.path
+      );
 
       this.route(fullPath, {
         using: route.using,
@@ -215,7 +184,7 @@ class Router {
    */
   resource(name, options = {}) {
     name = inflect.singularize(name);
-    const controller = this.controllers.get(name);
+    const controller = getOwner(this).lookup(&#x60;controller:${name}&#x60;);
 
     for (const [action] of restActionMapper) {
       this._mapControllerAction(name, controller, action, options);
@@ -242,16 +211,15 @@ class Router {
    *     this.route(&quot;/foo/bar&quot;, { method: &quot;get&quot; });
    */
   route(path, options) {
+    const app = getOwner(this).lookup(&quot;service:server&quot;);
     const [controllerName, actionName] = options.using.split(&quot;:&quot;);
-    const controller = this.controllers.get(controllerName);
+    const controller = getOwner(this).lookup(&#x60;controller:${controllerName}&#x60;);
     let method = options.method;
     const handlers = this._generateControllerHandlers(controller, actionName);
 
-    if (method === METHODS.DELETE) {
-      method = &quot;del&quot;;
-    }
+    if (method === METHODS.DELETE) { method = &quot;del&quot;; }
 
-    this.app[method](path, handlers);
+    app[method](path, handlers);
   }
 
   /**
@@ -275,6 +243,8 @@ class Router {
    * @method _generateControllerHandlers
    * @param {Object} controller
    * @param {String} action controller method
+   * @todo: move hooks to controller instance methods and just call them
+   *
    * @return {Array} handlers
    */
   _generateControllerHandlers(controller, action) {
@@ -298,17 +268,43 @@ class Router {
   }
 
   /**
+   * Generates a path segment from a given resource name
+   *
+   *     router._getPathSegment(&quot;foo&quot;, &quot;show&quot;);
+   *     // :fooId
+   *
+   * @private
+   * @method _getPathSegment
+   * @param resource
+   * @param action
+   *
+   * @returns {String} pathSegment
+   */
+  _getPathSegment(resource, action) {
+    const restPathSegment = restPathMapper.get(action);
+    const resourceSegmentString = &#x60;${resource}Id&#x60;;
+
+    return inflect.camelize(
+      restPathSegment.replace(&quot;id&quot;, resourceSegmentString)
+    );
+  }
+
+  /**
    * loads controllers from the loader
    *
    * @private
    * @method _loadControllers
    */
   _loadControllers() {
-    const controllers = this.loader.controllers.modules;
-    const loader = this.loader;
+    const controllerLoader = getOwner(this).lookup(&quot;loader:controller&quot;);
+    const { modules: controllers } = controllerLoader;
 
     Object.keys(controllers).forEach(controller =&gt; {
-      this.controllers.set(controller, new controllers[controller]({ loader }));
+      const Klass = controllers[controller];
+      const instance = new Klass(getOwner(this));
+      const instanceName = inflect.singularize(instance.name);
+
+      getOwner(this).register(&#x60;controller:${instanceName}&#x60;, instance);
     });
   }
 
@@ -323,20 +319,21 @@ class Router {
    * @param {Object} options mapping options
    */
   _mapControllerAction(resource, controller, action, options) {
+    const app = getOwner(this).lookup(&quot;service:server&quot;);
+    const handlers = this._generateControllerHandlers(controller, action);
     const method = restActionMapper.get(action);
     const namespace = options.namespace || &quot;&quot;;
     const singularResource = inflect.singularize(resource);
     const pluralResource = inflect.pluralize(singularResource);
-    const pathSegment = restPathMapper.get(action);
+    const pathSegment = this._getPathSegment(singularResource, action);
     const resourcePath = this._buildRoute(
       this.namespacePrefix,
       namespace,
       pluralResource,
       pathSegment
     );
-    const handlers = this._generateControllerHandlers(controller, action);
 
-    this.app[method](resourcePath, handlers);
+    app[method](resourcePath, handlers);
   }
 
   /**
@@ -347,8 +344,8 @@ class Router {
    * @param {Function} callback called with the router instance
    * @return {undefined}
    */
-  static map(settings, callback) {
-    const router = new Router(settings);
+  static map(registry, callback) {
+    const router = new Router(registry);
 
     callback.call(router);
     return router;
@@ -359,18 +356,16 @@ export default Router;
 
     </pre>
 </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="../assets/vendor/prettify/prettify-min.js"></script>
-    <script>prettyPrint();</script>
-    <script src="../assets/vendor/jquery/jquery.min.js"></script>
-    <script src="../assets/vendor/jquery-ui/jquery-ui.min.js"></script>
-    <script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
-    <script src="../assets/vendor/github-slugger/slugger.js"></script>
-    <script src="../assets/js/yuidoc-bootstrap.js"></script>
+</div>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/yuidoc-bootstrap.js"></script>
+<script>prettyPrint();</script>
 </body>
 </html>

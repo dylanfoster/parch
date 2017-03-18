@@ -1,6 +1,7 @@
 "use strict";
 
 import Sequelize from "sequelize";
+import { setOwner } from "./containment";
 
 /**
  * Manages all models
@@ -14,8 +15,11 @@ class ModelManager {
    * @param {Object} settings
    * @param {Object} settings.connection
    */
-  constructor(settings) {
-    const connection = settings.connection;
+  constructor(registry) {
+    const config = registry.lookup("config:main");
+    const { database: { connection }} = config;
+
+    setOwner(this, registry);
 
     this._models = {};
     this.Sequelize = Sequelize;
@@ -46,18 +50,17 @@ class ModelManager {
    *
    * @method addModel
    * @param {Object} Model parch model class
-   * @todo: check for existence before adding (i.e. caching)
    */
   addModel(Model) {
-    const _model = new Model();
-    const modelAttributes = _model.define(this.Sequelize);
+    const instance = new Model();
+    const modelAttributes = instance.define(this.Sequelize);
     const model = this.sequelize.define(
-      _model.name,
+      instance.name,
       modelAttributes,
-      _model.options
+      instance.options
     );
 
-    model.associate = _model.associate;
+    model.associate = instance.associate;
     this.models[model.name] = model;
   }
 

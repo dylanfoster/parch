@@ -2,17 +2,11 @@
 
 import path from "path";
 
-import _ from "lodash";
 import callsite from "callsite";
-import restify from "restify";
-import jwt from "restify-jwt";
+import includeAll from "include-all";
 
-import Loader from "./loader";
-import Logger from "./logger";
-import ModelManager from "./model_manager";
-import Router from "./router";
-import context from "./middleware/context";
-import logger from "./middleware/logger";
+import Registry from "./registry";
+import deprecate from "./utils/deprecate";
 
 const DEFAULT_CONNECTION_SETTINGS = {
   dialect: "sqlite",
@@ -20,16 +14,7 @@ const DEFAULT_CONNECTION_SETTINGS = {
   username: "test",
   password: "test"
 };
-const DEFAULT_JWT_SECRET = "secret";
 const DEFAULT_LISTEN_PORT = 3000;
-const DEFAULT_MIDDLEWARES = [
-  restify.gzipResponse(),
-  restify.CORS(),
-  restify.authorizationParser(),
-  restify.bodyParser(),
-  restify.fullResponse(),
-  restify.queryParser()
-];
 
 /**
  * Base application
@@ -47,86 +32,38 @@ class Application {
    * @return {undefined}
    */
   constructor(options = {}) {
-    // who are you
-    const caller = callsite()[1].getFileName();
-    const callerDirectory = path.dirname(caller);
-    const DEFAULT_CONTROLLER_LOOKUP_PATH = path.resolve(callerDirectory, "controllers");
-    const DEFAULT_MODEL_LOOKUP_PATH = path.resolve(callerDirectory, "models");
+    const projectDirectory = this._getProjectDirectory();
+    const registry = this.registry = new Registry();
 
-    options.controllers = options.controllers || {};
-    options.controllers.dir = options.controllers.dir || DEFAULT_CONTROLLER_LOOKUP_PATH;
-    options.database = options.database || {};
-    options.database.connection = options.database.connection || DEFAULT_CONNECTION_SETTINGS;
-    options.database.models = options.database.models || {};
-    options.database.models.dir = options.database.models.dir || DEFAULT_MODEL_LOOKUP_PATH;
-    options.logging = options.logging || {};
-    options.server = options.server || {};
+    this.DEFAULT_CONTROLLER_LOOKUP_PATH = path.resolve(
+      projectDirectory,
+      "controllers"
+    );
+    this.DEFAULT_MODEL_LOOKUP_PATH = path.resolve(projectDirectory, "models");
+    options = this._configure(options);
 
-    options.server.log = options.server.log || Logger.create(null, options.logging);
-    options.server.middlewares = options.server.middlewares || [];
-
-    const app = options.app || restify.createServer(options.server);
-    const connection = options.database.connection;
-    const controllerLoader = new Loader({
-      type: "controller",
-      path: options.controllers.dir
-    });
-    const middlewares = _.union(DEFAULT_MIDDLEWARES, options.server.middlewares);
-
-    this._internalModels = new Loader({
-      type: "model",
-      path: options.database.models.dir
-    });
-
-    this.logger = options.server.log;
-    this.modelManager = new ModelManager({ connection });
-    this._addModels();
-    this._associateModels();
-
-    const routerSettings = {
-      app,
-      loader: {
-        controllers: controllerLoader,
-        models: this.modelManager.models
-      },
-      namespace: options.namespace
-    };
-
-    app.use(restify.acceptParser(app.acceptable));
-
-    if (options.authentication) {
-      let secret, unless;
-
-      if (_.isObject(options.authentication)) {
-        secret = options.authentication.secretKey || DEFAULT_JWT_SECRET;
-        unless = options.authentication.unauthenticated || null;
-      } else {
-        secret = DEFAULT_JWT_SECRET;
-        unless = [];
-      }
-
-      app.use(jwt({ secret }).unless({ path: unless }));
-    }
-
-    app.use(logger({ log: this.logger }));
-    app.on("after", (req, res, route, err) => {
-      req.log.info({ req, res, err });
-    });
-    middlewares.forEach(middlware => { app.use(middlware); });
-    app.use(context(this));
-    this.app = app;
-    this.map = Router.map.bind(null, routerSettings);
+    registry.register("config:main", options);
+    this._initialize("logger");
+    this._initialize("server");
+    this._initialize("loaders");
+    this._initialize("model-manager");
+    this._initialize("models");
+    this._initialize("middleware");
+    this._initialize("router");
+    this._initialize("application");
   }
 
   /**
    * Get the restify application instance
    *
    * @method getApp
-   *
+   * @deprecated
    * @return {Object} restify application instance
    */
   getApp() {
-    return this.app;
+    deprecate(this, "getApp", "2.0.0");
+
+    return this.registry.lookup("service:server");
   }
 
   /**
@@ -143,34 +80,64 @@ class Application {
   }
 
   /**
-   * Loads the models into the model manager using
-   * {{#crossLink "ModelManager/addModel:method"}}ModelManager#addModel{{/crossLink}}
+   * Normalizes constructor options
    *
+   * @method _configure
    * @private
-   * @method _addModels
+   * @param {Object} config user passed config options
+   * @returns {Object} final config option
    */
-  _addModels() {
-    const _internalModels = this._internalModels;
+  _configure(config) {
+    config.controllers = config.controllers || {};
+    config.controllers.dir = config.controllers.dir || this.DEFAULT_CONTROLLER_LOOKUP_PATH;
+    config.database = config.database || {};
+    config.database.connection = config.database.connection || DEFAULT_CONNECTION_SETTINGS;
+    config.database.models = config.database.models || {};
+    config.database.models.dir = config.database.models.dir || this.DEFAULT_MODEL_LOOKUP_PATH;
+    config.logging = config.logging || {};
+    config.server = config.server || {};
+    config.server.middlewares = config.server.middlewares || [];
 
-    Object.keys(_internalModels.modules).forEach(model => {
-      this.modelManager.addModel(_internalModels.modules[model]);
-    });
+    return config;
   }
 
   /**
-   * runs associations for each model
+   * Returns the project directory (cwd) from which Application is being instantiated
    *
+   * @method _getProjectDirectory
    * @private
-   * @method _associateModels
+   * @returns {String} directory
    */
-  _associateModels() {
-    const modelManager = this.modelManager;
+  _getProjectDirectory() {
+    const caller = callsite()[2].getFileName();
+    const projectDirectory = path.dirname(caller);
 
-    Object.keys(modelManager.models).forEach(model => {
-      if (modelManager.models[model].associate) {
-        modelManager.models[model].associate(modelManager.models[model], modelManager.models);
-      }
-    });
+    return projectDirectory;
+  }
+
+  /**
+   * Run an initializer by name
+   *
+   * @method _initialize
+   * @private
+   * @param {String} name
+   */
+  _initialize(name) {
+    const initializers = includeAll({
+      dirname: __dirname
+    }).initializers;
+    const logger = this.logger;
+
+    // TODO: throw an error if the initializer is missing
+    const [initializer] = Object.keys(initializers).filter(
+      init => initializers[init].name === name
+    );
+
+    if (logger) {
+      logger.info(`Running initializer '${name}'`);
+    }
+
+    return initializers[initializer].initialize(this, this.registry);
   }
 }
 
