@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "options": {
     "exclude": "lib",
-    "helpers": ["node_modules/yuidoc-parch-theme/helpers/helpers.js"],
+    "helpers": ["node_modules/yuidoc-lucid-theme/helpers/helpers.js"],
     "linkNatives": "true",
     "outdir": "docs",
     "paths": ["./src"],
-    "themedir": "node_modules/yuidoc-parch-theme"
+    "themedir": "node_modules/yuidoc-lucid-theme"
   }
 }

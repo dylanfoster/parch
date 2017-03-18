@@ -6,8 +6,8 @@
         "description": "Restify + Sequelize"
     },
     "files": {
-        "docs/assets/vendor/github-slugger/slugger.js": {
-            "name": "docs/assets/vendor/github-slugger/slugger.js",
+        "docs/assets/vendor/bootstrap/js/bootstrap.min.js": {
+            "name": "docs/assets/vendor/bootstrap/js/bootstrap.min.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -272,29 +272,9 @@
     "elements": {},
     "classitems": [
         {
-            "file": "docs/assets/vendor/github-slugger/slugger.js",
-            "line": 12,
-            "description": "Generate a unique slug.",
-            "params": [
-                {
-                    "name": "value",
-                    "description": "String of text to slugify",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "A unique slug string",
-                "type": "String"
-            },
-            "class": "Application"
-        },
-        {
-            "file": "docs/assets/vendor/github-slugger/slugger.js",
-            "line": 37,
-            "description": "Reset - Forget all previous slugs",
-            "return": {
-                "description": "void"
-            },
+            "file": "docs/assets/vendor/bootstrap/js/bootstrap.min.js",
+            "line": 1,
+            "description": "Bootstrap.js by @fat & @mdo\nplugins: bootstrap-transition.js, bootstrap-modal.js, bootstrap-dropdown.js, bootstrap-scrollspy.js, bootstrap-tab.js, bootstrap-tooltip.js, bootstrap-popover.js, bootstrap-affix.js, bootstrap-alert.js, bootstrap-button.js, bootstrap-collapse.js, bootstrap-carousel.js, bootstrap-typeahead.js\nCopyright 2012 Twitter, Inc.\nhttp://www.apache.org/licenses/LICENSE-2.0.txt",
             "class": "Application"
         },
         {
@@ -320,6 +300,7 @@
             "description": "Get the restify application instance",
             "itemtype": "method",
             "name": "getApp",
+            "deprecated": true,
             "return": {
                 "description": "restify application instance",
                 "type": "Object"
@@ -329,7 +310,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 68,
+            "line": 69,
             "description": "starts listening on the defined port",
             "itemtype": "method",
             "name": "start",
@@ -349,7 +330,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 81,
+            "line": 82,
             "description": "Normalizes constructor options",
             "itemtype": "method",
             "name": "_configure",
@@ -371,7 +352,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 103,
+            "line": 104,
             "description": "Returns the project directory (cwd) from which Application is being instantiated",
             "itemtype": "method",
             "name": "_getProjectDirectory",
@@ -386,7 +367,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 117,
+            "line": 118,
             "description": "Run an initializer by name",
             "itemtype": "method",
             "name": "_initialize",
@@ -1162,11 +1143,11 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/application.js:81"
+            "line": " src/application.js:82"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/application.js:103"
+            "line": " src/application.js:104"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -1197,12 +1178,8 @@
             "line": " src/router.js:184"
         },
         {
-            "message": "Missing item type\nGenerate a unique slug.",
-            "line": " docs/assets/vendor/github-slugger/slugger.js:12"
-        },
-        {
-            "message": "Missing item type\nReset - Forget all previous slugs",
-            "line": " docs/assets/vendor/github-slugger/slugger.js:37"
+            "message": "Missing item type\nBootstrap.js by @fat & @mdo\nplugins: bootstrap-transition.js, bootstrap-modal.js, bootstrap-dropdown.js, bootstrap-scrollspy.js, bootstrap-tab.js, bootstrap-tooltip.js, bootstrap-popover.js, bootstrap-affix.js, bootstrap-alert.js, bootstrap-button.js, bootstrap-collapse.js, bootstrap-carousel.js, bootstrap-typeahead.js\nCopyright 2012 Twitter, Inc.\nhttp://www.apache.org/licenses/LICENSE-2.0.txt",
+            "line": " docs/assets/vendor/bootstrap/js/bootstrap.min.js:1"
         },
         {
             "message": "Missing item type",
