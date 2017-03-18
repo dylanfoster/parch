@@ -2,12 +2,12 @@
     "project": {
         "name": "Parch",
         "url": "https://github.com/dylanfoster/parch",
-        "version": "0.12.0",
+        "version": "1.0.0",
         "description": "Restify + Sequelize"
     },
     "files": {
-        "docs/assets/vendor/github-slugger/slugger.js": {
-            "name": "docs/assets/vendor/github-slugger/slugger.js",
+        "docs/assets/vendor/bootstrap/js/bootstrap.min.js": {
+            "name": "docs/assets/vendor/bootstrap/js/bootstrap.min.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -138,7 +138,7 @@
                 "add default restfull methods (index",
                 "show",
                 "etc)",
-                "implement store and deprecate controller based finders"
+                "implement store"
             ]
         }
     },
@@ -154,7 +154,7 @@
             "module": "parch",
             "namespace": "",
             "file": "src/application.js",
-            "line": 18,
+            "line": 19,
             "description": "Base application"
         },
         "containment": {
@@ -181,7 +181,7 @@
             "module": "parch",
             "namespace": "",
             "file": "src/controller.js",
-            "line": 9,
+            "line": 10,
             "description": "Base controller"
         },
         "Model": {
@@ -272,34 +272,14 @@
     "elements": {},
     "classitems": [
         {
-            "file": "docs/assets/vendor/github-slugger/slugger.js",
-            "line": 12,
-            "description": "Generate a unique slug.",
-            "params": [
-                {
-                    "name": "value",
-                    "description": "String of text to slugify",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "A unique slug string",
-                "type": "String"
-            },
-            "class": "Application"
-        },
-        {
-            "file": "docs/assets/vendor/github-slugger/slugger.js",
-            "line": 37,
-            "description": "Reset - Forget all previous slugs",
-            "return": {
-                "description": "void"
-            },
+            "file": "docs/assets/vendor/bootstrap/js/bootstrap.min.js",
+            "line": 1,
+            "description": "Bootstrap.js by @fat & @mdo\nplugins: bootstrap-transition.js, bootstrap-modal.js, bootstrap-dropdown.js, bootstrap-scrollspy.js, bootstrap-tab.js, bootstrap-tooltip.js, bootstrap-popover.js, bootstrap-affix.js, bootstrap-alert.js, bootstrap-button.js, bootstrap-collapse.js, bootstrap-carousel.js, bootstrap-typeahead.js\nCopyright 2012 Twitter, Inc.\nhttp://www.apache.org/licenses/LICENSE-2.0.txt",
             "class": "Application"
         },
         {
             "file": "src/application.js",
-            "line": 27,
+            "line": 28,
             "is_constructor": 1,
             "params": [
                 {
@@ -316,13 +296,11 @@
         },
         {
             "file": "src/application.js",
-            "line": 55,
+            "line": 56,
             "description": "Get the restify application instance",
             "itemtype": "method",
             "name": "getApp",
-            "todo": [
-                ": deprecate"
-            ],
+            "deprecated": true,
             "return": {
                 "description": "restify application instance",
                 "type": "Object"
@@ -332,7 +310,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 66,
+            "line": 69,
             "description": "starts listening on the defined port",
             "itemtype": "method",
             "name": "start",
@@ -352,7 +330,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 79,
+            "line": 82,
             "description": "Normalizes constructor options",
             "itemtype": "method",
             "name": "_configure",
@@ -374,7 +352,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 101,
+            "line": 104,
             "description": "Returns the project directory (cwd) from which Application is being instantiated",
             "itemtype": "method",
             "name": "_getProjectDirectory",
@@ -389,7 +367,7 @@
         },
         {
             "file": "src/application.js",
-            "line": 115,
+            "line": 118,
             "description": "Run an initializer by name",
             "itemtype": "method",
             "name": "_initialize",
@@ -448,7 +426,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 25,
+            "line": 26,
             "is_constructor": 1,
             "params": [
                 {
@@ -474,7 +452,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 45,
+            "line": 46,
             "description": "Builds, validates and saves a model instance.\n\n    return this.createRecord({ firstname: 'bar' }).then(record => {\n\n    });",
             "itemtype": "method",
             "name": "createRecord",
@@ -494,7 +472,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 79,
+            "line": 82,
             "description": "Destroy a model instance and remove it from the db\n\n    return this.destroyRecord(1).then(() => {\n\n    });",
             "itemtype": "method",
             "name": "destroyRecord",
@@ -514,7 +492,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 94,
+            "line": 99,
             "description": "Find all records.\n\n    return this.findAll().then(records => {\n\n    })\n\nYou can optionally pass in a where clause\n\n    return this.findAll({ username: 'john' }).then(user => {\n\n    });\n\nAs well as any finder options\n\n    return this.findAll(null, {\n      attributes: [\"title\"],\n      include: [this.models.User]\n    }).then(user => {\n\n    });",
             "itemtype": "method",
             "name": "findAll",
@@ -542,7 +520,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 133,
+            "line": 140,
             "description": "Find a single instance by id\n\n    return this.findOne(1).then(record => {\n\n    });\n\nThe same options apply to findOne\n\n    return this.findOne(1, {\n      attributes: [\"firstName\"]\n    }).then(user => {\n\n    });",
             "itemtype": "method",
             "name": "findOne",
@@ -567,7 +545,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 172,
+            "line": 181,
             "description": "Update a single record\n\n    return this.updateRecord(1, { firstName: 'foo' }).then(record => {\n\n    });",
             "itemtype": "method",
             "name": "updateRecord",
@@ -592,7 +570,7 @@
         },
         {
             "file": "src/controller.js",
-            "line": 193,
+            "line": 204,
             "description": "HACK: if this is a sequelize validation error, we transform it, otherwise\nwe can't be totally sure so just throw it up the stack",
             "class": "Controller",
             "module": "parch"
@@ -1165,11 +1143,11 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/application.js:79"
+            "line": " src/application.js:82"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/application.js:101"
+            "line": " src/application.js:104"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -1200,24 +1178,20 @@
             "line": " src/router.js:184"
         },
         {
-            "message": "Missing item type\nGenerate a unique slug.",
-            "line": " docs/assets/vendor/github-slugger/slugger.js:12"
-        },
-        {
-            "message": "Missing item type\nReset - Forget all previous slugs",
-            "line": " docs/assets/vendor/github-slugger/slugger.js:37"
+            "message": "Missing item type\nBootstrap.js by @fat & @mdo\nplugins: bootstrap-transition.js, bootstrap-modal.js, bootstrap-dropdown.js, bootstrap-scrollspy.js, bootstrap-tab.js, bootstrap-tooltip.js, bootstrap-popover.js, bootstrap-affix.js, bootstrap-alert.js, bootstrap-button.js, bootstrap-collapse.js, bootstrap-carousel.js, bootstrap-typeahead.js\nCopyright 2012 Twitter, Inc.\nhttp://www.apache.org/licenses/LICENSE-2.0.txt",
+            "line": " docs/assets/vendor/bootstrap/js/bootstrap.min.js:1"
         },
         {
             "message": "Missing item type",
-            "line": " src/application.js:27"
+            "line": " src/application.js:28"
         },
         {
             "message": "Missing item type",
-            "line": " src/controller.js:25"
+            "line": " src/controller.js:26"
         },
         {
             "message": "Missing item type\nHACK: if this is a sequelize validation error, we transform it, otherwise\nwe can't be totally sure so just throw it up the stack",
-            "line": " src/controller.js:193"
+            "line": " src/controller.js:204"
         },
         {
             "message": "Missing item type\nHACK: Babel no longer exports [default], though I'm pretty sure I have\nthat transform installed so....¯\\_(ツ)_/¯",

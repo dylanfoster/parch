@@ -25,6 +25,7 @@
 
 #options-form {
     margin-top: 20px;
+    padding-right: 20px;
 }
 
 /* -- Sidebar --------------------------------------------------------------- */
@@ -59,6 +60,10 @@
 }
 
 /* -- Content --------------------------------------------------------------- */
+
+#docs-main {
+    margin-top: 65px;
+}
 
 .content {
     padding-bottom: 50px;
