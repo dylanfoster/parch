@@ -53,7 +53,7 @@
                         <div class="panel-heading" role="tab" id="sidebar-version-heading">
                             <h4 class="panel-title">
                                 <a role="button" href="https://github.com/dylanfoster/parch/commits/0" target="_blank">
-                                  Tag: 0.12.0
+                                  Tag: 1.0.0
                                 </a>
                             </h4>
                         </div>
@@ -136,6 +136,7 @@ import errors from &quot;restify-errors&quot;;
 import inflect from &quot;inflect&quot;;
 
 import STATUS_CODES from &quot;./utils/status_codes&quot;;
+import deprecate from &quot;./utils/deprecate&quot;;
 import { setOwner } from &quot;./containment&quot;;
 
 /**
@@ -145,7 +146,7 @@ import { setOwner } from &quot;./containment&quot;;
  * @class Controller
  * @constructor
  * @todo add default restfull methods (index, show, etc)
- * @todo implement store and deprecate controller based finders
+ * @todo implement store
  */
 class Controller {
   get name() {
@@ -186,6 +187,8 @@ class Controller {
    * @return {Promise&lt;Model, Error&gt;} the model instance
    */
   createRecord(data) {
+    deprecate(this, &quot;createRecord&quot;, &quot;2.0.0&quot;);
+
     if (!data) {
       const error = this.errors.BadRequestError;
       const message = &quot;Missing or invalid POST body&quot;;
@@ -220,6 +223,8 @@ class Controller {
    * @return {Promise&lt;undefined, Error}
    */
   destroyRecord(id) {
+    deprecate(this, &quot;destroyRecord&quot;, &quot;2.0.0&quot;);
+
     return this.findOne(id).then(record =&gt; record.destroy());
   }
 
@@ -255,6 +260,8 @@ class Controller {
    * @return {Promise&lt;Model[], Error} an array of model instance
    */
   findAll(where, options = {}) {
+    deprecate(this, &quot;findAll&quot;, &quot;2.0.0&quot;);
+
     const query = { where };
 
     this._addOptionsToQuery(query, options);
@@ -285,6 +292,8 @@ class Controller {
    * @return {Promise&lt;Model, Error&gt;}
    */
   findOne(id, options = {}) {
+    deprecate(this, &quot;findOne&quot;, &quot;2.0.0&quot;);
+
     const query = { where: { id }};
 
     this._addOptionsToQuery(query, options);
@@ -314,6 +323,8 @@ class Controller {
    * @return {Promise&lt;Model, Error&gt;}
    */
   updateRecord(id, data) {
+    deprecate(this, &quot;updateRecord&quot;, &quot;2.0.0&quot;);
+
     if (!data) {
       const error = this.errors.BadRequestError;
       const message = &quot;Missing or invalid PUT body&quot;;
