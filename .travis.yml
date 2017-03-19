@@ -27,5 +27,5 @@ deploy:
 
 env:
   global:
-    - GH_REF: "github.com/parch-js/parch-js.github.com"
+    - GH_REF: "github.com/parch-js/parch-js.github.io"
     - secure: ZOWX0zkd1L8w04v/nUgkWXFe4weNui8HVwgumyBnID5Ei8GGxuE48Fm8xibFOaObbS+8weKJAkXUUSQBcLfOA5jRF2JtHLIBbj5q4eDI+I8DdvVB2m+zzEhlmGMxWph4yEbw5v1Or/q4k6WvV609U9QMqkQXiGKQnmKPY+wDIHftVKFixR3RvndDHcjx5lh+XV39wYtRHE6b48KPQS36W0PLbl8FSsBVBt+IbXiM0+8peAVZeuHA5fZvur+Xj/2o0HSUHBDC2bkavzY93uoSLgs130+dlj/7Y8duL/Dsfd8U8GA2vUwWu2wyaMuzYWEz5jUks+wGY4GpDS+n7rqayLmhOOEQxVNx5uCVQBlKSH0DvzVcakQl9jV+gIz83rzSadlpuR/KTL6Z5qum9r/nGrSd8NZokn/DH6zRNQRqpFTBCVkDP0xgWq9kH9GxB+U3QBAO76FZid7HMj37KNRSfPcW4EjMwjiOfV2llaTc99grdDjsU85Gai6s2DyAYVcz+KmxIWSI4d+xT4u0OKLuRjPjFNvNZQbl2L8sDRFXvoU5zYHUEuCl01Q0/qqEUnlkxe5ZBR6DV7Gd+lKfhqhH6ku9vTB6RRR7UQQtMQLjbXc0UCmrUAkHYeOxpjHq8xQHouiftuNmVIK7cqY63h2DJLx9wbd5EfHZ8FE8xII0CD4=
