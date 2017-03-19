@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+npm run docs
+
+pushd docs &> /dev/null
+git init
+git config user.name "AutoBot"
+git config user.email "dylan947@gmail.com"
+git add -A
+git commit -m "Deploy to GitHub pages"
+git push --force --quiet "https://${GH_REF}@${GH_TOKEN}" master > /dev/null 2>&1
+popd &> /dev/null
