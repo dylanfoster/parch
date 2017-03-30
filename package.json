@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src -d lib",
-    "coverage": "NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- --compilers js:babel-register --recursive --timeout 30000",
+    "coverage": "NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- --compilers js:babel-register --recursive --timeout 40000",
     "changelog": "conventional-changelog -s -p angular -i CHANGELOG.md",
     "docs": "yuidoc . -o docs",
     "lint": "eslint ./src ./test",
