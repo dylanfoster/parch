@@ -26,4 +26,4 @@ deploy:
     repo: dylanfoster/parch
 env:
   global:
-  - GH_REF: github.com/parch-js/parch-js.github.io
+  - GH_REF: github.com/parch-js/docs
