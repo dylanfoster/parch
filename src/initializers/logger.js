@@ -8,10 +8,11 @@ module.exports = {
     const config = registry.lookup("config:main");
 
     if (config.log && config.log instanceof Bunyan) {
-      return registry.register("service:logger", config.log);
+      registry.register("service:logger", config.log);
+    } else {
+      config.log = Logger.create("application", config.logging);
     }
 
-    config.log = Logger.create("application", config.logging);
     registry.register("service:logger", config.log);
     registry.inject(application, "service:logger", "logger");
   },

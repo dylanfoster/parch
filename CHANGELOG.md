@@ -1,3 +1,13 @@
+<a name="1.0.2"></a>
+## [1.0.2](https://github.com/dylanfoster/parch/compare/1.0.1...1.0.2) (2017-03-30)
+
+
+### Bug Fixes
+
+* **logger:** ensure logger is injected whether internal or user passed ([1b41ded](https://github.com/dylanfoster/parch/commit/1b41ded)), closes [#41](https://github.com/dylanfoster/parch/issues/41) [#41](https://github.com/dylanfoster/parch/issues/41)
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/dylanfoster/parch/compare/1.0.0...v1.0.1) (2017-03-18)
 

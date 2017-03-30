@@ -8,8 +8,9 @@ os:
 - osx
 - linux
 cache:
+  yarn: true
   directories:
-  - node_modules
+    - $HOME/.npm
 before_install:
 - npm config set spin false
 script: npm run test:cover
