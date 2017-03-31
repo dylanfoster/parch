@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src -d lib",
+    "build:watch": "chokidar 'src/**' 'test/**/*.js' -c 'npm run build' --initial",
     "coverage": "NO_DEPRECATION=parch NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- --compilers js:babel-register --recursive --timeout 40000",
     "changelog": "conventional-changelog -s -p angular -i CHANGELOG.md",
     "docs": "yuidoc . -o docs",
