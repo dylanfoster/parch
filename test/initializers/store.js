@@ -11,6 +11,7 @@ describe("initializer | store", function () {
 
   beforeEach(function () {
     registry = application.registry;
+    registry._registry.delete("service:store");
   });
 
   describe("#initialize", function () {

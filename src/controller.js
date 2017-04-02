@@ -35,12 +35,12 @@ class Controller {
 
     this.errors = errors;
     this.models = registry.lookup("service:model-manager").models;
-
-    const modelName = options.model || this.name;
-
-    // TODO: move to store service
-    registry.inject(this, `model:${modelName}`);
+    this.modelName = options.model || this.name;
+    this.modelNameLookup = inflect.singularize(this.modelName).toLowerCase();
     this.STATUS_CODES = STATUS_CODES;
+
+    registry.inject(this, "service:store", "store");
+    registry.inject(this, `model:${this.modelNameLookup}`);
   }
 
   /**
@@ -57,26 +57,7 @@ class Controller {
   createRecord(data) {
     deprecate(this, "createRecord", "2.0.0");
 
-    if (!data) {
-      const error = this.errors.BadRequestError;
-      const message = "Missing or invalid POST body";
-
-      return Promise.reject(new error(message));
-    }
-
-    const record = this.model.build(data);
-
-    return record.validate().then(err => {
-      if (err && err.errors && err.errors.length) {
-        const { errors: [validationError] } = err;
-        const error = this.errors.UnprocessableEntityError;
-        const message = validationError.message;
-
-        throw new error(message);
-      }
-
-      return record.save();
-    });
+    return this.store.createRecord(this.modelNameLookup, data);
   }
 
   /**
@@ -93,7 +74,7 @@ class Controller {
   destroyRecord(id) {
     deprecate(this, "destroyRecord", "2.0.0");
 
-    return this.findOne(id).then(record => record.destroy());
+    return this.store.destroyRecord(this.modelNameLookup, id);
   }
 
   /**
@@ -130,11 +111,7 @@ class Controller {
   findAll(where, options = {}) {
     deprecate(this, "findAll", "2.0.0");
 
-    const query = { where };
-
-    this._addOptionsToQuery(query, options);
-
-    return this.model.findAll(query);
+    return this.store.findAll(this.modelNameLookup, where, options);
   }
 
   /**
@@ -162,20 +139,7 @@ class Controller {
   findOne(id, options = {}) {
     deprecate(this, "findOne", "2.0.0");
 
-    const query = { where: { id }};
-
-    this._addOptionsToQuery(query, options);
-
-    return this.model.findOne(query).then(record => {
-      if (!record) {
-        const error = this.errors.NotFoundError;
-        const message = `${this.model.name} with id '${id}' does not exist`;
-
-        throw new error(message);
-      }
-
-      return record;
-    });
+    return this.store.findOne(this.modelNameLookup, id, options);
   }
 
   /**
@@ -193,28 +157,7 @@ class Controller {
   updateRecord(id, data) {
     deprecate(this, "updateRecord", "2.0.0");
 
-    if (!data) {
-      const error = this.errors.BadRequestError;
-      const message = "Missing or invalid PUT body";
-
-      return Promise.reject(new error(message));
-    }
-
-    return this.findOne(id).then(record => record.update(data)).catch(err => {
-      /**
-       * HACK: if this is a sequelize validation error, we transform it, otherwise
-       * we can't be totally sure so just throw it up the stack
-       */
-      if (err.name === "SequelizeValidationError") {
-        const { errors: [validationError] } = err;
-        const error = this.errors.UnprocessableEntityError;
-        const message = validationError.message;
-
-        throw new error(message);
-      } else {
-        throw err;
-      }
-    });
+    return this.store.updateRecord(this.modelNameLookup, id, data);
   }
 
   _addOptionsToQuery(query, options) {

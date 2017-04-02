@@ -47,8 +47,8 @@ class Application {
     this._initialize("server");
     this._initialize("loaders");
     this._initialize("model-manager");
-    this._initialize("store");
     this._initialize("models");
+    this._initialize("store");
     this._initialize("middleware");
     this._initialize("router");
     this._initialize("application");

@@ -29,7 +29,7 @@ describe("Controller", function () {
     expect(controller.model.name).to.eql("Foo");
   });
 
-  describe("finders", function () {
+  describe("store", function () {
     beforeEach(function () {
       class UserController extends Controller {}
       controller = new UserController(registry);
@@ -96,7 +96,7 @@ describe("Controller", function () {
       it("throws NotFoundError if no record is found", function (done) {
         controller.findOne(1).catch(err => {
           expect(err.code).to.eql("NotFound");
-          expect(err.message).to.eql("User with id '1' does not exist");
+          expect(err.message).to.eql("user does not exist");
           done();
         });
       });
@@ -106,13 +106,13 @@ describe("Controller", function () {
       it("creates a new record", function () {
         return controller.createRecord({ firstName: "john" }).then(user => {
           expect(user.firstName).to.eql("john");
-        });
+        }).catch(err => console.log(err));
       });
 
       it("throws BadRequestError for invalid body", function (done) {
         controller.createRecord().catch(err => {
           expect(err.code).to.eql("BadRequest");
-          expect(err.message).to.eql("Missing or invalid POST body");
+          expect(err.message).to.eql("Missing or invalid body");
           done();
         });
       });
@@ -158,7 +158,7 @@ describe("Controller", function () {
       it("throw BadRequestError for invalid or missing data", function (done) {
         controller.updateRecord(user.id).catch(err => {
           expect(err.code).to.eql("BadRequest");
-          expect(err.message).to.eql("Missing or invalid PUT body");
+          expect(err.message).to.eql("Missing or invalid body");
           done();
         });
       });
@@ -196,7 +196,7 @@ describe("Controller", function () {
         user.destroy().then(() => {
           controller.destroyRecord(user.id).catch(err => {
             expect(err.code).to.eql("NotFound");
-            expect(err.message).to.eql("User with id '1' does not exist");
+            expect(err.message).to.eql("user does not exist");
             done();
           });
         }).catch(done);
