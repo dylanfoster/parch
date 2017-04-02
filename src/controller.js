@@ -10,11 +10,13 @@ import { setOwner } from "./containment";
 /**
  * Base controller
  *
- * @module parch
  * @class Controller
  * @constructor
+ *
+ * @param {Object} registry module registry
+ * @param {Object} options configuration options
+ * @param {String} options.model override the default model name
  * @todo add default restfull methods (index, show, etc)
- * @todo implement store
  */
 class Controller {
   get name() {
@@ -23,13 +25,6 @@ class Controller {
     );
   }
 
-  /**
-   * @constructor
-   *
-   * @param {Object} registry module registry
-   * @param {Object} options configuration options
-   * @param {String} options.model override the default model name
-   */
   constructor(registry, options = {}) {
     setOwner(this, registry);
 
@@ -46,13 +41,17 @@ class Controller {
   /**
    * Builds, validates and saves a model instance.
    *
-   *     return this.createRecord({ firstname: 'bar' }).then(record => {
-   *
-   *     });
-   *
    * @method createRecord
+   * @deprecated use controller.store instead
    * @param {Object} data the model data to create the instance with
-   * @return {Promise<Model, Error>} the model instance
+   * @return {Promise}<ModelInstance, Error> the model instance
+   *
+   * @example
+   * ```javascript
+   * return this.createRecord({ firstname: 'bar' }).then(record => {
+   *
+   * });
+   * ```
    */
   createRecord(data) {
     deprecate(this, "createRecord", "2.0.0");
@@ -63,13 +62,17 @@ class Controller {
   /**
    * Destroy a model instance and remove it from the db
    *
-   *     return this.destroyRecord(1).then(() => {
-   *
-   *     });
-   *
    * @method destroyRecord
+   * @deprecated use controller.store instead
    * @param {Number} id the id of the resource to destroy
-   * @return {Promise<undefined, Error}
+   * @return {Promise}<void, Error>
+   *
+   * @example
+   * ```javascript
+   * return this.destroyRecord(1).then(() => {
+   *
+   * });
+   * ```
    */
   destroyRecord(id) {
     deprecate(this, "destroyRecord", "2.0.0");
@@ -80,33 +83,39 @@ class Controller {
   /**
    * Find all records.
    *
-   *     return this.findAll().then(records => {
-   *
-   *     })
-   *
-   * You can optionally pass in a where clause
-   *
-   *     return this.findAll({ username: 'john' }).then(user => {
-   *
-   *     });
-   *
-   * As well as any finder options
-   *
-   *     return this.findAll(null, {
-   *       attributes: ["title"],
-   *       include: [this.models.User]
-   *     }).then(user => {
-   *
-   *     });
-   *
    * @method findAll
-   * @param {Object} where sequelize where clause
-   * @param {Object} options <a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
-   *   sequelize finder options
-   * </a>
-   * @see http://docs.sequelizejs.com/en/v3/docs/querying/#where
+   * @deprecated use controller.store instead
+   * @param {Object} where
+   *   <a href="http://docs.sequelizejs.com/en/v3/docs/querying/#where" target="_blank">
+   *     See Sequelize Where
+   *   </a>
+   * @param {Object} options
+   *   <a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
+   *     Sequelize finder options
+   *   </a>
+   * @return {Promise}<ModelInstance[], Error> an array of model instance
    *
-   * @return {Promise<Model[], Error} an array of model instance
+   * @example
+   * ```javascript
+   * return this.findAll().then(records => {
+   *
+   * })
+   *
+   * // You can optionally pass in a where clause
+   *
+   * return this.findAll({ username: 'john' }).then(user => {
+   *
+   * });
+   *
+   * // As well as any finder options
+   *
+   * return this.findAll(null, {
+   *   attributes: ["title"],
+   *   include: [this.models.User]
+   * }).then(user => {
+   *
+   * });
+   * ```
    */
   findAll(where, options = {}) {
     deprecate(this, "findAll", "2.0.0");
@@ -117,24 +126,29 @@ class Controller {
   /**
    * Find a single instance by id
    *
-   *     return this.findOne(1).then(record => {
-   *
-   *     });
-   *
-   * The same options apply to findOne
-   *
-   *     return this.findOne(1, {
-   *       attributes: ["firstName"]
-   *     }).then(user => {
-   *
-   *     });
-   *
    * @method findOne
+   * @deprecated use controller.store instead
    * @param {Number} id the id of the instance to search for
-   * @param {Object} options <a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
-   *   sequelize finder options
-   * </a>
-   * @return {Promise<Model, Error>}
+   * @param {Object} options
+   *   <a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
+   *     Sequelize finder options
+   *   </a>
+   * @return {Promise}<ModelInstance, Error>
+   *
+   * @example
+   * ```javascript
+   * return this.findOne(1).then(record => {
+   *
+   * });
+   *
+   * // The same options apply to findOne
+   *
+   * return this.findOne(1, {
+   *   attributes: ["firstName"]
+   * }).then(user => {
+   *
+   * });
+   * ```
    */
   findOne(id, options = {}) {
     deprecate(this, "findOne", "2.0.0");
@@ -145,25 +159,23 @@ class Controller {
   /**
    * Update a single record
    *
-   *     return this.updateRecord(1, { firstName: 'foo' }).then(record => {
-   *
-   *     });
-   *
    * @method updateRecord
+   * @deprecated use controller.store instead
    * @param {Number} id the id of the record to update
    * @param {Object} data the data to update on the record
-   * @return {Promise<Model, Error>}
+   * @return {Promise}<Model, Error>
+   *
+   * @example
+   * ```javascript
+   * return this.updateRecord(1, { firstName: 'foo' }).then(record => {
+   *
+   * });
+   * ```
    */
   updateRecord(id, data) {
     deprecate(this, "updateRecord", "2.0.0");
 
     return this.store.updateRecord(this.modelNameLookup, id, data);
-  }
-
-  _addOptionsToQuery(query, options) {
-    Object.keys(options).forEach(prop => {
-      query[prop] = options[prop];
-    });
   }
 }
 

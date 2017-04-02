@@ -20,17 +20,20 @@ export default class Registry {
   /**
    * Inject an object into another object
    *
-   *     registry.inject(object, "service:store");
-   *     // object.store
-   *
-   *     registry.inject(object, "service:model-manager", "modelManager");
-   *     // object.modelManager
-   *
    * @method inject
    * @param {Object} context the object to inject onto
    * @param {String} lookup name by which to look search for the injection in the registry
    * @param {String} propertyName optional property name of the newly injected object
    * @returns {Object} context
+   *
+   * @example
+   * ```javascript
+   * registry.inject(object, "service:store");
+   * // object.store
+   *
+   * registry.inject(object, "service:model-manager", "modelManager");
+   * // object.modelManager
+   * ```
    */
   inject(context, lookup, propertyName) {
     const hasBeenInjected = this._registry.has(lookup);
@@ -60,11 +63,14 @@ export default class Registry {
    * lookup will attempt to find it by requiring it in. If the require fails
    * the lookup fails
    *
-   *     registry.lookup("service:foo");
-   *
    * @method lookup
    * @param {String} name colon delimited lookup string "service:foo"
    * @returns {Object}
+   *
+   * @example
+   * ```javascript
+   * registry.lookup("service:foo");
+   * ```
    */
   lookup(name) {
     const [moduleLookup, moduleName] = name.split(":");
@@ -85,8 +91,6 @@ export default class Registry {
    * Register an object in the registry by name. If the name exists and it was
    * registered with the { singleton: true } option, an error will be thrown.
    *
-   *     registry.register("service:foo", { foo: "bar" });
-   *
    * @method register
    * @param {String} name the name by which to register the object
    * @param {Object} Obj the object to store in the registry
@@ -94,6 +98,11 @@ export default class Registry {
    * @param {Boolean} options.instantiate instantiate the object when registering it
    * @param {Boolean} options.singleton only allow one registration of this name/object
    * @returns {Object} Obj
+   *
+   * @example
+   * ```javascript
+   * registry.register("service:foo", { foo: "bar" });
+   * ```
    */
   register(name, Obj, options = {}) {
     const { instantiate, singleton } = options;
@@ -139,6 +148,7 @@ export default class Registry {
    * name of the module (e.g. 'model-manager') which is underscored
    *
    * @method _loadModule
+   * @private
    * @param {String} lookup string name of object we're looking for (e.g. 'module')
    * @param {String} name string module name
    * @returns {Object} required module

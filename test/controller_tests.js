@@ -106,7 +106,7 @@ describe("Controller", function () {
       it("creates a new record", function () {
         return controller.createRecord({ firstName: "john" }).then(user => {
           expect(user.firstName).to.eql("john");
-        }).catch(err => console.log(err));
+        });
       });
 
       it("throws BadRequestError for invalid body", function (done) {
