@@ -1,3 +1,13 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/dylanfoster/parch/compare/1.0.3...1.1.0) (2017-04-03)
+
+
+### Features
+
+* **controller:** move underlying dao methods to use parch-js/orm and ([9119ba8](https://github.com/dylanfoster/parch/commit/9119ba8))
+
+
+
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/dylanfoster/parch/compare/1.0.2...v1.0.3) (2017-03-31)
 
