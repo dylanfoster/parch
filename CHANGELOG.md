@@ -4,7 +4,8 @@
 
 ### Features
 
-* **controller:** move underlying dao methods to use parch-js/orm and ([9119ba8](https://github.com/dylanfoster/parch/commit/9119ba8))
+* **controller:** move underlying dao methods to use parch-js/orm and expose via
+store ([9119ba8](https://github.com/dylanfoster/parch/commit/9119ba8))
 
 
 
