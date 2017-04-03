@@ -5,19 +5,27 @@ import RouteSegment from "./route_segment";
 /**
  * Builds a consistent route path from a set of path segments
  *
- *     new Route("foo", "/bar", "baz/"); => { path: "/foo/bar/baz" segments: [RouteSegment, RouteSegment, RouteSegment] }
- *
  * @class Route
+ * @constructor
+ * @param {String} ...segment
+ * @return {Object} path object
+ *
+ * @example
+ * ```javascript
+ * new Route("foo", "/bar", "baz/");
+ * /**
+ *  * {
+ *  *   path: "/foo/bar/baz"
+ *  *   segments: [
+ *  *     {{#crossLink "RouteSegment"}}RouteSegment{{/crossLink}},
+ *  *     {{#crossLink "RouteSegment"}}RouteSegment{{/crossLink}},
+ *  *     {{#crossLink "RouteSegment"}}RouteSegment{{/crossLink}}
+ *  *   ]
+ *  * }
+ *  *
+ * ```
  */
 class Route {
-  /**
-   * The constructor takes an unknown number of string segments and
-   * converts them to a path
-   *
-   * @constructor
-   * @param {String} ...segment
-   * @return {Object} path object
-   */
   constructor() {
     const segments = Array.from(arguments);
     const routeParts = segments.map(segment => new RouteSegment(segment));
@@ -29,7 +37,7 @@ class Route {
     this.path = routeParts.map(part => part.path).join("");
 
     /**
-     * All segments that make up this route. Consists of an array of RouteSegments
+     * All segments that make up this route. Consists of an array of {{#crossLink "RouteSegment"}}RouteSegments{{/crossLink}}
      * @property {Array} segments
      */
     this.segments = routeParts;

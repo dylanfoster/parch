@@ -7,14 +7,12 @@ import { setOwner } from "./containment";
  * Manages all models
  *
  * @class ModelManager
+ * @constructor
+ *
+ * @param {Object} settings
+ * @param {Object} settings.connection
  */
 class ModelManager {
-  /**
-   * @constructor
-   *
-   * @param {Object} settings
-   * @param {Object} settings.connection
-   */
   constructor(registry) {
     const config = registry.lookup("config:main");
     const { database: { connection }} = config;

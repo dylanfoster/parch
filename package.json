@@ -12,7 +12,7 @@
     "lint": "eslint ./src ./test",
     "prepare-release": "curl -sL https://gist.githubusercontent.com/dylanfoster/35b06db9aaa9237da77eff4a8eec0a22/raw/83ec714ec64f7ec36c5004588aa259354fc87b51/prepare-release.sh | bash -s",
     "prepublish": "npm run build",
-    "test": "NO_DEPRECATION=parch NODE_ENV=test mocha --recursive --compilers js:babel-register",
+    "test": "NO_DEPRECATION=parch NODE_ENV=test mocha --recursive --compilers js:babel-register --timeout 5000",
     "test:cover": "npm run coverage",
     "watch": "chokidar 'src/**' 'test/**/*.js' -c 'npm test' --initial"
   },
@@ -77,6 +77,7 @@
     }
   },
   "dependencies": {
+    "@parch-js/orm": "^0.0.1",
     "bunyan": "^1.8.1",
     "callsite": "^1.0.0",
     "depd": "^1.1.0",
