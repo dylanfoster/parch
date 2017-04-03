@@ -27,14 +27,10 @@ const restPathMapper = new Map([
  * Manages routing
  *
  * @class Router
+ * @constructor
+ * @param {Object} registry {{#crossLink "Registry"}}module registry{{/crossLink}}
  */
 class Router {
-  /**
-   * constructor
-   *
-   * @constructor
-   * @param {Object} registry {{#crossLink "Registry"}}module registry{{/crossLink}}
-   */
   constructor(registry) {
     setOwner(this, registry);
 
@@ -54,16 +50,19 @@ class Router {
    * Uses {{#crossLink "Router/_buildRoute:method"}}_buildRoute{{/crossLink}} to
    * normalize the path
    *
-   *     Router.map(function () {
-   *       this.namespace("/users/:userId", [
-   *         { path: "/setProfileImage", using: "user:setImage", method: "post" }
-   *       ])
-   *     });
-   *
    * @method namespace
    * @param {String} namespace the namespace to bind to, with or without leading slash
    * @param {Array[Object]} routes array of routes to bind to the namespace
    * @since 0.9.0
+   *
+   * @example
+   * ```javascript
+   * Router.map(function () {
+   *   this.namespace("/users/:userId", [
+   *     { path: "/setProfileImage", using: "user:setImage", method: "post" }
+   *   ])
+   * });
+   * ```
    */
   namespace(namespace, routes) {
     for (const route of routes) {
@@ -83,18 +82,22 @@ class Router {
   /**
    * Register a resource and wire up restful endpoints.
    * Uses {{#crossLink "Router/_buildRoute:method"}}_buildRoute{{/crossLink}} to
-   * normalize the path
-   *
-   *     Router.map(function () {
-   *       this.resource("user");
-   *     });
+   * normalize the path and builds your 5 basic CRUD endpoints
    *
    * @method resource
    * @param {String} name the resource name in singular form
    * @param {Object} options resource mapping options
    * @param {String} options.namespace mount the resource endpoint under a namespace
    *
-   *     this.resource("user", { namespace: "api" })
+   * @example
+   * ```javascript
+   * Router.map(function () {
+   *   this.resource("user");
+   *
+   *   // Optionally prefix this resource with a namespace
+   *   this.resource("user", { namespace: "api" })
+   * });
+   * ```
    */
   resource(name, options = {}) {
     name = inflect.singularize(name);
@@ -110,19 +113,18 @@ class Router {
    * Uses {{#crossLink "Router/_buildRoute:method"}}_buildRoute{{/crossLink}} to
    * normalize the path
    *
-   *     Router.map(function () {
-   *       this.route("/user/foo", { using: "users:foo", method: "get" });
-   *     });
-   *
    * @method route
    * @param {String} path the route path (e.g. /foo/bar)
    * @param {Object} options
    * @param {String} options.using colon delimited controller method identifier
-   *
-   *     this.route("/foo/bar", { using: "foo:bar" });
    * @param {String} options.method http method
    *
-   *     this.route("/foo/bar", { method: "get" });
+   * @example
+   * ```javascript
+   * Router.map(function () {
+   *   this.route("/user/foo", { using: "users:foo", method: "get" });
+   * });
+   * ```
    */
   route(path, options) {
     const app = getOwner(this).lookup("service:server");
@@ -139,8 +141,6 @@ class Router {
   /**
    * Consistently builds a route from a set of path segments using
    * {{#crossLink "Route"}}Route{{/crossLink}}
-   *
-   *     router._buildRoute("foo", "/bar" "baz/");
    *
    * @method _buildRoute
    * @private
@@ -184,15 +184,12 @@ class Router {
   /**
    * Generates a path segment from a given resource name
    *
-   *     router._getPathSegment("foo", "show");
-   *     // :fooId
-   *
    * @private
    * @method _getPathSegment
    * @param resource
    * @param action
    *
-   * @returns {String} pathSegment
+   * @returns {String} pathSegment (e.g. `:userId`)
    */
   _getPathSegment(resource, action) {
     const restPathSegment = restPathMapper.get(action);

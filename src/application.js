@@ -19,18 +19,16 @@ const DEFAULT_LISTEN_PORT = 3000;
 /**
  * Base application
  *
- * @module parch
  * @class Application
+ * @constructor
+ *
+ * @param {Object} options Application config options
+ * <a href="https://parch-js.github.io">
+ *   See configuration
+ * </a>
  */
 class Application {
   /* eslint-disable complexity */
-
-  /**
-   * @constructor
-   *
-   * @param options = {}
-   * @return {undefined}
-   */
   constructor(options = {}) {
     const projectDirectory = this._getProjectDirectory();
     const registry = this.registry = new Registry();
@@ -48,6 +46,7 @@ class Application {
     this._initialize("loaders");
     this._initialize("model-manager");
     this._initialize("models");
+    this._initialize("store");
     this._initialize("middleware");
     this._initialize("router");
     this._initialize("application");
@@ -57,7 +56,7 @@ class Application {
    * Get the restify application instance
    *
    * @method getApp
-   * @deprecated
+   * @deprecated use registry.lookup("service:server") instead
    * @return {Object} restify application instance
    */
   getApp() {

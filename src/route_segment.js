@@ -4,19 +4,19 @@
  * Represents a single route segment, providing a consistent output segment
  * regardless of trailing/leading slashes
  *
- *     new RouteSegment("/foo"); => { path: "/foo", segment: "/foo" }
- *     new RouteSegment("foo"); => { path: "/foo", segment: "foo" }
- *     new RouteSegment("/foo/"); => { path: "/foo", segment: "/foo/" }
- *     new RouteSegment("foo/"); => { path: "/foo", segment: "foo/" }
- *
  * @class RouteSegment
+ * @constructor
+ * @param {String} segment A single route segment
+ *
+ * @example
+ * ```javascript
+ * new RouteSegment("/foo"); => { path: "/foo", segment: "/foo" }
+ * new RouteSegment("foo"); => { path: "/foo", segment: "foo" }
+ * new RouteSegment("/foo/"); => { path: "/foo", segment: "/foo/" }
+ * new RouteSegment("foo/"); => { path: "/foo", segment: "foo/" }
+ * ```
  */
 class RouteSegment {
-  /**
-   * constructor
-   *
-   * @param {String} segment A single route segment
-   */
   constructor(segment) {
     this.segment = segment;
     this.path = this._buildSegment();
@@ -25,13 +25,16 @@ class RouteSegment {
   /**
    * Determines if a path segment contains a leading slash /
    *
-   *     new RouteSegment("foo").hasLeadingSlash(); => false
-   *     new RouteSegment("foo/").hasLeadingSlash(); => false
-   *     new RouteSegment("/foo/").hasLeadingSlash(); => true
-   *     new RouteSegment("/foo").hasLeadingSlash(); => true
-   *
    * @method hasLeadingSlash
    * @return {Boolean}
+   *
+   * @example
+   * ```javascript
+   * new RouteSegment("foo").hasLeadingSlash(); => false
+   * new RouteSegment("foo/").hasLeadingSlash(); => false
+   * new RouteSegment("/foo/").hasLeadingSlash(); => true
+   * new RouteSegment("/foo").hasLeadingSlash(); => true
+   * ```
    */
   hasLeadingSlash() {
     return this.segment.indexOf("/") === 0;
@@ -40,13 +43,16 @@ class RouteSegment {
   /**
    * Determines if a path segment contains a trailing slash /
    *
-   *     new RouteSegment("foo").hasTrailingSlash(); => false
-   *     new RouteSegment("/foo").hasTrailingSlash(); => false
-   *     new RouteSegment("/foo/").hasTrailingSlash(); => true
-   *     new RouteSegment("foo/").hasTrailingSlash(); => true
-   *
    * @method hasTrailingSlash
    * @return {Boolean}
+   *
+   * @example
+   * ```javascript
+   * new RouteSegment("foo").hasTrailingSlash(); => false
+   * new RouteSegment("/foo").hasTrailingSlash(); => false
+   * new RouteSegment("/foo/").hasTrailingSlash(); => true
+   * new RouteSegment("foo/").hasTrailingSlash(); => true
+   * ```
    */
   hasTrailingSlash() {
     return this.segment.charAt(this.segment.length - 1) === "/";
