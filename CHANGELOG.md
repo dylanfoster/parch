@@ -1,3 +1,8 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/dylanfoster/parch/compare/1.1.0...1.1.1) (2017-04-09)
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/dylanfoster/parch/compare/1.0.3...1.1.0) (2017-04-03)
 
