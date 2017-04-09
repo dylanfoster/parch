@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@parch-js/orm@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@parch-js/orm/-/orm-0.0.1.tgz#b0a8b80ff51e0a41baa8901b4dc360da5388af1a"
+"@parch-js/orm@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@parch-js/orm/-/orm-0.0.2.tgz#74c4df51b7b4e9d00c5d44527939a29311ba8fb4"
   dependencies:
     inflect "^0.3.0"
     restify-errors "^4.3.0"
