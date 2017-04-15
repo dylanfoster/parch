@@ -49,7 +49,7 @@ class Loader {
         modules[key] = modules[module];
       }
 
-      delete modules[module];
+      if (module !== key) { delete modules[module]; }
     });
 
     return modules;

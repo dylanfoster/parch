@@ -3,7 +3,7 @@
 import { expect } from "chai";
 
 import Controller from "../src/controller";
-import { modelManager, registry } from "./fixtures";
+import { application, modelManager, registry } from "./fixtures";
 
 describe("Controller", function () {
   let controller;
@@ -33,6 +33,11 @@ describe("Controller", function () {
     beforeEach(function () {
       class UserController extends Controller {}
       controller = new UserController(registry);
+
+      application.map(function () {
+        this.resource("user");
+      });
+
       return modelManager.sequelize.sync({ force: true });
     });
 
@@ -40,15 +45,15 @@ describe("Controller", function () {
       return modelManager.sequelize.drop();
     });
 
-    describe("#findAll", function () {
+    describe.only("#findAll", function () {
       it("returns all records of a model", function () {
-        return controller.findAll().then(users => {
-          expect(users).to.eql([]);
+        return controller.findAll().then(res => {
+          expect(res.users).to.eql([]);
 
           return modelManager.models.User.create({ firstName: "john" });
         }).then(() => controller.findAll())
-        .then(users => {
-          expect(users[0].firstName).to.eql("john");
+        .then(res => {
+          expect(res.users[0].firstName).to.eql("john");
         });
       });
 
@@ -60,16 +65,16 @@ describe("Controller", function () {
           return modelManager.models.User.create({ firstName: "joe" }).then(joe => {
             user2 = joe;
           });
-        }).then(() => controller.findAll({ firstName: "john" })).then(users => {
-          expect(users.length).to.eql(1);
+        }).then(() => controller.findAll({ firstName: "john" })).then(res => {
+          expect(res.users.length).to.eql(1);
         });
       });
 
       it("allows for finder options", function () {
         return modelManager.models.User.create({ firstName: "john" }).then(
           () => controller.findAll({ firstName: "john" }, { attributes: ["firstName"] })
-        ).then(([john]) => {
-          expect(john.toJSON()).to.eql({ firstName: "john" });
+        ).then(res => {
+          expect(res.users[0].firstName).to.eql("john");
         });
       });
 
@@ -104,8 +109,8 @@ describe("Controller", function () {
 
     describe("#createRecord", function () {
       it("creates a new record", function () {
-        return controller.createRecord({ firstName: "john" }).then(user => {
-          expect(user.firstName).to.eql("john");
+        return controller.createRecord({ firstName: "john" }).then(res => {
+          expect(res.user.firstName).to.eql("john");
         });
       });
 

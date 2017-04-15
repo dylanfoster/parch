@@ -32,6 +32,12 @@ describe("Router", function () {
       .expect(200);
   });
 
+  it("loads serializers", function () {
+    const serializer = registry.lookup("serializer:foo");
+
+    expect(serializer).to.be.ok;
+  });
+
   describe("namespace", function () {
     it("maps a set of routes to a namespace", function () {
       router.namespace("/foos/:fooId", [

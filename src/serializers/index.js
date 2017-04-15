@@ -1,5 +1,3 @@
 "use strict";
 
-import RestSerializer from "./rest";
-
-export default { RestSerializer };
+export { default as RestSerializer } from "./rest";

@@ -2,6 +2,7 @@
 
 import inflect from "inflect";
 
+import { RestSerializer } from "./serializers";
 import Route from "./route";
 import { getOwner, setOwner } from "./containment";
 
@@ -208,14 +209,27 @@ class Router {
    */
   _loadControllers() {
     const controllerLoader = getOwner(this).lookup("loader:controller");
+    const serializerLoader = getOwner(this).lookup("loader:serializer");
     const { modules: controllers } = controllerLoader;
+    const { modules: serializers } = serializerLoader;
 
     Object.keys(controllers).forEach(controller => {
       const Klass = controllers[controller];
       const instance = new Klass(getOwner(this));
       const instanceName = inflect.singularize(instance.name);
+      const Serializer = serializers[instanceName];
+      let serializer;
 
       getOwner(this).register(`controller:${instanceName}`, instance);
+
+      if (Serializer) {
+        serializer = new Serializer();
+        getOwner(this).register(`serializer:${instanceName}`, serializer);
+      } else {
+        serializer = new RestSerializer();
+
+        getOwner(this).register(`serializer:${instanceName}`, serializer);
+      }
     });
   }
 
