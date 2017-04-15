@@ -43,7 +43,15 @@ describe.only("Store", function () {
   });
 
   describe("#findOne", function () {
-    it("returns a single record by id");
+    beforeEach(function () {
+      return modelManager.models.Foo.create({ type: "bar" });
+    });
+
+    it("returns a single record by id", function () {
+      return store.findOne("foo", 1).then(res => {
+        expect(res.foo.type).to.eql("bar");
+      });
+    });
   });
 
   describe("#queryRecord", function () {

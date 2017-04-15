@@ -209,28 +209,43 @@ class Router {
    */
   _loadControllers() {
     const controllerLoader = getOwner(this).lookup("loader:controller");
-    const serializerLoader = getOwner(this).lookup("loader:serializer");
     const { modules: controllers } = controllerLoader;
-    const { modules: serializers } = serializerLoader;
 
     Object.keys(controllers).forEach(controller => {
       const Klass = controllers[controller];
       const instance = new Klass(getOwner(this));
       const instanceName = inflect.singularize(instance.name);
-      const Serializer = serializers[instanceName];
-      let serializer;
+      const registry = getOwner(this);
+      const serializer = this._lookupSerializer(instanceName);
 
-      getOwner(this).register(`controller:${instanceName}`, instance);
-
-      if (Serializer) {
-        serializer = new Serializer();
-        getOwner(this).register(`serializer:${instanceName}`, serializer);
-      } else {
-        serializer = new RestSerializer();
-
-        getOwner(this).register(`serializer:${instanceName}`, serializer);
-      }
+      registry.register(`controller:${instanceName}`, instance);
+      registry.register(`serializer:${instanceName}`, serializer);
     });
+  }
+
+  /**
+   * Attempts to lookup a serializer by 'name' in the module loader. If one exists
+   * it is instantiated and registered by 'name'. If one does not exist the
+   * default (RestSerializer at the moment) is instantiated and registered.
+   *
+   * @method _lookupSerializer
+   * @private
+   * @param {String} name lowercase singular lookup name (e.g. "user")
+   * @return {Object} serializer instance
+   */
+  _lookupSerializer(name) {
+    const serializerLoader = getOwner(this).lookup("loader:serializer");
+    const { modules: serializers } = serializerLoader;
+    const Serializer = serializers[name];
+    let serializer;
+
+    if (Serializer) {
+      serializer = new Serializer();
+    } else {
+      serializer = new RestSerializer();
+    }
+
+    return serializer;
   }
 
   /**

@@ -34,6 +34,14 @@ export default class Store extends ORM {
     );
   }
 
+  findOne(name) {
+    const serializer = this._lookupSerializer(name);
+
+    return super.findOne(...arguments).then(
+      record => serializer.normalizeResponse(record, "findOne", name)
+    );
+  }
+
   _lookupSerializer(name) {
     return getOwner(this).lookup(`serializer:${name}`);
   }
