@@ -5,6 +5,10 @@ import ORM from "@parch-js/orm";
 import { getOwner, setOwner } from "./containment";
 
 /**
+ * Parch overrides the base ORM class to implement the serializer defined for
+ * each controller. If no serializer is defined, the
+ * {{#crossLink "RestSerializer"}}RestSerializer{{/crossLink}} is used.
+ *
  * @class Store
  * @constructor
  * @extends <a href="https://github.com/parch-js/orm" target="_blank">Parch ORM</a>
@@ -18,6 +22,12 @@ export default class Store extends ORM {
     setOwner(this, registry);
   }
 
+  /**
+   * createRecord
+   *
+   * @param name
+   * @returns {undefined}
+   */
   createRecord(name) {
     const serializer = this._lookupSerializer(name);
 
@@ -26,6 +36,12 @@ export default class Store extends ORM {
     );
   }
 
+  /**
+   * findAll
+   *
+   * @param name
+   * @returns {undefined}
+   */
   findAll(name) {
     const serializer = this._lookupSerializer(name);
 
@@ -34,6 +50,12 @@ export default class Store extends ORM {
     );
   }
 
+  /**
+   * findOne
+   *
+   * @param name
+   * @returns {undefined}
+   */
   findOne(name) {
     const serializer = this._lookupSerializer(name);
 
@@ -42,6 +64,12 @@ export default class Store extends ORM {
     );
   }
 
+  /**
+   * queryRecord
+   *
+   * @param name
+   * @returns {undefined}
+   */
   queryRecord(name) {
     const serializer = this._lookupSerializer(name);
 
@@ -50,6 +78,12 @@ export default class Store extends ORM {
     );
   }
 
+  /**
+   * updateRecord
+   *
+   * @param name
+   * @returns {undefined}
+   */
   updateRecord(name) {
     const serializer = this._lookupSerializer(name);
 
@@ -58,6 +92,12 @@ export default class Store extends ORM {
     );
   }
 
+  /**
+   * _lookupSerializer
+   *
+   * @param name
+   * @returns {undefined}
+   */
   _lookupSerializer(name) {
     return getOwner(this).lookup(`serializer:${name}`);
   }

@@ -1,5 +1,10 @@
 "use strict";
 
-import RestSerializer from "@parch-js/rest-serializer";
+import Serializer from "@parch-js/rest-serializer";
 
-export default RestSerializer;
+/**
+ * @class RestSerializer
+ * @constructor
+ * @extends <a href="https://github.com/parch-js/rest-serializer"" target="_blank"> Parch RestSerializer</a>
+ */
+export default class RestSerializer extends Serializer {}
