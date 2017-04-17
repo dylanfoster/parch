@@ -32,6 +32,9 @@ describe("Application", function () {
         database: {
           connection,
           models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
     });
@@ -65,7 +68,15 @@ describe("Application", function () {
         controllers: {
           dir: path.resolve(__dirname, "fixtures", "controllers")
         },
-        database: { connection, models: { dir: path.resolve(__dirname, "fixtures/models") }}
+        database: {
+          connection,
+          models: {
+            dir: path.resolve(__dirname, "fixtures/models")
+          }
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
+        }
       });
     });
 
@@ -92,6 +103,9 @@ describe("Application", function () {
         database: {
           connection,
           models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
 
@@ -128,6 +142,9 @@ describe("Application", function () {
         database: {
           connection,
           models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
       application.map(function () {
@@ -149,6 +166,9 @@ describe("Application", function () {
         database: {
           connection,
           models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
       application.map(function () {

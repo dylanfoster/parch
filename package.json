@@ -6,12 +6,13 @@
   "scripts": {
     "build": "babel src -d lib",
     "build:watch": "chokidar 'src/**' 'test/**/*.js' -c 'npm run build' --initial",
-    "coverage": "NO_DEPRECATION=parch NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- --compilers js:babel-register --recursive --timeout 40000",
+    "coverage": "NO_DEPRECATION=parch NODE_ENV=test nyc mocha --compilers js:babel-register --recursive --timeout 40000",
     "changelog": "conventional-changelog -s -p angular -i CHANGELOG.md",
     "docs": "yuidoc . -o docs",
     "lint": "eslint ./src ./test",
     "prepare-release": "curl -sL https://gist.githubusercontent.com/dylanfoster/35b06db9aaa9237da77eff4a8eec0a22/raw/83ec714ec64f7ec36c5004588aa259354fc87b51/prepare-release.sh | bash -s",
     "prepublish": "npm run build",
+    "pretest": "yarn run build",
     "test": "NO_DEPRECATION=parch NODE_ENV=test mocha --recursive --compilers js:babel-register --timeout 5000",
     "test:cover": "npm run coverage",
     "watch": "chokidar 'src/**' 'test/**/*.js' -c 'npm test' --initial"
@@ -24,60 +25,8 @@
   "author": "Dylan Foster",
   "license": "MIT",
   "repository": "dylanfoster/parch",
-  "devDependencies": {
-    "babel-cli": "^6.10.1",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-es2015": "^6.9.0",
-    "babel-register": "^6.9.0",
-    "chai": "^3.5.0",
-    "chokidar-cli": "^1.2.0",
-    "conventional-changelog-cli": "^1.2.0",
-    "coveralls": "^2.11.9",
-    "del": "^2.2.1",
-    "eslint": "^3.11.1",
-    "eslint-config-unstandard": "^1.4.0",
-    "istanbul": "^1.0.0-alpha.2",
-    "jsdoc": "^3.4.0",
-    "jsonwebtoken": "^7.0.1",
-    "minimatch": "^3.0.3",
-    "mocha": "^3.2.0",
-    "sinon": "^2.1.0",
-    "sinon-chai": "^2.8.0",
-    "sqlite3": "^3.1.4",
-    "stream": "0.0.2",
-    "supertest": "^3.0.0",
-    "yuidoc-lucid-theme": "^0.1.2",
-    "yuidoc-parch-theme": "^1.0.0",
-    "yuidocjs": "^0.10.2"
-  },
-  "eslintConfig": {
-    "extends": "unstandard",
-    "parserOptions": {
-      "sourceType": "module"
-    },
-    "rules": {
-      "max-len": [
-        1,
-        {
-          "code": 100
-        }
-      ],
-      "new-cap": 0,
-      "no-magic-numbers": [
-        2,
-        {
-          "ignore": [
-            -1,
-            0,
-            1
-          ],
-          "ignoreArrayIndexes": true
-        }
-      ]
-    }
-  },
   "dependencies": {
-    "@parch-js/orm": "^0.0.2",
+    "@parch-js/orm": "^0.0.3",
     "bunyan": "^1.8.1",
     "callsite": "^1.0.0",
     "depd": "^1.1.0",
@@ -90,5 +39,55 @@
     "restify-errors": "^4.2.3",
     "restify-jwt": "^0.4.0",
     "sequelize": "^3.23.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.10.1",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-register": "^6.9.0",
+    "chai": "^3.5.0",
+    "chokidar-cli": "^1.2.0",
+    "conventional-changelog-cli": "^1.2.0",
+    "coveralls": "^2.11.9",
+    "del": "^2.2.1",
+    "eslint": "^3.11.1",
+    "eslint-config-unstandard": "^1.4.0",
+    "jsonwebtoken": "^7.0.1",
+    "mocha": "^3.2.0",
+    "nyc": "^10.2.0",
+    "sinon": "^2.1.0",
+    "sinon-chai": "^2.8.0",
+    "sqlite3": "^3.1.4",
+    "stream": "0.0.2",
+    "supertest": "^3.0.0",
+    "yuidoc-lucid-theme": "^0.1.2",
+    "yuidocjs": "^0.10.2"
+  },
+  "eslintConfig": {
+    "extends": "unstandard",
+    "parserOptions": { "sourceType": "module" },
+    "rules": {
+      "max-len": [1, { "code": 100 }],
+      "new-cap": 0,
+      "no-magic-numbers": [
+        2,
+        { "ignore": [-1, 0, 1], "ignoreArrayIndexes": true }
+      ]
+    }
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ],
+    "plugins": [
+      "babel-plugin-add-module-exports"
+    ]
+  },
+  "nyc": {
+    "reporter": [
+      "text",
+      "lcov",
+      "html"
+    ]
   }
 }

@@ -74,7 +74,7 @@ describe("Registry", function () {
     it("throws an error if the lookup mapping doesn't exist", function () {
       expect(function () {
         registry.lookup("service:not-found");
-      }).to.throw("Attempted to lookup unknown module 'not-found'");
+      }).to.throw("Attempted to lookup unknown service 'not-found'");
     });
   });
 

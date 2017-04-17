@@ -9,7 +9,7 @@ import {
   registry
 } from "./fixtures";
 
-describe.only("Store", function () {
+describe("Store", function () {
   let store;
 
   beforeEach(function () {
@@ -43,22 +43,48 @@ describe.only("Store", function () {
   });
 
   describe("#findOne", function () {
+    let foo;
+
     beforeEach(function () {
-      return modelManager.models.Foo.create({ type: "bar" });
+      return modelManager.models.Foo.create({ type: "bar" })
+        .then(_foo => {
+          foo = _foo;
+        });
     });
 
     it("returns a single record by id", function () {
-      return store.findOne("foo", 1).then(res => {
+      return store.findOne("foo", foo.id).then(res => {
         expect(res.foo.type).to.eql("bar");
       });
     });
   });
 
   describe("#queryRecord", function () {
-    it("returns a single record from a query");
+    beforeEach(function () {
+      return modelManager.models.Foo.create({ type: "bar" });
+    });
+
+    it("returns a single record by query", function () {
+      return store.queryRecord("foo", { type: "bar" }).then(res => {
+        expect(res.foo.type).to.eql("bar");
+      });
+    });
   });
 
   describe("updateRecord", function () {
-    it("updates a record");
+    let foo;
+
+    beforeEach(function () {
+      return modelManager.models.Foo.create({ type: "bar" })
+        .then(_foo => {
+          foo = _foo;
+        });
+    });
+
+    it("updates a record", function () {
+      return store.updateRecord("foo", foo.id, { type: "baz" }).then(res => {
+        expect(res.foo.type).to.eql("baz");
+      });
+    });
   });
 });

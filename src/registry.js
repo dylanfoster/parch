@@ -59,7 +59,7 @@ export default class Registry {
   }
 
   /**
-   * Find an object in the registry. If the object isn't found in the registry
+   * Find an object in the registry. If the object isn't found in the registry,
    * lookup will attempt to find it by requiring it in. If the require fails
    * the lookup fails
    *
@@ -78,9 +78,12 @@ export default class Registry {
 
     if (obj) { return obj.instance; }
 
-    obj = this._loadModule(moduleLookup, moduleName);
-
-    assert(obj, `Attempted to lookup unknown module '${moduleName}'`);
+    try {
+      obj = this._loadModule(moduleLookup, moduleName);
+      assert(obj, `Attempted to lookup unknown ${moduleLookup} '${moduleName}'`);
+    } catch (err) {
+      throw err;
+    }
 
     this.register(name, obj);
 
@@ -160,7 +163,7 @@ export default class Registry {
       modules = includeAll({ dirname: this._getLookupDirectory(lookup) });
     } catch (err) {
       if (err.message.match(/dirname/i)) {
-        throw new Error(`Attempted to lookup unknown module '${name}'`);
+        throw new Error(`Attempted to lookup unknown ${lookup} '${name}'`);
       }
 
       throw err;

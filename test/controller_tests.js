@@ -45,7 +45,7 @@ describe("Controller", function () {
       return modelManager.sequelize.drop();
     });
 
-    describe.only("#findAll", function () {
+    describe("#findAll", function () {
       it("returns all records of a model", function () {
         return controller.findAll().then(res => {
           expect(res.users).to.eql([]);
@@ -85,16 +85,19 @@ describe("Controller", function () {
       it("finds a single record by id", function () {
         return modelManager.models.User.create({ firstName: "john" })
           .then(john => controller.findOne(john.id))
-          .then(john => {
-            expect(john.firstName).to.eql("john");
+          .then(res => {
+            expect(res.user.firstName).to.eql("john");
           });
       });
 
       it("allows for finder options", function () {
         return modelManager.models.User.create({ firstName: "john" }).then(
           john => controller.findOne(john.id, { attributes: ["firstName"] })
-        ).then(john => {
-          expect(john.toJSON()).to.eql({ firstName: "john" });
+        ).then(res => {
+          expect(res.user).to.eql({
+            firstName: "john",
+            users: []
+          });
         });
       });
 
@@ -146,8 +149,8 @@ describe("Controller", function () {
       });
 
       it("updates an existing record by id", function () {
-        return controller.updateRecord(user.id, { firstName: "bob" }).then(bob => {
-          expect(bob.firstName).to.eql("bob");
+        return controller.updateRecord(user.id, { firstName: "bob" }).then(res => {
+          expect(res.user.firstName).to.eql("bob");
         });
       });
 

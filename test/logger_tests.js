@@ -7,6 +7,7 @@ import Bunyan from "bunyan";
 import del from "del";
 import { expect } from "chai";
 import restify from "restify";
+import sinon from "sinon";
 import stream from "stream";
 
 import Logger from "../src/logger";
@@ -61,78 +62,100 @@ describe("Logger", function () {
     });
   });
 
-  describe("requests", function () {
-    beforeEach(function () {
-      logger = Logger.create();
-      messages = [];
-      writable = new stream.Writable();
+  describe("serializers", function () {
+    describe("requests", function () {
+      beforeEach(function () {
+        logger = Logger.create();
+        messages = [];
+        writable = new stream.Writable();
 
-      stream.write = message => {
-        messages.push(JSON.parse(message));
-      };
+        stream.write = message => {
+          messages.push(JSON.parse(message));
+        };
 
-      logger.addStream({
-        type: "stream",
-        stream
+        logger.addStream({
+          type: "stream",
+          stream
+        });
       });
-    });
 
-    it("logs allowed properties only", function () {
-      logger.info({
-        req: {
-          body: { foo: "bar" },
+      it("logs allowed properties only", function () {
+        logger.info({
+          req: {
+            body: { foo: "bar" },
+            httpVersion: "1.1",
+            method: "GET",
+            params: { id: "2" },
+            query: { lastName: "heisenburg" },
+            url: "/users"
+          }
+        });
+
+        expect(messages[0].req).to.eql({
           httpVersion: "1.1",
           method: "GET",
           params: { id: "2" },
           query: { lastName: "heisenburg" },
           url: "/users"
-        }
+        });
       });
 
-      expect(messages[0].req).to.eql({
-        httpVersion: "1.1",
-        method: "GET",
-        params: { id: "2" },
-        query: { lastName: "heisenburg" },
-        url: "/users"
+      it("logs nothing if no request is passed", function () {
+        logger.info("foo");
+
+        expect(messages[0].req).to.be.undefined;
       });
-    });
-  });
 
-  describe("responses", function () {
-    beforeEach(function () {
-      logger = Logger.create();
-      messages = [];
-      writable = new stream.Writable();
+      it("uses a custom req serializer", function () {
+        const serializers = { req() { console.log("foo"); return {}; } };
 
-      stream.write = message => {
-        messages.push(JSON.parse(message));
-      };
-
-      logger.addStream({
-        type: "stream",
-        stream
+        logger = Logger.create("api", { serializers });
+        logger.info({ req: { method: "GET" }});
       });
     });
 
-    it("logs allowed properties only", function () {
-      logger.info({
-        res: {
-          body: { },
+    describe("responses", function () {
+      beforeEach(function () {
+        logger = Logger.create();
+        messages = [];
+        writable = new stream.Writable();
+
+        stream.write = message => {
+          messages.push(JSON.parse(message));
+        };
+
+        logger.addStream({
+          type: "stream",
+          stream
+        });
+      });
+
+      it("logs allowed properties only", function () {
+        logger.info({
+          res: {
+            body: { },
+            statusCode: 200,
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        });
+
+        expect(messages[0].res).to.eql({
           statusCode: 200,
           headers: {
             "Content-Type": "application/json"
           }
-        }
+        });
       });
 
-      expect(messages[0].res).to.eql({
-        statusCode: 200,
-        headers: {
-          "Content-Type": "application/json"
-        }
+      it("logs nothing if no response is passed", function () {
+        logger.info("foo");
+
+        expect(messages[0].res).to.be.undefined;
       });
     });
+
   });
 
   describe("errors", function () {

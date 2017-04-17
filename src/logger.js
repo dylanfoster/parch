@@ -12,15 +12,10 @@ class Logger {
     name = name || "api";
 
     const serializers = options.serializers || {};
-
-    if (!serializers.req) {
-      serializers.req = this.req;
-    }
-    if (!serializers.res) {
-      serializers.res = this.res;
-    }
-
     const streams = [];
+
+    serializers.req = serializers.req || this.req;
+    serializers.res = serializers.res || this.res;
 
     if (options.dir) {
       streams.push({

@@ -44,7 +44,10 @@ describe("initializer | logger", function () {
         controllers: {
           dir: path.resolve(__dirname, "../fixtures/controllers")
         },
-        log: Bunyan.createLogger({ name: "user", streams: [] })
+        log: Bunyan.createLogger({ name: "user", streams: [] }),
+        serializers: {
+          dir: path.resolve(__dirname, "../fixtures", "serializers")
+        }
       });
 
       initializer.initialize(app, registry);

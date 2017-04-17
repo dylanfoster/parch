@@ -42,6 +42,22 @@ export default class Store extends ORM {
     );
   }
 
+  queryRecord(name) {
+    const serializer = this._lookupSerializer(name);
+
+    return super.queryRecord(...arguments).then(
+      record => serializer.normalizeResponse(record, "queryRecord", name)
+    );
+  }
+
+  updateRecord(name) {
+    const serializer = this._lookupSerializer(name);
+
+    return super.updateRecord(...arguments).then(
+      record => serializer.normalizeResponse(record, "updateRecord", name)
+    );
+  }
+
   _lookupSerializer(name) {
     return getOwner(this).lookup(`serializer:${name}`);
   }
