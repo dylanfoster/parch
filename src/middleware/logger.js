@@ -1,6 +1,6 @@
 "use strict";
 
-export default function (options = {}) {
+export default function (options) {
   return function logger(req, res, next) {
     const log = options.log;
 
