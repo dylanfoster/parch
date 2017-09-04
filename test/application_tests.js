@@ -181,7 +181,7 @@ describe("Application", function () {
     });
   });
 
-  describe.skip("logging", function () {
+  describe("logging", function () {
     let loggingDir, messages, writable;
 
     beforeEach(function () {
@@ -205,7 +205,12 @@ describe("Application", function () {
           connection,
           models: { dir: path.resolve(__dirname, "fixtures/models") }
         },
-        logging: { dir: loggingDir }
+        logging: {
+          dir: loggingDir
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
+        }
       });
 
       application.map(function () {
@@ -262,6 +267,9 @@ describe("Application", function () {
               return { url: req.url };
             }
           }
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
 
@@ -298,6 +306,9 @@ describe("Application", function () {
               return { statusCode: res.statusCode };
             }
           }
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
 
