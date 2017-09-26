@@ -29,7 +29,7 @@ const DEFAULT_LISTEN_PORT = 3000;
  */
 class Application {
   /* eslint-disable complexity */
-  constructor(options = {}) {
+  constructor(options) {
     const projectDirectory = this._getProjectDirectory();
     const registry = this.registry = new Registry();
 

@@ -39,15 +39,7 @@ class Loader {
       const moduleName = module.toLowerCase().replace("_", "").replace("-", "");
       const key = inflect.singularize(moduleName);
 
-      if (modules[module].hasOwnProperty("default")) {
-        /**
-         * HACK: Babel no longer exports [default], though I'm pretty sure I have
-         * that transform installed so....¯\_(ツ)_/¯
-         */
-        modules[key] = modules[module].default;
-      } else {
-        modules[key] = modules[module];
-      }
+      modules[key] = modules[module];
 
       delete modules[module];
     });
