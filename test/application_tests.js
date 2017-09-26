@@ -247,7 +247,6 @@ describe("Application", function () {
             try {
               log = JSON.parse(line);
             } catch (err3) {
-              console.log(fileData.toString().split("\n"));
               throw err3;
             }
 
