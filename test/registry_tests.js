@@ -74,7 +74,7 @@ describe("Registry", function () {
     it("throws an error if the lookup mapping doesn't exist", function () {
       expect(function () {
         registry.lookup("service:not-found");
-      }).to.throw("Attempted to lookup unknown module 'not-found'");
+      }).to.throw("Attempted to lookup unknown service 'not-found'");
     });
   });
 
@@ -106,12 +106,32 @@ describe("Registry", function () {
       expect(obj.fooService).to.eql({ foo: "bar" });
     });
 
+    it("only defines a getter", function () {
+      const obj = { bar: "baz" };
+
+      registry.register("service:foo", { foo: "bar" });
+      registry.inject(obj, "service:foo", "fooService");
+      obj.fooService = "foo";
+
+      expect(obj.fooService).to.eql({ foo: "bar" });
+    });
+
     it("throws an error if the object hasn't been registered", function () {
       const obj = { bar: "baz" };
 
       expect(function () {
         registry.inject(obj, "service:foo");
       }).to.throw("Attempted to inject unknown object 'service:foo'");
+    });
+
+    it("throws an error for an invalid object", function () {
+      const obj = { bar: "baz" };
+
+      registry.register("module:invalid", null);
+
+      expect(function () {
+        registry.inject(obj, "module:invalid");
+      }).to.throw("Attempted to inject unknown object 'module:invalid'");
     });
   });
 });

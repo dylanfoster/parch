@@ -19,7 +19,8 @@ describe("initializer | server", function () {
 
       const server = registry.lookup("service:server");
 
-      expect(server).to.be.instanceof(Server);
+      expect(server).to.be.ok;
+      expect(server.listen).to.be.a("function");
     });
   });
 });

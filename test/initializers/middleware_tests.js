@@ -28,5 +28,25 @@ describe("initializer | middleware", function () {
         }
       });
     });
+
+    it("registers default authentication", function () {
+      const config = registry.lookup("config:main");
+
+      config.authentication = {};
+
+      initializer.initialize(application, registry);
+
+      const server = registry.lookup("service:server");
+
+      initializer.middleware.forEach(ware => {
+        if (Array.isArray(ware)) {
+          ware.forEach(w => {
+            expect(server.chain).to.include(w);
+          });
+        } else {
+          expect(server.chain).to.include(ware);
+        }
+      });
+    });
   });
 });
