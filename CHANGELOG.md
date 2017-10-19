@@ -1,3 +1,14 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/dylanfoster/parch/compare/1.1.1...1.2.0) (2017-10-19)
+
+
+### Features
+
+* **application:** add support for project initializers ([dfbacab](https://github.com/dylanfoster/parch/commit/dfbacab))
+* **loader:** remove type suffix from module name ([3e8c2f3](https://github.com/dylanfoster/parch/commit/3e8c2f3))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/dylanfoster/parch/compare/1.1.0...1.1.1) (2017-04-09)
 

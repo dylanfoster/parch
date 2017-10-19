@@ -23,8 +23,7 @@ describe("initializer | logger", function () {
       const logger = registry.lookup("service:logger");
 
       expect(logger).to.be.ok;
-      expect(logger).to.be.instanceof(Bunyan);
-      expect(application.logger).to.be.instanceof(Bunyan);
+      expect(logger.info).to.be.ok;
     });
 
     it("registers the logger if it is user passed", function () {
@@ -52,8 +51,7 @@ describe("initializer | logger", function () {
       const logger = registry.lookup("service:logger");
 
       expect(logger).to.be.ok;
-      expect(logger).to.be.instanceof(Bunyan);
-      expect(app.logger).to.be.instanceof(Bunyan);
+      expect(logger.info).to.be.ok;
     });
   });
 });

@@ -1,29 +1,29 @@
 {
   "name": "parch",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Restify + Sequelize",
   "main": "index.js",
-  "scripts": {
-    "build": "babel src -d lib",
-    "build:watch": "chokidar 'src/**' 'test/**/*.js' -c 'npm run build' --initial",
-    "coverage": "NO_DEPRECATION=parch NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- --compilers js:babel-register --recursive --timeout 40000",
-    "changelog": "conventional-changelog -s -p angular -i CHANGELOG.md",
-    "docs": "yuidoc . -o docs",
-    "lint": "eslint ./src ./test",
-    "prepare-release": "curl -sL https://gist.githubusercontent.com/dylanfoster/35b06db9aaa9237da77eff4a8eec0a22/raw/83ec714ec64f7ec36c5004588aa259354fc87b51/prepare-release.sh | bash -s",
-    "prepublish": "npm run build",
-    "test": "NO_DEPRECATION=parch NODE_ENV=test mocha --recursive --compilers js:babel-register --timeout 5000",
-    "test:cover": "npm run coverage",
-    "watch": "chokidar 'src/**' 'test/**/*.js' -c 'npm test' --initial"
-  },
+  "repository": "dylanfoster/parch",
+  "author": "Dylan Foster",
+  "license": "MIT",
   "keywords": [
     "restify",
     "sequelize",
     "restful"
   ],
-  "author": "Dylan Foster",
-  "license": "MIT",
-  "repository": "dylanfoster/parch",
+  "scripts": {
+    "build": "babel src -d lib",
+    "changelog": "conventional-changelog -s -p angular -i CHANGELOG.md",
+    "cover": "nyc yarn test",
+    "docs": "yuidoc . -o docs",
+    "lint": "eslint ./src ./test",
+    "prepare-release": "curl -sL https://gist.githubusercontent.com/dylanfoster/35b06db9aaa9237da77eff4a8eec0a22/raw/83ec714ec64f7ec36c5004588aa259354fc87b51/prepare-release.sh | bash -s",
+    "prepublish": "yarn build",
+    "test": "NO_DEPRECATION=parch NODE_ENV=test mocha --recursive --compilers js:babel-register --timeout 6000",
+    "watch:test": "chokidar 'src/**' 'test/**/*.js' -c 'yarn test' --initial",
+    "watch:build": "chokidar 'src/**' 'test/**/*.js' -c 'yarn build' --initial",
+    "watch:cover": "chokidar 'src/**' 'test/**/*.js' -c 'yarn cover' --initial"
+  },
   "devDependencies": {
     "babel-cli": "^6.10.1",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -36,19 +36,31 @@
     "del": "^2.2.1",
     "eslint": "^3.11.1",
     "eslint-config-unstandard": "^1.4.0",
-    "istanbul": "^1.0.0-alpha.2",
-    "jsdoc": "^3.4.0",
     "jsonwebtoken": "^7.0.1",
-    "minimatch": "^3.0.3",
     "mocha": "^3.2.0",
+    "nyc": "^11.2.1",
     "sinon": "^2.1.0",
     "sinon-chai": "^2.8.0",
     "sqlite3": "^3.1.4",
     "stream": "0.0.2",
     "supertest": "^3.0.0",
     "yuidoc-lucid-theme": "^0.1.2",
-    "yuidoc-parch-theme": "^1.0.0",
     "yuidocjs": "^0.10.2"
+  },
+  "dependencies": {
+    "@parch-js/orm": "^0.0.2",
+    "bunyan": "^1.8.1",
+    "callsite": "^1.0.0",
+    "depd": "^1.1.0",
+    "include-all": "^4.0.3",
+    "inflect": "^0.3.0",
+    "lodash": "^4.13.1",
+    "pg": "^6.1.2",
+    "pg-hstore": "^2.3.2",
+    "restify": "^4.1.0",
+    "restify-errors": "^4.2.3",
+    "restify-jwt": "^0.4.0",
+    "sequelize": "^3.23.3"
   },
   "eslintConfig": {
     "extends": "unstandard",
@@ -76,19 +88,11 @@
       ]
     }
   },
-  "dependencies": {
-    "@parch-js/orm": "^0.0.2",
-    "bunyan": "^1.8.1",
-    "callsite": "^1.0.0",
-    "depd": "^1.1.0",
-    "include-all": "^4.0.3",
-    "inflect": "^0.3.0",
-    "lodash": "^4.13.1",
-    "pg": "^6.1.2",
-    "pg-hstore": "^2.3.2",
-    "restify": "^4.1.0",
-    "restify-errors": "^4.2.3",
-    "restify-jwt": "^0.4.0",
-    "sequelize": "^3.23.3"
+  "nyc": {
+    "reporter": [
+      "text",
+      "lcov",
+      "html"
+    ]
   }
 }

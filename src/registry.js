@@ -40,19 +40,23 @@ export default class Registry {
 
     assert(hasBeenInjected, `Attempted to inject unknown object '${lookup}'`);
 
-    const obj = this.lookup(lookup);
     const [prop] = lookup.split(":");
     const property = propertyName || prop;
+    let obj;
 
     if (Object.prototype.hasOwnProperty.call(context, property)) { return; }
 
-    if (obj) {
+    try {
+      obj = this.lookup(lookup);
+      assert(obj, `Attempted to inject unknown object '${lookup}'`);
       Object.defineProperty(context, property, {
         enumerable: false,
         configurable: false,
         get() { return obj; },
         set() {}
       });
+    } catch (err) {
+      throw err;
     }
 
     return context;
@@ -78,9 +82,12 @@ export default class Registry {
 
     if (obj) { return obj.instance; }
 
-    obj = this._loadModule(moduleLookup, moduleName);
-
-    assert(obj, `Attempted to lookup unknown module '${moduleName}'`);
+    try {
+      obj = this._loadModule(moduleLookup, moduleName);
+      assert(obj, `Attempted to lookup unknown ${moduleLookup} '${moduleName}'`);
+    } catch (err) {
+      throw err;
+    }
 
     this.register(name, obj);
 
@@ -159,11 +166,7 @@ export default class Registry {
     try {
       modules = includeAll({ dirname: this._getLookupDirectory(lookup) });
     } catch (err) {
-      if (err.message.match(/dirname/i)) {
-        throw new Error(`Attempted to lookup unknown module '${name}'`);
-      }
-
-      throw err;
+      throw new Error(`Attempted to lookup unknown ${lookup} '${name}'`);
     }
 
     // TODO: this will need to be configurable somehow (or better regex)

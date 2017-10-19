@@ -23,6 +23,29 @@ import { connection } from "./fixtures";
 describe("Application", function () {
   let application;
 
+  describe("#runProjectInitializers", function () {
+    beforeEach(function () {
+      application = new Application({
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        initializers: {
+          dir: path.resolve(__dirname, "fixtures", "initializers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        }
+      });
+    });
+
+    it("runs a project's initializers", function () {
+      return application.runProjectInitializers().then(() => {
+        expect(application.foo.foo).to.eql("bar");
+      });
+    });
+  });
+
   describe("#map", function () {
     beforeEach(function () {
       application = new Application({
@@ -65,8 +88,15 @@ describe("Application", function () {
         controllers: {
           dir: path.resolve(__dirname, "fixtures", "controllers")
         },
-        database: { connection, models: { dir: path.resolve(__dirname, "fixtures/models") }}
+        initializers: {
+          dir: path.resolve(__dirname, "fixtures", "initializers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        }
       });
+      sinon.spy(application, "runProjectInitializers");
     });
 
     afterEach(function () {
@@ -75,6 +105,7 @@ describe("Application", function () {
 
     it("starts the application", function () {
       return application.start().then(() => {
+        expect(application.runProjectInitializers).to.have.been.called;
         expect(mockRestify.listen).to.have.been.calledWith(3000);
       });
     });
@@ -216,7 +247,6 @@ describe("Application", function () {
             try {
               log = JSON.parse(line);
             } catch (err3) {
-              console.log(fileData.toString().split("\n"));
               throw err3;
             }
 
