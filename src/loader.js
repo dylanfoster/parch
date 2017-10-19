@@ -15,18 +15,8 @@ class Loader {
     return this.modules[name];
   }
 
-  _getFilter(filter) {
-    filter = filter || this._getDefaultFilterString();
-
-    return new RegExp(filter, "i");
-  }
-
-  _getDefaultFilterString() {
-    return `(.+)${this.type}\\.js$`;
-  }
-
   _getDefaultFilter() {
-    return this._getFilter();
+    return /(.+).js$/i;
   }
 
   _loadModules() {
@@ -36,12 +26,18 @@ class Loader {
     });
 
     Object.keys(modules).forEach(module => {
-      const moduleName = module.toLowerCase().replace("_", "").replace("-", "");
+      const moduleName = module.toLowerCase()
+        .replace("_", "")
+        .replace("-", "")
+        .replace(this.type, "");
+
       const key = inflect.singularize(moduleName);
 
-      modules[key] = modules[module];
+      if (!modules[key]) {
+        modules[key] = modules[module];
 
-      delete modules[module];
+        delete modules[module];
+      }
     });
 
     return modules;
