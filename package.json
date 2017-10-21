@@ -48,6 +48,7 @@
     "yuidocjs": "^0.10.2"
   },
   "dependencies": {
+    "@parch-js/json-serializer": "^0.0.1",
     "@parch-js/orm": "^0.0.2",
     "bunyan": "^1.8.1",
     "callsite": "^1.0.0",
