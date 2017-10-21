@@ -29,7 +29,7 @@ npm install --save parch
 - [Model](#model)
 - [Associations](#associations-wip)
 - [Authentication](#authentication-and-authorization)
-- [Application Initializers](#initializers)
+- [Application Initializers](#application-initializers)
 - [Logging](#logging)
 - [Error handling](#error-handling-and-responses)
   - [Error Codes](#errors)
