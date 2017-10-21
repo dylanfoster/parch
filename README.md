@@ -29,6 +29,7 @@ npm install --save parch
 - [Model](#model)
 - [Associations](#associations-wip)
 - [Authentication](#authentication-and-authorization)
+- [Application Initializers](#initializers)
 - [Logging](#logging)
 - [Error handling](#error-handling-and-responses)
   - [Error Codes](#errors)
@@ -63,6 +64,9 @@ const parch = new parch.Application({
     models: {
       dir: path.resolve(__dirname, "models")
     }
+  },
+  initializers: {
+    dir: path.resolve(__dirname, "controllers")
   },
   logging: {
     dir: path.resolve(__dirname, 'logs'),
@@ -179,7 +183,7 @@ app.map(function () {
 
 ### Controller
 
-`lib/controllers/user_controller.js`
+`lib/controllers/users.js`
 
 ```javascript
 const parch = require("parch");
@@ -335,31 +339,6 @@ class UserModel extends parch.Model {
 }
 ```
 
-## Associations [WIP]
-
-parch loads associations of a record as an array of ids.
-
-```javascript
-class UserController extends parch.Controller {
-  constructor() {
-    super();
-  }
-
-  show(req, res, next) {
-    this.findOne(req.params.id).then(user => {
-      /**
-       *  {
-       *    user: {
-       *      firstName: "John",
-       *      posts: [1, 2, 3]
-       *    }
-       *  }
-       */
-    });
-  }
-}
-```
-
 ## Authentication and Authorization
 
 Authorization is handled using [jwt](https://jwt.io/), with more
@@ -416,6 +395,33 @@ app.map(function () {
 
 ```bash
 curl http://my-server.com/protectedRoute -H 'Authorization: Bearer <token>'
+```
+
+## Application Initializers
+
+Initializers allow you to accmomplish many things during application boot.
+Registering mixins, add custom application logic, and adding services can all be
+done in an initializer and attached to the application instance. Parch will run
+your initializers in alphanumeric order. This means that if you need to run them
+in a specific order you should prefix them in a way that will accomplish that.
+
+
+`your-app/lib/initializers/my-awesome-initializer.js`
+
+```javascript
+"use strict";
+
+const Worker = require("../worker");
+
+module.exports = {
+  initialize(appInstance, registry) {
+    appInstance.foo = "bar";
+
+    app.worker = new Worker();
+  },
+
+  name: "my-awesome-initializer"
+};
 ```
 
 ## Logging
@@ -480,6 +486,8 @@ show(req, res, next) {
     - `connection(Object)` [Sequelize connection options](http://docs.sequelizejs.com/en/latest/docs/getting-started/)
     - `models`
       - `dir(String)`: The path to your models directory. **Default**: `__dirname/models`
+  - **initializers**
+    - `dir(String)`: The path to your initializers directory. **Default**: `__dirname/initializers`
   - **logging**
     - `dir(String)`: Path where logs should be saved
     - `serializers(Object)`:
