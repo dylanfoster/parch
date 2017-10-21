@@ -29,6 +29,7 @@ npm install --save parch
 - [Model](#model)
 - [Associations](#associations-wip)
 - [Authentication](#authentication-and-authorization)
+- [Application Initializers](#initializers)
 - [Logging](#logging)
 - [Error handling](#error-handling-and-responses)
   - [Error Codes](#errors)
@@ -63,6 +64,9 @@ const parch = new parch.Application({
     models: {
       dir: path.resolve(__dirname, "models")
     }
+  },
+  initializers: {
+    dir: path.resolve(__dirname, "controllers")
   },
   logging: {
     dir: path.resolve(__dirname, 'logs'),
@@ -416,6 +420,33 @@ app.map(function () {
 
 ```bash
 curl http://my-server.com/protectedRoute -H 'Authorization: Bearer <token>'
+```
+
+## Application Initializers
+
+Initializers allow you to accmomplish many things during application boot.
+Registering mixins, add custom application logic, and adding services can all be
+done in an initializer and attached to the application instance. Parch will run
+your initializers in alphanumeric order. This means that if you need to run them
+in a specific order you should prefix them in a way that will accomplish that.
+
+
+`your-app/lib/initializers/my-awesome-initializer.js`
+
+```javascript
+"use strict";
+
+const Worker = require("../worker");
+
+module.exports = {
+  initialize(appInstance, registry) {
+    appInstance.foo = "bar";
+
+    app.worker = new Worker();
+  },
+
+  name: "my-awesome-initializer"
+};
 ```
 
 ## Logging
