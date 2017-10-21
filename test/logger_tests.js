@@ -107,7 +107,7 @@ describe("Logger", function () {
       });
 
       it("uses a custom req serializer", function () {
-        const serializers = { req() { console.log("foo"); return {}; } };
+        const serializers = { req() { return {}; } };
 
         logger = Logger.create("api", { serializers });
         logger.info({ req: { method: "GET" }});

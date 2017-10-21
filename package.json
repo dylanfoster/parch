@@ -1,6 +1,6 @@
 {
   "name": "parch",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Restify + Sequelize",
   "main": "index.js",
   "repository": "dylanfoster/parch",
@@ -20,8 +20,8 @@
     "prepare-release": "curl -sL https://gist.githubusercontent.com/dylanfoster/35b06db9aaa9237da77eff4a8eec0a22/raw/83ec714ec64f7ec36c5004588aa259354fc87b51/prepare-release.sh | bash -s",
     "prepublish": "yarn build",
     "pretest": "yarn build",
-    "test": "NO_DEPRECATION=parch NODE_ENV=test mocha --recursive --compilers js:babel-register --timeout 5000",
-    "watch": "chokidar 'src/**' 'test/**/*.js' -c 'yarn test' --initial",
+    "test": "NO_DEPRECATION=parch NODE_ENV=test mocha --recursive --compilers js:babel-register --timeout 6000",
+    "watch:test": "chokidar 'src/**' 'test/**/*.js' -c 'yarn test' --initial",
     "watch:build": "chokidar 'src/**' 'test/**/*.js' -c 'yarn build' --initial",
     "watch:cover": "chokidar 'src/**' 'test/**/*.js' -c 'yarn cover' --initial"
   },
@@ -39,7 +39,7 @@
     "eslint-config-unstandard": "^1.4.0",
     "jsonwebtoken": "^7.0.1",
     "mocha": "^3.2.0",
-    "nyc": "^10.2.0",
+    "nyc": "^11.2.1",
     "sinon": "^2.1.0",
     "sinon-chai": "^2.8.0",
     "sqlite3": "^3.1.4",

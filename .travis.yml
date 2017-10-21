@@ -2,15 +2,13 @@ sudo: false
 language: node_js
 node_js:
 - '6'
-- '5'
-- '4'
+- '8'
+- node
 os:
 - osx
 - linux
 cache:
   yarn: true
-  directories:
-    - $HOME/.npm
 before_install:
 - yarn config set spin false
 script: yarn cover

@@ -1,6 +1,9 @@
 "use strict";
 
-import path from "path";
+import {
+  dirname,
+  resolve
+} from "path";
 
 import callsite from "callsite";
 import includeAll from "include-all";
@@ -29,16 +32,23 @@ const DEFAULT_LISTEN_PORT = 3000;
  */
 class Application {
   /* eslint-disable complexity */
-  constructor(options = {}) {
+  constructor(options) {
     const projectDirectory = this._getProjectDirectory();
     const registry = this.registry = new Registry();
 
-    this.DEFAULT_CONTROLLER_LOOKUP_PATH = path.resolve(
+    this.DEFAULT_CONTROLLER_LOOKUP_PATH = resolve(
       projectDirectory,
       "controllers"
     );
-    this.DEFAULT_MODEL_LOOKUP_PATH = path.resolve(projectDirectory, "models");
-    this.DEFAULT_SERIALIZER_LOOKUP_PATH = path.resolve(projectDirectory, "serializers");
+    this.DEFAULT_INITIALIZERS_LOOKUP_PATH = resolve(
+      projectDirectory,
+      "initializers"
+    );
+    this.DEFAULT_MODEL_LOOKUP_PATH = resolve(projectDirectory, "models");
+    this.DEFAULT_SERIALIZER_LOOKUP_PATH = resolve(
+      projectDirectory,
+      "serializers"
+    );
     options = this._configure(options);
 
     registry.register("config:main", options);
@@ -66,6 +76,26 @@ class Application {
     return this.registry.lookup("service:server");
   }
 
+  listen(port) {
+    return new Promise(done => {
+      this.app.listen(port, () => done());
+    });
+  }
+
+  runProjectInitializers() {
+    const config = this.registry.lookup("config:main");
+    const initializersPath = config.initializers.dir;
+    const initializerModules = includeAll({
+      dirname: initializersPath,
+      filter: /(.+).js$/
+    });
+    const initializers = Object.keys(initializerModules);
+
+    return Promise.all(initializers.map(name =>
+      initializerModules[name].initialize(this, this.registry)
+    ));
+  }
+
   /**
    * starts listening on the defined port
    *
@@ -74,9 +104,7 @@ class Application {
    * @return {Promise<undefined, Error>}
    */
   start(port = DEFAULT_LISTEN_PORT) {
-    return new Promise((resolve, reject) => {
-      this.app.listen(port, () => { resolve(); });
-    });
+    return this.runProjectInitializers().then(() => this.listen(port));
   }
 
   /**
@@ -94,6 +122,8 @@ class Application {
     config.database.connection = config.database.connection || DEFAULT_CONNECTION_SETTINGS;
     config.database.models = config.database.models || {};
     config.database.models.dir = config.database.models.dir || this.DEFAULT_MODEL_LOOKUP_PATH;
+    config.initializers = config.initializers || {};
+    config.initializers.dir = config.initializers.dir || this.DEFAULT_INITIALIZERS_LOOKUP_PATH;
     config.logging = config.logging || {};
     config.serializers = config.serializers || {};
     config.serializers.dir = config.serializers.dir || this.DEFAULT_SERIALIZER_LOOKUP_PATH;
@@ -112,7 +142,7 @@ class Application {
    */
   _getProjectDirectory() {
     const caller = callsite()[2].getFileName();
-    const projectDirectory = path.dirname(caller);
+    const projectDirectory = dirname(caller);
 
     return projectDirectory;
   }
