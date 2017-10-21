@@ -183,7 +183,7 @@ app.map(function () {
 
 ### Controller
 
-`lib/controllers/user_controller.js`
+`lib/controllers/users.js`
 
 ```javascript
 const parch = require("parch");
@@ -339,31 +339,6 @@ class UserModel extends parch.Model {
 }
 ```
 
-## Associations [WIP]
-
-parch loads associations of a record as an array of ids.
-
-```javascript
-class UserController extends parch.Controller {
-  constructor() {
-    super();
-  }
-
-  show(req, res, next) {
-    this.findOne(req.params.id).then(user => {
-      /**
-       *  {
-       *    user: {
-       *      firstName: "John",
-       *      posts: [1, 2, 3]
-       *    }
-       *  }
-       */
-    });
-  }
-}
-```
-
 ## Authentication and Authorization
 
 Authorization is handled using [jwt](https://jwt.io/), with more
@@ -511,6 +486,8 @@ show(req, res, next) {
     - `connection(Object)` [Sequelize connection options](http://docs.sequelizejs.com/en/latest/docs/getting-started/)
     - `models`
       - `dir(String)`: The path to your models directory. **Default**: `__dirname/models`
+  - **initializers**
+    - `dir(String)`: The path to your initializers directory. **Default**: `__dirname/initializers`
   - **logging**
     - `dir(String)`: Path where logs should be saved
     - `serializers(Object)`:
