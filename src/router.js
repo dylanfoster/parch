@@ -209,16 +209,24 @@ class Router {
    */
   _loadControllers() {
     const controllerLoader = getOwner(this).lookup("loader:controller");
+    const modelLoader = getOwner(this).lookup("loader:model");
     const { modules: controllers } = controllerLoader;
+    const { modules: models } = modelLoader;
 
     Object.keys(controllers).forEach(controller => {
       const Klass = controllers[controller];
       const instance = new Klass(getOwner(this));
       const instanceName = inflect.singularize(instance.name);
       const registry = getOwner(this);
-      const serializer = this._lookupSerializer(instanceName);
 
       registry.register(`controller:${instanceName}`, instance);
+    });
+
+    Object.keys(models).forEach(model => {
+      const instanceName = inflect.singularize(model);
+      const registry = getOwner(this);
+      const serializer = this._lookupSerializer(instanceName);
+
       registry.register(`serializer:${instanceName}`, serializer);
     });
   }
@@ -235,6 +243,11 @@ class Router {
    */
   _lookupSerializer(name) {
     const serializerLoader = getOwner(this).lookup("loader:serializer");
+
+    if (!serializerLoader) {
+      return new JSONSerializer();
+    }
+
     const { modules: serializers } = serializerLoader;
     const Serializer = serializers[name];
     let serializer;
