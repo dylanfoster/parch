@@ -63,7 +63,7 @@ export default class Registry {
   }
 
   /**
-   * Find an object in the registry. If the object isn't found in the registry
+   * Find an object in the registry. If the object isn't found in the registry,
    * lookup will attempt to find it by requiring it in. If the require fails
    * the lookup fails
    *

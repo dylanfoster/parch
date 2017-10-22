@@ -29,12 +29,15 @@ describe("Application", function () {
         controllers: {
           dir: path.resolve(__dirname, "fixtures", "controllers")
         },
-        initializers: {
-          dir: path.resolve(__dirname, "fixtures", "initializers")
-        },
         database: {
           connection,
           models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        initializers: {
+          dir: path.resolve(__dirname, "fixtures", "initializers")
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
     });
@@ -55,6 +58,9 @@ describe("Application", function () {
         database: {
           connection,
           models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
     });
@@ -88,12 +94,15 @@ describe("Application", function () {
         controllers: {
           dir: path.resolve(__dirname, "fixtures", "controllers")
         },
-        initializers: {
-          dir: path.resolve(__dirname, "fixtures", "initializers")
-        },
         database: {
           connection,
           models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        initializers: {
+          dir: path.resolve(__dirname, "fixtures", "initializers")
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
       sinon.spy(application, "runProjectInitializers");
@@ -123,6 +132,9 @@ describe("Application", function () {
         database: {
           connection,
           models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
 
@@ -159,6 +171,9 @@ describe("Application", function () {
         database: {
           connection,
           models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
       application.map(function () {
@@ -180,6 +195,9 @@ describe("Application", function () {
         database: {
           connection,
           models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
       application.map(function () {
@@ -192,7 +210,7 @@ describe("Application", function () {
     });
   });
 
-  describe.skip("logging", function () {
+  describe("logging", function () {
     let loggingDir, messages, writable;
 
     beforeEach(function () {
@@ -216,7 +234,10 @@ describe("Application", function () {
           connection,
           models: { dir: path.resolve(__dirname, "fixtures/models") }
         },
-        logging: { dir: loggingDir }
+        logging: { dir: loggingDir },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
+        }
       });
 
       application.map(function () {
@@ -272,6 +293,9 @@ describe("Application", function () {
               return { url: req.url };
             }
           }
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
 
@@ -308,6 +332,9 @@ describe("Application", function () {
               return { statusCode: res.statusCode };
             }
           }
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
         }
       });
 
@@ -327,6 +354,30 @@ describe("Application", function () {
           expect(messages[0].req).to.not.have.any.keys("headers");
           done();
         });
+    });
+  });
+
+  describe("serializers", function () {
+    it("uses JSONSerializer by default", function () {
+      application = new Application({
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        logging: {
+          serializers: {
+            res(res) {
+              return { statusCode: res.statusCode };
+            }
+          }
+        }
+      });
+      application.map(function () {
+        this.resource("user");
+      });
     });
   });
 });

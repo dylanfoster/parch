@@ -19,7 +19,8 @@
     "lint": "eslint ./src ./test",
     "prepare-release": "curl -sL https://gist.githubusercontent.com/dylanfoster/35b06db9aaa9237da77eff4a8eec0a22/raw/83ec714ec64f7ec36c5004588aa259354fc87b51/prepare-release.sh | bash -s",
     "prepublish": "yarn build",
-    "test": "NO_DEPRECATION=parch NODE_ENV=test mocha --recursive --compilers js:babel-register --timeout 6000",
+    "pretest": "yarn build",
+    "test": "NO_DEPRECATION=parch NODE_ENV=test mocha --recursive --compilers js:babel-register --timeout 12000",
     "watch:test": "chokidar 'src/**' 'test/**/*.js' -c 'yarn test' --initial",
     "watch:build": "chokidar 'src/**' 'test/**/*.js' -c 'yarn build' --initial",
     "watch:cover": "chokidar 'src/**' 'test/**/*.js' -c 'yarn cover' --initial"
@@ -48,6 +49,7 @@
     "yuidocjs": "^0.10.2"
   },
   "dependencies": {
+    "@parch-js/json-serializer": "^0.0.1",
     "@parch-js/orm": "^0.0.2",
     "bunyan": "^1.8.1",
     "callsite": "^1.0.0",
@@ -87,6 +89,14 @@
         }
       ]
     }
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ],
+    "plugins": [
+      "babel-plugin-add-module-exports"
+    ]
   },
   "nyc": {
     "reporter": [

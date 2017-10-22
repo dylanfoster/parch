@@ -3,7 +3,11 @@
 import { expect } from "chai";
 
 import Controller from "../src/controller";
-import { modelManager, registry } from "./fixtures";
+import {
+  application,
+  modelManager,
+  registry
+} from "./fixtures";
 
 describe("Controller", function () {
   let controller;
@@ -33,6 +37,11 @@ describe("Controller", function () {
     beforeEach(function () {
       class UserController extends Controller {}
       controller = new UserController(registry);
+
+      application.map(function () {
+        this.resource("user");
+      });
+
       return modelManager.sequelize.sync({ force: true });
     });
 

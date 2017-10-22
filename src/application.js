@@ -39,6 +39,10 @@ class Application {
     this.DEFAULT_CONTROLLER_LOOKUP_PATH = resolve(projectDirectory, "controllers");
     this.DEFAULT_INITIALIZERS_LOOKUP_PATH = resolve(projectDirectory, "initializers");
     this.DEFAULT_MODEL_LOOKUP_PATH = resolve(projectDirectory, "models");
+    this.DEFAULT_SERIALIZER_LOOKUP_PATH = resolve(
+      projectDirectory,
+      "serializers"
+    );
     options = this._configure(options);
 
     registry.register("config:main", options);
@@ -47,9 +51,9 @@ class Application {
     this._initialize("loaders");
     this._initialize("model-manager");
     this._initialize("models");
-    this._initialize("store");
     this._initialize("middleware");
     this._initialize("router");
+    this._initialize("store");
     this._initialize("application");
   }
 
@@ -115,6 +119,8 @@ class Application {
     config.initializers = config.initializers || {};
     config.initializers.dir = config.initializers.dir || this.DEFAULT_INITIALIZERS_LOOKUP_PATH;
     config.logging = config.logging || {};
+    config.serializers = config.serializers || {};
+    config.serializers.dir = config.serializers.dir || this.DEFAULT_SERIALIZER_LOOKUP_PATH;
     config.server = config.server || {};
     config.server.middlewares = config.server.middlewares || [];
 
