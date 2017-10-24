@@ -94,7 +94,7 @@ describe("Controller", function () {
         return modelManager.models.User.create({ firstName: "john" }).then(
           john => controller.findOne(john.id, { attributes: ["firstName"] })
         ).then(res => {
-          expect(res.user).to.eql({
+          expect(res.toJSON().user).to.eql({
             firstName: "john",
             users: []
           });
