@@ -13,11 +13,15 @@ module.exports = {
       type: "model",
       path: config.database.models.dir
     });
-    const serializerLoader = new Loader({
-      filter: /(.*).js$/,
-      type: "serializer",
-      path: config.serializers.dir
-    });
+    let serializerLoader;
+
+    try {
+      serializerLoader = new Loader({
+        filter: /(.*).js$/,
+        type: "serializer",
+        path: config.serializers.dir
+      });
+    } catch (err) {}
 
     registry.register("loader:controller", controllerLoader);
     registry.register("loader:model", modelLoader);

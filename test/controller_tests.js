@@ -3,7 +3,11 @@
 import { expect } from "chai";
 
 import Controller from "../src/controller";
-import { application, modelManager, registry } from "./fixtures";
+import {
+  application,
+  modelManager,
+  registry
+} from "./fixtures";
 
 describe("Controller", function () {
   let controller;

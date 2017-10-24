@@ -15,6 +15,7 @@ const serializers = require("./lib/serializers");
 module.exports = {
   Application,
   Controller,
+  JSONSerializer: serializers.JSONSerializer,
   Model,
   RestSerializer: serializers.RestSerializer,
   Route,

@@ -11,7 +11,7 @@ import { getOwner, setOwner } from "./containment";
  *
  * @class Store
  * @constructor
- * @extends <a href="https://github.com/parch-js/orm" target="_blank">Parch ORM</a>
+ * @extends <a href="parch-js/orm" target="_blank">Parch ORM</a>
  */
 export default class Store extends ORM {
   constructor(registry) {

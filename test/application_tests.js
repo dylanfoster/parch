@@ -360,4 +360,28 @@ describe("Application", function () {
         });
     });
   });
+
+  describe("serializers", function () {
+    it("uses JSONSerializer by default", function () {
+      application = new Application({
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        logging: {
+          serializers: {
+            res(res) {
+              return { statusCode: res.statusCode };
+            }
+          }
+        }
+      });
+      application.map(function () {
+        this.resource("user");
+      });
+    });
+  });
 });
