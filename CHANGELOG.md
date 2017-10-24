@@ -1,3 +1,14 @@
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/dylanfoster/parch/compare/1.2.0...1.3.0) (2017-10-24)
+
+
+### Features
+
+* **serializers:** add RestSerializer ([0cfca6a](https://github.com/dylanfoster/parch/commit/0cfca6a))
+* **store:** add json serializer ([77406aa](https://github.com/dylanfoster/parch/commit/77406aa))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/dylanfoster/parch/compare/1.1.1...1.2.0) (2017-10-19)
 
