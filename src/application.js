@@ -36,8 +36,14 @@ class Application {
     const projectDirectory = this._getProjectDirectory();
     const registry = this.registry = new Registry();
 
-    this.DEFAULT_CONTROLLER_LOOKUP_PATH = resolve(projectDirectory, "controllers");
-    this.DEFAULT_INITIALIZERS_LOOKUP_PATH = resolve(projectDirectory, "initializers");
+    this.DEFAULT_CONTROLLER_LOOKUP_PATH = resolve(
+      projectDirectory,
+      "controllers"
+    );
+    this.DEFAULT_INITIALIZERS_LOOKUP_PATH = resolve(
+      projectDirectory,
+      "initializers"
+    );
     this.DEFAULT_MODEL_LOOKUP_PATH = resolve(projectDirectory, "models");
     this.DEFAULT_SERIALIZER_LOOKUP_PATH = resolve(
       projectDirectory,

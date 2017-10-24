@@ -50,7 +50,8 @@
   },
   "dependencies": {
     "@parch-js/json-serializer": "^0.0.1",
-    "@parch-js/orm": "^0.0.2",
+    "@parch-js/orm": "^0.0.3",
+    "@parch-js/rest-serializer": "^0.1.1",
     "bunyan": "^1.8.1",
     "callsite": "^1.0.0",
     "depd": "^1.1.0",

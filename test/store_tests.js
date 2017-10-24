@@ -25,7 +25,7 @@ describe("Store", function () {
   describe("#createRecord", function () {
     it("creates a record", function () {
       return store.createRecord("foo", { type: "bar" }).then(res => {
-        expect(res.type).to.eql("bar");
+        expect(res.foo.type).to.eql("bar");
       });
     });
   });
@@ -37,7 +37,7 @@ describe("Store", function () {
 
     it("returns all records", function () {
       return store.findAll("foo").then(res => {
-        expect(res[0].type).to.eql("bar");
+        expect(res.foos[0].type).to.eql("bar");
       });
     });
   });
@@ -54,7 +54,7 @@ describe("Store", function () {
 
     it("returns a single record by id", function () {
       return store.findOne("foo", foo.id).then(res => {
-        expect(res.type).to.eql("bar");
+        expect(res.foo.type).to.eql("bar");
       });
     });
   });
@@ -66,7 +66,7 @@ describe("Store", function () {
 
     it("returns a single record by query", function () {
       return store.queryRecord("foo", { type: "bar" }).then(res => {
-        expect(res.type).to.eql("bar");
+        expect(res.foo.type).to.eql("bar");
       });
     });
   });
@@ -83,7 +83,7 @@ describe("Store", function () {
 
     it("updates a record", function () {
       return store.updateRecord("foo", foo.id, { type: "baz" }).then(res => {
-        expect(res.type).to.eql("baz");
+        expect(res.foo.type).to.eql("baz");
       });
     });
   });

@@ -96,7 +96,9 @@ describe("Application", function () {
         },
         database: {
           connection,
-          models: { dir: path.resolve(__dirname, "fixtures/models") }
+          models: {
+            dir: path.resolve(__dirname, "fixtures/models")
+          }
         },
         initializers: {
           dir: path.resolve(__dirname, "fixtures", "initializers")
@@ -234,7 +236,9 @@ describe("Application", function () {
           connection,
           models: { dir: path.resolve(__dirname, "fixtures/models") }
         },
-        logging: { dir: loggingDir },
+        logging: {
+          dir: loggingDir
+        },
         serializers: {
           dir: path.resolve(__dirname, "fixtures", "serializers")
         }

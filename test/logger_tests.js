@@ -155,6 +155,7 @@ describe("Logger", function () {
         expect(messages[0].res).to.be.undefined;
       });
     });
+
   });
 
   describe("errors", function () {

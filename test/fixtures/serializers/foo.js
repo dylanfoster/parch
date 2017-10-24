@@ -1,5 +1,5 @@
 "use strict";
 
-import { JSONSerializer } from "../../../src/serializers";
+import { RestSerializer } from "../../../src/serializers";
 
-export default class FooSerializer extends JSONSerializer {}
+export default class FooSerializer extends RestSerializer {}

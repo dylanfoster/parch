@@ -10,10 +10,19 @@
     restify-errors "^4.3.0"
     sequelize "^3.30.4"
 
-"@parch-js/orm@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@parch-js/orm/-/orm-0.0.2.tgz#74c4df51b7b4e9d00c5d44527939a29311ba8fb4"
+"@parch-js/orm@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@parch-js/orm/-/orm-0.0.3.tgz#15f9ff2fae3c7b75d01c048b4434f928e204f21c"
   dependencies:
+    inflect "^0.3.0"
+    restify-errors "^4.3.0"
+    sequelize "^3.30.4"
+
+"@parch-js/rest-serializer@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@parch-js/rest-serializer/-/rest-serializer-0.1.1.tgz#5b2ff47bca379678b89f5f1148bff59dc1e6a1bc"
+  dependencies:
+    "@parch-js/json-serializer" "^0.0.1"
     inflect "^0.3.0"
     restify-errors "^4.3.0"
     sequelize "^3.30.4"
