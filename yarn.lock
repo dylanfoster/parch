@@ -18,9 +18,9 @@
     restify-errors "^4.3.0"
     sequelize "^3.30.4"
 
-"@parch-js/rest-serializer@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@parch-js/rest-serializer/-/rest-serializer-0.1.0.tgz#fd1ffac8bd3be7f3582a23fe2d28f0e3b9fc93bc"
+"@parch-js/rest-serializer@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@parch-js/rest-serializer/-/rest-serializer-0.1.1.tgz#5b2ff47bca379678b89f5f1148bff59dc1e6a1bc"
   dependencies:
     "@parch-js/json-serializer" "^0.0.1"
     inflect "^0.3.0"
