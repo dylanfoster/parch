@@ -52,12 +52,12 @@ describe("Controller", function () {
     describe("#findAll", function () {
       it("returns all records of a model", function () {
         return controller.findAll().then(res => {
-          expect(res.users).to.eql([]);
+          expect(res).to.eql([]);
 
           return modelManager.models.User.create({ firstName: "john" });
         }).then(() => controller.findAll())
         .then(res => {
-          expect(res.users[0].firstName).to.eql("john");
+          expect(res[0].firstName).to.eql("john");
         });
       });
 
@@ -70,7 +70,7 @@ describe("Controller", function () {
             user2 = joe;
           });
         }).then(() => controller.findAll({ firstName: "john" })).then(res => {
-          expect(res.users.length).to.eql(1);
+          expect(res.length).to.eql(1);
         });
       });
 
@@ -78,7 +78,7 @@ describe("Controller", function () {
         return modelManager.models.User.create({ firstName: "john" }).then(
           () => controller.findAll({ firstName: "john" }, { attributes: ["firstName"] })
         ).then(res => {
-          expect(res.users[0].firstName).to.eql("john");
+          expect(res[0].firstName).to.eql("john");
         });
       });
 
@@ -90,7 +90,7 @@ describe("Controller", function () {
         return modelManager.models.User.create({ firstName: "john" })
           .then(john => controller.findOne(john.id))
           .then(res => {
-            expect(res.user.firstName).to.eql("john");
+            expect(res.firstName).to.eql("john");
           });
       });
 
@@ -98,9 +98,8 @@ describe("Controller", function () {
         return modelManager.models.User.create({ firstName: "john" }).then(
           john => controller.findOne(john.id, { attributes: ["firstName"] })
         ).then(res => {
-          expect(res.toJSON().user).to.eql({
-            firstName: "john",
-            users: []
+          expect(res.toJSON()).to.eql({
+            firstName: "john"
           });
         });
       });
@@ -117,7 +116,7 @@ describe("Controller", function () {
     describe("#createRecord", function () {
       it("creates a new record", function () {
         return controller.createRecord({ firstName: "john" }).then(res => {
-          expect(res.user.firstName).to.eql("john");
+          expect(res.firstName).to.eql("john");
         });
       });
 
@@ -154,7 +153,7 @@ describe("Controller", function () {
 
       it("updates an existing record by id", function () {
         return controller.updateRecord(user.id, { firstName: "bob" }).then(res => {
-          expect(res.user.firstName).to.eql("bob");
+          expect(res.firstName).to.eql("bob");
         });
       });
 
