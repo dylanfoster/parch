@@ -27,6 +27,7 @@ npm install --save parch
 - [Controller](#controller)
   - [hooks](#controller-hooks)
 - [Model](#model)
+- [Serializers](#serializers)
 - [Associations](#associations-wip)
 - [Authentication](#authentication-and-authorization)
 - [Application Initializers](#application-initializers)
@@ -336,6 +337,36 @@ class UserModel extends parch.Model {
 
     return user;
   }
+}
+```
+
+### Serializers
+
+Serializers allow you to control how data is transformed and sent to the client.
+Each model you define can also define an accompanying serializer to transform its
+data. If you do not define one yourself, Parch will use the [JSONSerializer](https://github.com/parch-js/json-serializer)
+
+JSONSerializer is the most basic of all the serializers, offering only a `normalizeResponse` method, which in turn just returns the instance or instance array.
+To extend this behavior, the [RESTSerializer](https://github.com/parch-js/rest-serializer) will nest your record under a
+singular or plural record key (e.g. `{ user: record  }` or `{ users: [records] }`), as well as automatically add each hasMany/belongsTo relationship as an array
+of ids, removing the need for you to transform these yourself. The [JSONAPISerializer](https://github.com/parch-js/json-api-serializer)(TBD) takes this even
+further, ensuring your data is transform following the JSONAPI spec
+
+`lib/serializers/user.js`
+
+```javascript
+import { RestSerializer } from "parch";
+
+export default UserSerializer extends RestSerializer {
+  keyForRecord(record, singular) {}
+
+  keyForRelationship(association) {}
+
+  normalizeArrayResponse(instances, fallbackName) {}
+
+  normalizeRelationships(instance) {}
+
+  normalizeSingularResponse(instance) {}
 }
 ```
 

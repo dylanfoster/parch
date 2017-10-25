@@ -17,7 +17,7 @@ module.exports = {
   Controller,
   JSONSerializer: serializers.JSONSerializer,
   Model,
-  RestSerializer: serializers.RestSerializer,
+  RESTSerializer: serializers.RESTSerializer,
   Route,
   RouteSegment,
   Store,
