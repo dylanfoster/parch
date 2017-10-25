@@ -234,7 +234,7 @@ class Router {
   /**
    * Attempts to lookup a serializer by 'name' in the module loader. If one exists
    * it is instantiated and registered by 'name'. If one does not exist the
-   * default (RestSerializer at the moment) is instantiated and registered.
+   * default JSONSerializer is instantiated and registered.
    *
    * @method _lookupSerializer
    * @private
