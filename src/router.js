@@ -2,6 +2,7 @@
 
 import inflect from "inflect";
 
+import { JSONSerializer } from "./serializers";
 import Route from "./route";
 import { getOwner, setOwner } from "./containment";
 
@@ -208,15 +209,56 @@ class Router {
    */
   _loadControllers() {
     const controllerLoader = getOwner(this).lookup("loader:controller");
+    const modelLoader = getOwner(this).lookup("loader:model");
     const { modules: controllers } = controllerLoader;
+    const { modules: models } = modelLoader;
 
     Object.keys(controllers).forEach(controller => {
       const Klass = controllers[controller];
       const instance = new Klass(getOwner(this));
       const instanceName = inflect.singularize(instance.name);
+      const registry = getOwner(this);
 
-      getOwner(this).register(`controller:${instanceName}`, instance);
+      registry.register(`controller:${instanceName}`, instance);
     });
+
+    Object.keys(models).forEach(model => {
+      const instanceName = inflect.singularize(model);
+      const registry = getOwner(this);
+      const serializer = this._lookupSerializer(instanceName);
+
+      registry.register(`serializer:${instanceName}`, serializer);
+    });
+  }
+
+  /**
+   * Attempts to lookup a serializer by 'name' in the module loader. If one exists
+   * it is instantiated and registered by 'name'. If one does not exist the
+   * default (RestSerializer at the moment) is instantiated and registered.
+   *
+   * @method _lookupSerializer
+   * @private
+   * @param {String} name lowercase singular lookup name (e.g. "user")
+   * @return {Object} serializer instance
+   */
+  _lookupSerializer(name) {
+    const serializerLoader = getOwner(this).lookup("loader:serializer");
+
+    if (!serializerLoader) {
+      return new JSONSerializer();
+    }
+
+    const { modules: serializers } = serializerLoader;
+    const Serializer = serializers[name];
+    let serializer;
+
+    if (Serializer) {
+      serializer = new Serializer();
+    } else {
+      serializer = new JSONSerializer();
+    }
+
+    return serializer;
   }
 
   /**
