@@ -198,6 +198,14 @@ class Router {
       if (actionHooks && actionHooks.after) {
         handlers.push(actionHooks.after.bind(controller));
       }
+    } else if (controller.beforeModel || controller.afterModel) {
+      if (controller.beforeModel) {
+        handlers.unshift(controller.beforeModel.bind(controller));
+      }
+
+      if (controller.afterModel) {
+        handlers.unshift(controller.afterModel.bind(controller));
+      }
     }
 
     return handlers;

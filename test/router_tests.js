@@ -286,6 +286,36 @@ describe("Router", function () {
           done();
         });
     });
+
+    it("binds a beforeModel hook", function (done) {
+      router.resource("comment");
+      client = supertest(app);
+      controller = registry.lookup("controller:comment.create");
+
+      client.post("/comments").send({
+        name: "foo"
+      }).end(function (err, res) {
+        if (err) { return done(err); }
+
+        expect(controller.beforeModel.called).to.be.true;
+        done();
+      });
+    });
+
+    it("binds an afterModel hook", function (done) {
+      router.resource("comment");
+      client = supertest(app);
+      controller = registry.lookup("controller:comment.create");
+
+      client.post("/comments").send({
+        name: "foo"
+      }).end(function (err, res) {
+        if (err) { return done(err); }
+
+        expect(controller.afterModel.called).to.be.true;
+        done();
+      });
+    });
   });
 
   describe("#route", function () {
