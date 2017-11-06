@@ -23,14 +23,14 @@ describe("Controller", function () {
     class UserController extends Controller {}
 
     controller = new UserController(registry);
-    expect(controller.model.name).to.eql("User");
+    expect(controller.internalModel.name).to.eql("User");
   });
 
   it("overrides model when provided", function () {
     class UserController extends Controller {}
 
     controller = new UserController(registry, { model: "foo" });
-    expect(controller.model.name).to.eql("Foo");
+    expect(controller.internalModel.name).to.eql("Foo");
   });
 
   describe("store", function () {
