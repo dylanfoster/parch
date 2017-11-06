@@ -23,6 +23,28 @@ import { connection } from "./fixtures";
 describe("Application", function () {
   let application;
 
+  describe("#projectDirectory", function () {
+    it("returns the current project directory", function () {
+      application = new Application({
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        initializers: {
+          dir: path.resolve(__dirname, "fixtures", "initializers")
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
+        }
+      });
+
+      expect(application.projectDirectory).to.eql(__dirname);
+    });
+  });
+
   describe("#runProjectInitializers", function () {
     beforeEach(function () {
       application = new Application({

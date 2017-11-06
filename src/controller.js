@@ -28,14 +28,50 @@ class Controller {
   constructor(registry, options = {}) {
     setOwner(this, registry);
 
+    if (options.parent) {
+      Object.defineProperty(this, "isChild", {
+        enumerable: true,
+        configurable: false,
+        get() {
+          return true;
+        }
+      });
+
+      Object.defineProperty(this, "__parent", {
+        enumerable: true,
+        configurable: false,
+        get() {
+          return options.parent;
+        }
+      });
+    }
+
     this.errors = errors;
     this.models = registry.lookup("service:model-manager").models;
-    this.modelName = options.model || this.name;
+    this.modelName = this.getModelName(options.model);
     this.modelNameLookup = inflect.singularize(this.modelName).toLowerCase();
     this.STATUS_CODES = STATUS_CODES;
 
     registry.inject(this, "service:store", "store");
-    registry.inject(this, `model:${this.modelNameLookup}`);
+
+    if (this.modelNameLookup) {
+      registry.inject(this, `model:${this.modelNameLookup}`, "internalModel");
+    }
+  }
+
+  getModelName(model) {
+    const isChild = this.isChild;
+    let modelName;
+
+    if (isChild) {
+      const parent = this.__parent;
+
+      modelName = model || inflect.camelize(parent);
+    } else {
+      modelName = model || this.name;
+    }
+
+    return modelName;
   }
 
   /**

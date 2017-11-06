@@ -102,10 +102,31 @@ class Router {
    */
   resource(name, options = {}) {
     name = inflect.singularize(name);
-    const controller = getOwner(this).lookup(`controller:${name}`);
+    const registry = getOwner(this);
+    let controller;
+
+    try {
+      controller = registry.lookup(`controller:${name}`);
+    } catch (err) {
+      controller = {};
+
+      for (const [action] of restActionMapper) {
+        controller[action] = registry.lookup(`controller:${name}.${action}`);
+        controller.__children = true;
+      }
+    }
 
     for (const [action] of restActionMapper) {
-      this._mapControllerAction(name, controller, action, options);
+      let controllerInstance = controller;
+      let method = action;
+
+      if (controller.__children) {
+        controllerInstance = controller[action];
+        method = "model";
+        options.action = action;
+      }
+
+      this._mapControllerAction(name, controllerInstance, method, options);
     }
   }
 
@@ -177,6 +198,14 @@ class Router {
       if (actionHooks && actionHooks.after) {
         handlers.push(actionHooks.after.bind(controller));
       }
+    } else if (controller.beforeModel || controller.afterModel) {
+      if (controller.beforeModel) {
+        handlers.unshift(controller.beforeModel.bind(controller));
+      }
+
+      if (controller.afterModel) {
+        handlers.unshift(controller.afterModel.bind(controller));
+      }
     }
 
     return handlers;
@@ -212,19 +241,34 @@ class Router {
     const modelLoader = getOwner(this).lookup("loader:model");
     const { modules: controllers } = controllerLoader;
     const { modules: models } = modelLoader;
+    const registry = getOwner(this);
 
     Object.keys(controllers).forEach(controller => {
       const Klass = controllers[controller];
-      const instance = new Klass(getOwner(this));
-      const instanceName = inflect.singularize(instance.name);
-      const registry = getOwner(this);
 
-      registry.register(`controller:${instanceName}`, instance);
+      if (Object.keys(Klass).length) {
+        const Klasses = Object.keys(Klass).map(action => ({
+          Klass: Klass[action],
+          name: action
+        }));
+
+        Klasses.forEach(subClass => {
+          const instance = new subClass.Klass(getOwner(this), {
+            parent: controller
+          });
+
+          registry.register(`controller:${controller}.${subClass.name}`, instance);
+        });
+      } else {
+        const instance = new Klass(getOwner(this));
+        const instanceName = inflect.singularize(instance.name);
+
+        registry.register(`controller:${instanceName}`, instance);
+      }
     });
 
     Object.keys(models).forEach(model => {
       const instanceName = inflect.singularize(model);
-      const registry = getOwner(this);
       const serializer = this._lookupSerializer(instanceName);
 
       registry.register(`serializer:${instanceName}`, serializer);
@@ -272,13 +316,14 @@ class Router {
    * @param {Object} options mapping options
    */
   _mapControllerAction(resource, controller, action, options) {
+    const actionForPath = action === "model" ? options.action : action;
     const app = getOwner(this).lookup("service:server");
     const handlers = this._generateControllerHandlers(controller, action);
-    const method = restActionMapper.get(action);
+    const method = restActionMapper.get(actionForPath);
     const namespace = options.namespace || "";
     const singularResource = inflect.singularize(resource);
     const pluralResource = inflect.pluralize(singularResource);
-    const pathSegment = this._getPathSegment(singularResource, action);
+    const pathSegment = this._getPathSegment(singularResource, actionForPath);
     const resourcePath = this._buildRoute(
       this.namespacePrefix,
       namespace,

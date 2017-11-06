@@ -105,6 +105,65 @@ describe("Router", function () {
       client = supertest(app);
     });
 
+    describe("controller directory", function () {
+      beforeEach(function () {
+        router.resource("comment");
+      });
+
+      it("maps a resource to a controller's index method", function (done) {
+        client.get("/comments")
+          .expect(200, {
+            comments: [{
+              id: 1,
+              name: "bar"
+            }, {
+              id: 2,
+              name: "baz"
+            }]
+          })
+        .end(done);
+      });
+
+      it("maps a resource to a controller's show method", function (done) {
+        client.get("/comments/1")
+          .expect(200, {
+            foo: {
+              id: 1,
+              name: "bar"
+            }
+          })
+        .end(done);
+      });
+
+      it("maps a resource to a controller's create method", function (done) {
+        client.post("/comments")
+          .send({ name: "bar" })
+          .expect(201)
+          .end(done);
+      });
+
+      it("maps a resource to a controller's update method", function (done) {
+        client.put("/comments/1")
+          .send({ name: "baz" })
+          .expect(200)
+          .end(done);
+      });
+
+      it("maps a resource to a controller's destroy method", function (done) {
+        client.del("/comments/1")
+          .expect(204)
+          .end(done);
+      });
+
+      it("allows for namespacing", function (done) {
+        router.resource("comment", { namespace: "api" });
+
+        client.get("/api/comments")
+          .expect(200)
+          .end(done);
+      });
+    });
+
     it("maps a resource to a controller's index method", function (done) {
       client.get("/foos")
         .expect(200, {
@@ -226,6 +285,36 @@ describe("Router", function () {
           expect(controller.hooks.destroy.after.called).to.be.true;
           done();
         });
+    });
+
+    it("binds a beforeModel hook", function (done) {
+      router.resource("comment");
+      client = supertest(app);
+      controller = registry.lookup("controller:comment.create");
+
+      client.post("/comments").send({
+        name: "foo"
+      }).end(function (err, res) {
+        if (err) { return done(err); }
+
+        expect(controller.beforeModel.called).to.be.true;
+        done();
+      });
+    });
+
+    it("binds an afterModel hook", function (done) {
+      router.resource("comment");
+      client = supertest(app);
+      controller = registry.lookup("controller:comment.create");
+
+      client.post("/comments").send({
+        name: "foo"
+      }).end(function (err, res) {
+        if (err) { return done(err); }
+
+        expect(controller.afterModel.called).to.be.true;
+        done();
+      });
     });
   });
 

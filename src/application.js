@@ -82,6 +82,10 @@ class Application {
     });
   }
 
+  get projectDirectory() {
+    return this._getProjectDirectory();
+  }
+
   runProjectInitializers() {
     const config = this.registry.lookup("config:main");
     const initializersPath = config.initializers.dir;
