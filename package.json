@@ -58,7 +58,7 @@
     "include-all": "^4.0.3",
     "inflect": "^0.4.0",
     "lodash": "^4.13.1",
-    "pg": "^7.4.0",
+    "pg": "^6.1.2",
     "pg-hstore": "^2.3.2",
     "restify": "^6.3.2",
     "restify-cors-middleware": "^1.0.1",
