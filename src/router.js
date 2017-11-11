@@ -326,7 +326,8 @@ class Router {
    * Registers controller beforeModel and afterModel hooks
    *
    * @method _registerControllerHooks
-   * @param {Object} {{#crossLink "Controller"}}controller{{/crossLink}}
+   * @private
+   * @param {Object} controller {{#crossLink "Controller"}}controller{{/crossLink}}
    * @param {Array} handlers restify request handlers
    */
   _registerControllerHooks(controller, handlers) {
@@ -343,7 +344,8 @@ class Router {
    * Registers legacy controller before/after hooks
    *
    * @method _registerLegacyControllerHooks
-   * @param {Object} {{#crossLink "Controller"}}controller{{/crossLink}}
+   * @private
+   * @param {Object} controller {{#crossLink "Controller"}}controller{{/crossLink}}
    * @param {String} action controller action type (index, create, update, etc)
    * @param {Array} handlers restify request handlers
    */
