@@ -173,43 +173,6 @@ class Router {
   }
 
   /**
-   * _registerLegacyControllerHooks
-   *
-   * @param controller
-   * @param action
-   * @param hooks
-   * @returns {undefined}
-   */
-  _registerLegacyControllerHooks(controller, action, hooks, handlers) {
-    const actionHooks = hooks[action];
-
-    if (actionHooks && actionHooks.before) {
-      handlers.unshift(actionHooks.before.bind(controller));
-    }
-
-    if (actionHooks && actionHooks.after) {
-      handlers.push(actionHooks.after.bind(controller));
-    }
-  }
-
-  /**
-   * _registerControllerHooks
-   *
-   * @param controller
-   * @param handlers
-   * @returns {undefined}
-   */
-  _registerControllerHooks(controller, handlers) {
-    if (controller.beforeModel) {
-      handlers.unshift(controller.beforeModel.bind(controller));
-    }
-
-    if (controller.afterModel) {
-      handlers.push(controller.afterModel.bind(controller));
-    }
-  }
-
-  /**
    * generates main route handler plus pre and post hooks
    *
    * @private
@@ -357,6 +320,43 @@ class Router {
     );
 
     app[method](resourcePath, handlers);
+  }
+
+  /**
+   * Registers controller beforeModel and afterModel hooks
+   *
+   * @method _registerControllerHooks
+   * @param {Object} {{#crossLink "Controller"}}controller{{/crossLink}}
+   * @param {Array} handlers restify request handlers
+   */
+  _registerControllerHooks(controller, handlers) {
+    if (controller.beforeModel) {
+      handlers.unshift(controller.beforeModel.bind(controller));
+    }
+
+    if (controller.afterModel) {
+      handlers.push(controller.afterModel.bind(controller));
+    }
+  }
+
+  /**
+   * Registers legacy controller before/after hooks
+   *
+   * @method _registerLegacyControllerHooks
+   * @param {Object} {{#crossLink "Controller"}}controller{{/crossLink}}
+   * @param {String} action controller action type (index, create, update, etc)
+   * @param {Array} handlers restify request handlers
+   */
+  _registerLegacyControllerHooks(controller, action, hooks, handlers) {
+    const actionHooks = hooks[action];
+
+    if (actionHooks && actionHooks.before) {
+      handlers.unshift(actionHooks.before.bind(controller));
+    }
+
+    if (actionHooks && actionHooks.after) {
+      handlers.push(actionHooks.after.bind(controller));
+    }
   }
 
   /**
