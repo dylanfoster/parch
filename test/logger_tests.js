@@ -6,7 +6,7 @@ import path from "path";
 import Bunyan from "bunyan";
 import del from "del";
 import { expect } from "chai";
-import restify from "restify";
+import errors from "restify-errors";
 import sinon from "sinon";
 import stream from "stream";
 
@@ -175,7 +175,7 @@ describe("Logger", function () {
     });
 
     it("logs allowed properties only", function () {
-      logger.error(new restify.InternalServerError("Something broke"));
+      logger.error(new errors.InternalServerError("Something broke"));
 
       const error = messages[0].err;
 
