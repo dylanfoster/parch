@@ -2323,6 +2323,10 @@ inflect@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/inflect/-/inflect-0.3.0.tgz#81d0eaaa36b50a60230b7510048b39c4142fe52a"
 
+inflect@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/inflect/-/inflect-0.4.0.tgz#6a33016a6368d8a70d2513fd230ce8722e980573"
+
 inflection@^1.6.0:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/inflection/-/inflection-1.12.0.tgz#a200935656d6f5f6bc4dc7502e1aecb703228416"
