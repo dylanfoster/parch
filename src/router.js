@@ -204,7 +204,7 @@ class Router {
       }
 
       if (controller.afterModel) {
-        handlers.unshift(controller.afterModel.bind(controller));
+        handlers.push(controller.afterModel.bind(controller));
       }
     }
 
