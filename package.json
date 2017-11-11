@@ -35,7 +35,7 @@
     "conventional-changelog-cli": "^1.2.0",
     "coveralls": "^2.11.9",
     "del": "^2.2.1",
-    "eslint": "^3.11.1",
+    "eslint": "^4.11.0",
     "eslint-config-unstandard": "^1.4.0",
     "jsonwebtoken": "^7.0.1",
     "mocha": "^4.0.1",
