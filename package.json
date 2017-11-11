@@ -60,7 +60,7 @@
     "lodash": "^4.13.1",
     "pg": "^7.4.0",
     "pg-hstore": "^2.3.2",
-    "restify": "^4.1.0",
+    "restify": "^6.3.2",
     "restify-errors": "^5.0.0",
     "restify-jwt": "^0.4.0",
     "sequelize": "^3.23.3"
