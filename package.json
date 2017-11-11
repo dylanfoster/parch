@@ -58,7 +58,7 @@
     "include-all": "^4.0.3",
     "inflect": "^0.3.0",
     "lodash": "^4.13.1",
-    "pg": "^6.1.2",
+    "pg": "^7.4.0",
     "pg-hstore": "^2.3.2",
     "restify": "^4.1.0",
     "restify-errors": "^4.2.3",
