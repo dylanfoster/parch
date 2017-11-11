@@ -179,7 +179,6 @@ class Router {
    * @method _generateControllerHandlers
    * @param {Object} controller
    * @param {String} action controller method
-   * @todo: move hooks to controller instance methods and just call them
    *
    * @return {Array} handlers
    */
