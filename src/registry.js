@@ -59,7 +59,9 @@ export default class Registry {
       throw err;
     }
 
+    /* eslint-disable consistent-return */
     return context;
+    /* eslint-enable consistent-return */
   }
 
   /**
