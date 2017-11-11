@@ -20,7 +20,7 @@
     "prepare-release": "curl -sL https://gist.githubusercontent.com/dylanfoster/35b06db9aaa9237da77eff4a8eec0a22/raw/83ec714ec64f7ec36c5004588aa259354fc87b51/prepare-release.sh | bash -s",
     "prepublish": "yarn build",
     "pretest": "yarn build",
-    "test": "NO_DEPRECATION=parch NODE_ENV=test mocha --recursive --compilers js:babel-register --timeout 12000",
+    "test": "NO_DEPRECATION=parch NODE_ENV=test mocha --recursive --require babel-register --timeout 12000 --exit",
     "watch:test": "chokidar 'src/**' 'test/**/*.js' -c 'yarn test' --initial",
     "watch:build": "chokidar 'src/**' 'test/**/*.js' -c 'yarn build' --initial",
     "watch:cover": "chokidar 'src/**' 'test/**/*.js' -c 'yarn cover' --initial"
