@@ -38,7 +38,7 @@
     "eslint": "^3.11.1",
     "eslint-config-unstandard": "^1.4.0",
     "jsonwebtoken": "^7.0.1",
-    "mocha": "^3.2.0",
+    "mocha": "^4.0.1",
     "nyc": "^11.2.1",
     "sinon": "^2.1.0",
     "sinon-chai": "^2.8.0",
