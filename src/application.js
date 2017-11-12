@@ -9,7 +9,6 @@ import callsite from "callsite";
 import includeAll from "include-all";
 
 import Registry from "./registry";
-import deprecate from "./utils/deprecate";
 
 const DEFAULT_CONNECTION_SETTINGS = {
   dialect: "sqlite",
