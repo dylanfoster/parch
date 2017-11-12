@@ -16,9 +16,9 @@ describe("initializer | application", function () {
     it("registers the application injections", function () {
       initializer.initialize(application, registry);
 
-      expect(application.app).to.be.ok;
-      expect(application.modelManager).to.be.ok;
-      expect(registry.lookup("application:main")).to.eql(application);
+      const app = registry.lookup("application:main");
+
+      expect(app).to.eql(application);
     });
   });
 });

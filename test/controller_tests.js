@@ -51,11 +51,11 @@ describe("Controller", function () {
 
     describe("#findAll", function () {
       it("returns all records of a model", function () {
-        return controller.findAll().then(res => {
+        return controller.store.findAll("user").then(res => {
           expect(res).to.eql([]);
 
           return modelManager.models.User.create({ firstName: "john" });
-        }).then(() => controller.findAll())
+        }).then(() => controller.store.findAll("user"))
         .then(res => {
           expect(res[0].firstName).to.eql("john");
         });
@@ -69,14 +69,14 @@ describe("Controller", function () {
           return modelManager.models.User.create({ firstName: "joe" }).then(joe => {
             user2 = joe;
           });
-        }).then(() => controller.findAll({ firstName: "john" })).then(res => {
+        }).then(() => controller.store.findAll("user", { firstName: "john" })).then(res => {
           expect(res.length).to.eql(1);
         });
       });
 
       it("allows for finder options", function () {
         return modelManager.models.User.create({ firstName: "john" }).then(
-          () => controller.findAll({ firstName: "john" }, { attributes: ["firstName"] })
+          () => controller.store.findAll("user", { firstName: "john" }, { attributes: ["firstName"] })
         ).then(res => {
           expect(res[0].firstName).to.eql("john");
         });
@@ -88,7 +88,7 @@ describe("Controller", function () {
     describe("#findOne", function () {
       it("finds a single record by id", function () {
         return modelManager.models.User.create({ firstName: "john" })
-          .then(john => controller.findOne(john.id))
+          .then(john => controller.store.findOne("user", john.id))
           .then(res => {
             expect(res.firstName).to.eql("john");
           });
@@ -96,7 +96,7 @@ describe("Controller", function () {
 
       it("allows for finder options", function () {
         return modelManager.models.User.create({ firstName: "john" }).then(
-          john => controller.findOne(john.id, { attributes: ["firstName"] })
+          john => controller.store.findOne("user", john.id, { attributes: ["firstName"] })
         ).then(res => {
           expect(res.toJSON()).to.eql({
             firstName: "john"
@@ -105,7 +105,7 @@ describe("Controller", function () {
       });
 
       it("throws NotFoundError if no record is found", function (done) {
-        controller.findOne(1).catch(err => {
+        controller.store.findOne("user", 1).catch(err => {
           expect(err.code).to.eql("NotFound");
           expect(err.message).to.eql("user does not exist");
           done();
@@ -115,13 +115,13 @@ describe("Controller", function () {
 
     describe("#createRecord", function () {
       it("creates a new record", function () {
-        return controller.createRecord({ firstName: "john" }).then(res => {
+        return controller.store.createRecord("user", { firstName: "john" }).then(res => {
           expect(res.firstName).to.eql("john");
         });
       });
 
       it("throws BadRequestError for invalid body", function (done) {
-        controller.createRecord().catch(err => {
+        controller.store.createRecord("user").catch(err => {
           expect(err.code).to.eql("BadRequest");
           expect(err.message).to.eql("Missing or invalid body");
           done();
@@ -129,7 +129,7 @@ describe("Controller", function () {
       });
 
       it("throws UnprocessableEntityError for validation failures", function (done) {
-        controller.createRecord({ firstName: 1 }).catch(err => {
+        controller.store.createRecord("user", { firstName: 1 }).catch(err => {
           expect(err.code).to.eql("UnprocessableEntity");
           expect(err.message).to.eql("firstName must be a valid string");
           done();
@@ -152,14 +152,14 @@ describe("Controller", function () {
       });
 
       it("updates an existing record by id", function () {
-        return controller.updateRecord(user.id, { firstName: "bob" }).then(res => {
+        return controller.store.updateRecord("user", user.id, { firstName: "bob" }).then(res => {
           expect(res.firstName).to.eql("bob");
         });
       });
 
       it("throws NotFoundError if record is not found", function (done) {
         user.destroy().then(() => {
-          controller.updateRecord(1, { firstName: "bob" }).catch(err => {
+          controller.store.updateRecord("user", 1, { firstName: "bob" }).catch(err => {
             expect(err.code).to.eql("NotFound");
             done();
           });
@@ -167,7 +167,7 @@ describe("Controller", function () {
       });
 
       it("throw BadRequestError for invalid or missing data", function (done) {
-        controller.updateRecord(user.id).catch(err => {
+        controller.store.updateRecord("user", user.id).catch(err => {
           expect(err.code).to.eql("BadRequest");
           expect(err.message).to.eql("Missing or invalid body");
           done();
@@ -175,7 +175,7 @@ describe("Controller", function () {
       });
 
       it("throws UnprocessableEntityError for validation failures", function (done) {
-        controller.updateRecord(user.id, { firstName: 1 }).catch(err => {
+        controller.store.updateRecord("user", user.id, { firstName: 1 }).catch(err => {
           expect(err.code).to.eql("UnprocessableEntity");
           expect(err.message).to.eql("firstName must be a valid string");
           done();
@@ -196,7 +196,7 @@ describe("Controller", function () {
       });
 
       it("destroys a record by id", function () {
-        return controller.destroyRecord(user.id).then(() =>
+        return controller.store.destroyRecord("user", user.id).then(() =>
             modelManager.models.User.findById(user.id)
         ).then(found => {
           expect(found).to.be.null;
@@ -205,7 +205,7 @@ describe("Controller", function () {
 
       it("throws NotFoundError if record doesn't exist", function (done) {
         user.destroy().then(() => {
-          controller.destroyRecord(user.id).catch(err => {
+          controller.store.destroyRecord("user", user.id).catch(err => {
             expect(err.code).to.eql("NotFound");
             expect(err.message).to.eql("user does not exist");
             done();
