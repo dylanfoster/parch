@@ -4,7 +4,6 @@ import errors from "restify-errors";
 import inflect from "inflect";
 
 import STATUS_CODES from "./utils/status_codes";
-import deprecate from "./utils/deprecate";
 import { setOwner } from "./containment";
 
 /**
@@ -46,15 +45,66 @@ class Controller {
       });
     }
 
+    /**
+     * Restify errors map
+     * <a href="https://github.com/restify/errors">
+     * restify-errors
+     * </a>
+     *
+     * @property errors
+     * @type {Object}
+     */
     this.errors = errors;
+
+    /**
+     * Object containing all models registered
+     *
+     * @property models
+     * @type {Array}
+     */
     this.models = registry.lookup("service:model-manager").models;
+
+    /**
+     * The name of the model that belongs to this controller. If one cannot be
+     * found this will be undefined
+     *
+     * @property modelName
+     * @type {String}
+     */
     this.modelName = this.getModelName(options.model);
+
+    /**
+     * Pluralized version of modelName
+     *
+     * @property modelNameLookup
+     * @type {String}
+     */
     this.modelNameLookup = inflect.singularize(this.modelName).toLowerCase();
+
+    /**
+     * An object mapping of status codes and their corresponding value
+     *
+     * @property STATUS_CODES
+     * @type {Object}
+     */
     this.STATUS_CODES = STATUS_CODES;
 
+    /**
+     * Instance of {{#crossLink "Store"}}Store{{/crossLink}}
+     *
+     * @property store
+     * @type {Object}
+     */
     registry.inject(this, "service:store", "store");
 
     if (this.modelNameLookup) {
+      /**
+       * The model class that belongs to this controller. If none could be found
+       * this will be undefined.
+       *
+       * @property internalModel
+       * @type {Object}
+       */
       registry.inject(this, `model:${this.modelNameLookup}`, "internalModel");
     }
   }

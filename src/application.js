@@ -62,20 +62,44 @@ class Application {
     this._initialize("application");
   }
 
+  /**
+   * Restify application instance
+   *
+   * @property app
+   * @type {Object} Restify service
+   */
   get app() {
     return this.registry.lookup("service:server");
   }
 
+  /**
+   * Starts the server
+   * @method listen
+   * @param {Number} port
+   * @returns {Promise<void>}
+   */
   listen(port) {
     return new Promise(done => {
       this.app.listen(port, () => done());
     });
   }
 
+  /**
+   * The consuming project's directory
+   *
+   * @property projectDirectory
+   * @type {String}
+   */
   get projectDirectory() {
     return this._getProjectDirectory();
   }
 
+  /**
+   * Runs all consumer initializers
+   *
+   * @method runProjectInitializers
+   * @returns {Promise<void>}
+   */
   runProjectInitializers() {
     const config = this.registry.lookup("config:main");
     const initializersPath = config.initializers.dir;

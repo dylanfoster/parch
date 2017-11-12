@@ -23,10 +23,19 @@ export default class Store extends ORM {
   }
 
   /**
-   * createRecord
+   * Creates a record
    *
+   * @method createRecord
    * @param name
-   * @returns {undefined}
+   * @returns {Object} seralized record instance
+   *
+   * @example
+   * ```javascript
+   * return store.createRecord("user", {
+   *   firstName: "hank",
+   *   lastName: "hill"
+   * });
+   * ```
    */
   createRecord(name) {
     const serializer = this._lookupSerializer(name);
@@ -37,10 +46,20 @@ export default class Store extends ORM {
   }
 
   /**
-   * findAll
+   * Returns all records. Passing an optional query will query those records.
    *
+   * @method findAll
    * @param name
-   * @returns {undefined}
+   * @returns {Array|Object} serialized record arry
+   *
+   * @example
+   * ```javascript
+   * return store.findAll("user");
+   *
+   * return store.findAll("user", {
+   *   firstName: "Jon"
+   * })
+   * ```
    */
   findAll(name) {
     const serializer = this._lookupSerializer(name);
@@ -51,10 +70,16 @@ export default class Store extends ORM {
   }
 
   /**
-   * findOne
+   * Returns a single record by id
    *
+   * @method findOne
    * @param name
-   * @returns {undefined}
+   * @returns {Array|Object} serialized record array
+   *
+   * @example
+   * ```javascript
+   * return store.findOne("user", 1);
+   * ```
    */
   findOne(name) {
     const serializer = this._lookupSerializer(name);
@@ -65,10 +90,18 @@ export default class Store extends ORM {
   }
 
   /**
-   * queryRecord
+   * Returns the first record matching the passed query
    *
+   * @method queryRecord
    * @param name
-   * @returns {undefined}
+   * @returns {Object} serialized record instance
+   *
+   * @example
+   * ```javascript
+   * return store.queryRecord("user", {
+   *   firstName: "jon"
+   * })
+   * ```
    */
   queryRecord(name) {
     const serializer = this._lookupSerializer(name);
@@ -79,10 +112,16 @@ export default class Store extends ORM {
   }
 
   /**
-   * updateRecord
+   * Updates a record by id
    *
+   * @method updateRecord
    * @param name
-   * @returns {undefined}
+   * @returns {Object} seralized record instance
+   *
+   * @example
+   * ```javascript
+   * return store.updateRecord("user", 1, { firstName: "Jane" });
+   * ```
    */
   updateRecord(name) {
     const serializer = this._lookupSerializer(name);
@@ -93,10 +132,12 @@ export default class Store extends ORM {
   }
 
   /**
-   * _lookupSerializer
+   * Attempts to load the serialized for a particular model
    *
+   * @method _lookupSerializer
+   * @private
    * @param name
-   * @returns {undefined}
+   * @returns {Object} serializer
    */
   _lookupSerializer(name) {
     return getOwner(this).lookup(`serializer:${name}`);

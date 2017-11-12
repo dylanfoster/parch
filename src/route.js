@@ -32,13 +32,17 @@ class Route {
 
     /**
      * The path is the fully built path from segments e.g. /foo/bar/baz
-     * @property {String} path
+     *
+     * @property path
+     * @type {String}
      */
     this.path = routeParts.map(part => part.path).join("");
 
     /**
      * All segments that make up this route. Consists of an array of {{#crossLink "RouteSegment"}}RouteSegments{{/crossLink}}
-     * @property {Array} segments
+     *
+     * @property segments
+     * @type {Array}
      */
     this.segments = routeParts;
   }

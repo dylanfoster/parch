@@ -19,8 +19,29 @@ class ModelManager {
 
     setOwner(this, registry);
 
+    /**
+     * Map of Sequelize models
+     *
+     * @property _models
+     * @private
+     * @type {Object}
+     */
     this._models = {};
+
+    /**
+     * Sequelize class
+     *
+     * @property Sequelize
+     * @type {Object}
+     */
     this.Sequelize = Sequelize;
+
+    /**
+     * Sequelize instance
+     *
+     * @property sequelize
+     * @type {Object}
+     */
     this.sequelize = new Sequelize(
       connection.database,
       connection.username,

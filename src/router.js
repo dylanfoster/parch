@@ -37,11 +37,23 @@ class Router {
 
     const config = registry.lookup("config:main");
 
+    /**
+     * Contains the model and controller {{#crossLink "Loader"}}loaders{{/crossLink}}
+     *
+     * @property loader
+     * @type {Object}
+     */
     this.loader = {
       controllers: registry.lookup("loader:controller"),
       models: registry.lookup("service:model-manager").models
     };
 
+    /**
+     * An optional namespace to place before all routes (e.g. /v1)
+     *
+     * @property namespacePrefix
+     * @type {String}
+     */
     this.namespacePrefix = config.namespace || "";
     this._loadControllers();
   }
