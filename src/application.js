@@ -9,7 +9,6 @@ import callsite from "callsite";
 import includeAll from "include-all";
 
 import Registry from "./registry";
-import deprecate from "./utils/deprecate";
 
 const DEFAULT_CONNECTION_SETTINGS = {
   dialect: "sqlite",
@@ -63,16 +62,7 @@ class Application {
     this._initialize("application");
   }
 
-  /**
-   * Get the restify application instance
-   *
-   * @method getApp
-   * @deprecated use registry.lookup("service:server") instead
-   * @return {Object} restify application instance
-   */
-  getApp() {
-    deprecate(this, "getApp", "2.0.0");
-
+  get app() {
     return this.registry.lookup("service:server");
   }
 

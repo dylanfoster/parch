@@ -121,7 +121,7 @@ describe("Application", function () {
         this.resource("foo");
       });
 
-      supertest(application.getApp())
+      supertest(application.app)
         .get("/foos")
         .expect(200)
         .end(done);
@@ -195,7 +195,7 @@ describe("Application", function () {
     it("authenticates users via jwt", function (done) {
       const token = jwt.sign({ foo: "bar" }, "secret");
 
-      supertest(application.getApp())
+      supertest(application.app)
         .get("/users")
         .set("Authorization", `Bearer ${token}`)
         .expect(200)
@@ -203,7 +203,7 @@ describe("Application", function () {
     });
 
     it("skips 'unauthenticated' routes", function (done) {
-      supertest(application.getApp())
+      supertest(application.app)
         .post("/users/resetPassword")
         .expect(200)
         .end(done);
@@ -226,7 +226,7 @@ describe("Application", function () {
         this.resource("user");
       });
 
-      supertest(application.getApp())
+      supertest(application.app)
         .get("/users")
         .expect(200)
         .end(done);
@@ -249,7 +249,7 @@ describe("Application", function () {
       application.map(function () {
         this.resource("user");
       });
-      supertest(application.getApp())
+      supertest(application.app)
         .get("/users")
         .expect(401)
         .end(done);
