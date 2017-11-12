@@ -163,9 +163,18 @@ class Router {
   route(path, options) {
     const app = getOwner(this).lookup("service:server");
     const [controllerName, actionName] = options.using.split(":");
-    const controller = getOwner(this).lookup(`controller:${controllerName}`);
+    let action, controller;
+
+    try {
+      action = actionName;
+      controller = getOwner(this).lookup(`controller:${controllerName}`);
+    } catch (err) {
+      controller = getOwner(this).lookup(`controller:${controllerName}.${actionName}`);
+      action = "model";
+    }
+
     let method = options.method;
-    const handlers = this._generateControllerHandlers(controller, actionName);
+    const handlers = this._generateControllerHandlers(controller, action);
 
     if (method === METHODS.DELETE) { method = "del"; }
 

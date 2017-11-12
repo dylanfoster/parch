@@ -1,3 +1,13 @@
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/dylanfoster/parch/compare/2.0.0...2.1.0) (2017-11-12)
+
+
+### Features
+
+* **router:** add support for nested non crud controllers ([cd6b085](https://github.com/dylanfoster/parch/commit/cd6b085))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/dylanfoster/parch/compare/1.3.2...2.0.0) (2017-11-12)
 

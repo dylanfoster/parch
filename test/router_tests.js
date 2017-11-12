@@ -354,5 +354,14 @@ describe("Router", function () {
         .expect(200)
         .end(done);
     });
+
+    it("supports nested controller", function (done) {
+      router.route("/comment/:commentId/rate", { using: "comment:rate", method: "post" });
+
+      client.post("/comment/1/rate").send({
+        rating: 1
+      }).expect(200)
+      .end(done);
+    });
   });
 });
