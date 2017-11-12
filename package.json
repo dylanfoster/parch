@@ -17,6 +17,7 @@
     "cover": "nyc yarn test",
     "docs": "yuidoc . -o docs",
     "lint": "eslint ./src ./test",
+    "postinstall": "npm rebuild dtrace-provider",
     "prepare-release": "curl -sL https://gist.githubusercontent.com/dylanfoster/35b06db9aaa9237da77eff4a8eec0a22/raw/83ec714ec64f7ec36c5004588aa259354fc87b51/prepare-release.sh | bash -s",
     "prepublish": "yarn build",
     "pretest": "yarn build",
