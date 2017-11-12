@@ -19,8 +19,29 @@ class ModelManager {
 
     setOwner(this, registry);
 
+    /**
+     * Map of Sequelize models
+     *
+     * @property _models
+     * @private
+     * @type {Object}
+     */
     this._models = {};
+
+    /**
+     * Sequelize class
+     *
+     * @property Sequelize
+     * @type {Object}
+     */
     this.Sequelize = Sequelize;
+
+    /**
+     * Sequelize instance
+     *
+     * @property sequelize
+     * @type {Object}
+     */
     this.sequelize = new Sequelize(
       connection.database,
       connection.username,
@@ -57,6 +78,26 @@ class ModelManager {
       modelAttributes,
       instance.options
     );
+
+    if (instance.options && instance.options.classMethods) {
+      const methods = instance.options.classMethods;
+
+      Object.keys(methods).forEach(method => {
+        if (methods[method].bind && typeof methods[method].bind === "function") {
+          model[method] = methods[method].bind(null, model);
+        } else {
+          model[method] = methods[method];
+        }
+      });
+    }
+
+    if (instance.options && instance.options.instanceMethods) {
+      const methods = instance.options.instanceMethods;
+
+      Object.keys(methods).forEach(method => {
+        model.prototype[method] = methods[method];
+      });
+    }
 
     model.associate = instance.associate;
     this.models[model.name] = model;

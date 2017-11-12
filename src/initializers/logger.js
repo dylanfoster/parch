@@ -1,6 +1,5 @@
 "use strict";
 
-import Bunyan from "bunyan";
 import depd from "depd";
 
 module.exports = {
@@ -10,13 +9,14 @@ module.exports = {
 
     depd("parch")("config#log is deprectated and will be removed in 2.0.0");
 
-    if (config.log && config.log instanceof Bunyan) {
-      registry.register("service:logger", config.log);
+    if (config.logging && config.logging.logger) {
+      registry.register("service:logger", config.logging.logger);
     } else {
-      config.log = Logger.create("application", config.logging);
+      config.logging = config.logging || {};
+      config.logging.logger = Logger.create("application", config.logging);
     }
 
-    registry.register("service:logger", config.log);
+    registry.register("service:logger", config.logging.logger);
     registry.inject(application, "service:logger", "logger");
   },
 

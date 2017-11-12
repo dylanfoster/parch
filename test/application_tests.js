@@ -6,6 +6,7 @@ import fs from "fs";
 import path from "path";
 
 import chai, { expect } from "chai";
+import chaiAsPromised from "chai-as-promised";
 import del from "del";
 import jwt from "jsonwebtoken";
 import restify from "restify";
@@ -14,6 +15,7 @@ import sinonChai from "sinon-chai";
 import stream from "stream";
 import supertest from "supertest";
 
+chai.use(chaiAsPromised);
 chai.use(sinonChai);
 
 import Application from "../src/application";
@@ -22,6 +24,28 @@ import { connection } from "./fixtures";
 
 describe("Application", function () {
   let application;
+
+  describe("#projectDirectory", function () {
+    it("returns the current project directory", function () {
+      application = new Application({
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        initializers: {
+          dir: path.resolve(__dirname, "fixtures", "initializers")
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
+        }
+      });
+
+      expect(application.projectDirectory).to.eql(__dirname);
+    });
+  });
 
   describe("#runProjectInitializers", function () {
     beforeEach(function () {
@@ -46,6 +70,26 @@ describe("Application", function () {
       return application.runProjectInitializers().then(() => {
         expect(application.foo.foo).to.eql("bar");
       });
+    });
+
+    it("doesn't throw for a missing initializers directory", function () {
+      application = new Application({
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        initializers: {
+          dir: path.resolve(__dirname, "fixtures", "missing-initializers")
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
+        }
+      });
+
+      return expect(application.runProjectInitializers()).to.be.fulfilled;
     });
   });
 
@@ -77,7 +121,7 @@ describe("Application", function () {
         this.resource("foo");
       });
 
-      supertest(application.getApp())
+      supertest(application.app)
         .get("/foos")
         .expect(200)
         .end(done);
@@ -151,7 +195,7 @@ describe("Application", function () {
     it("authenticates users via jwt", function (done) {
       const token = jwt.sign({ foo: "bar" }, "secret");
 
-      supertest(application.getApp())
+      supertest(application.app)
         .get("/users")
         .set("Authorization", `Bearer ${token}`)
         .expect(200)
@@ -159,7 +203,7 @@ describe("Application", function () {
     });
 
     it("skips 'unauthenticated' routes", function (done) {
-      supertest(application.getApp())
+      supertest(application.app)
         .post("/users/resetPassword")
         .expect(200)
         .end(done);
@@ -182,7 +226,7 @@ describe("Application", function () {
         this.resource("user");
       });
 
-      supertest(application.getApp())
+      supertest(application.app)
         .get("/users")
         .expect(200)
         .end(done);
@@ -205,159 +249,10 @@ describe("Application", function () {
       application.map(function () {
         this.resource("user");
       });
-      supertest(application.getApp())
+      supertest(application.app)
         .get("/users")
         .expect(401)
         .end(done);
-    });
-  });
-
-  describe("logging", function () {
-    let loggingDir, messages, writable;
-
-    beforeEach(function () {
-      loggingDir = path.resolve(__dirname, "fixtures/custom-logs");
-      messages = [];
-      stream.write = message => {
-        messages.push(JSON.parse(message));
-      };
-    });
-
-    afterEach(function () {
-      return del([`${loggingDir}/**/*.log`, `!${loggingDir}`]);
-    });
-
-    it("allows for a custom directory", function (done) {
-      application = new Application({
-        controllers: {
-          dir: path.resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: path.resolve(__dirname, "fixtures/models") }
-        },
-        logging: {
-          dir: loggingDir
-        },
-        serializers: {
-          dir: path.resolve(__dirname, "fixtures", "serializers")
-        }
-      });
-
-      application.map(function () {
-        this.resource("user");
-      });
-
-      supertest(application.getApp())
-        .get("/users")
-        .end(function (err, res) {
-          if (err) { return done(err); }
-
-          fs.readdir(loggingDir, (err2, files) => {
-            if (err2) { return done(err2); }
-
-            const file = files.filter(f => f.match(/\.log/));
-            let log;
-
-            expect(file).to.be.ok;
-            expect(file).to.have.length.gt(0);
-
-            const fileData = fs.readFileSync(path.resolve(loggingDir, file[0]));
-            const lines = fileData
-              .toString()
-              .split("\n")
-              .filter(line => line.length);
-            const line = lines[lines.length - 1];
-
-            try {
-              log = JSON.parse(line);
-            } catch (err3) {
-              throw err3;
-            }
-
-            expect(log.res.statusCode).to.eql(200);
-
-            done();
-          });
-        });
-    });
-
-    it("allows for custom request serializer", function (done) {
-      application = new Application({
-        controllers: {
-          dir: path.resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: path.resolve(__dirname, "fixtures/models") }
-        },
-        logging: {
-          serializers: {
-            req(req) {
-              return { url: req.url };
-            }
-          }
-        },
-        serializers: {
-          dir: path.resolve(__dirname, "fixtures", "serializers")
-        }
-      });
-
-      application.logger.addStream({
-        type: "stream",
-        stream
-      });
-      application.map(function () {
-        this.resource("user");
-      });
-      supertest(application.getApp())
-        .get("/users")
-        .end(function (err, res) {
-          if (err) { return done(err); }
-
-          expect(messages[0].req.url).to.eql("/users");
-          expect(messages[0].req).to.not.have.any.keys("httpVersion", "method");
-          done();
-        });
-    });
-
-    it("allows for custom response serializer", function (done) {
-      application = new Application({
-        controllers: {
-          dir: path.resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: path.resolve(__dirname, "fixtures/models") }
-        },
-        logging: {
-          serializers: {
-            res(res) {
-              return { statusCode: res.statusCode };
-            }
-          }
-        },
-        serializers: {
-          dir: path.resolve(__dirname, "fixtures", "serializers")
-        }
-      });
-
-      application.logger.addStream({
-        type: "stream",
-        stream
-      });
-      application.map(function () {
-        this.resource("user");
-      });
-      supertest(application.getApp())
-        .get("/users")
-        .end(function (err, res) {
-          if (err) { return done(err); }
-
-          expect(messages[0].res.statusCode).to.eql(200);
-          expect(messages[0].req).to.not.have.any.keys("headers");
-          done();
-        });
     });
   });
 

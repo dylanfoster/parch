@@ -9,7 +9,6 @@ import callsite from "callsite";
 import includeAll from "include-all";
 
 import Registry from "./registry";
-import deprecate from "./utils/deprecate";
 
 const DEFAULT_CONNECTION_SETTINGS = {
   dialect: "sqlite",
@@ -64,36 +63,66 @@ class Application {
   }
 
   /**
-   * Get the restify application instance
+   * Restify application instance
    *
-   * @method getApp
-   * @deprecated use registry.lookup("service:server") instead
-   * @return {Object} restify application instance
+   * @property app
+   * @type {Object} Restify service
    */
-  getApp() {
-    deprecate(this, "getApp", "2.0.0");
-
+  get app() {
     return this.registry.lookup("service:server");
   }
 
+  /**
+   * Starts the server
+   * @method listen
+   * @param {Number} port
+   * @returns {Promise<void>}
+   */
   listen(port) {
     return new Promise(done => {
       this.app.listen(port, () => done());
     });
   }
 
+  /**
+   * The consuming project's directory
+   *
+   * @property projectDirectory
+   * @type {String}
+   */
+  get projectDirectory() {
+    return this._getProjectDirectory();
+  }
+
+  /**
+   * Runs all consumer initializers
+   *
+   * @method runProjectInitializers
+   * @returns {Promise<void>}
+   */
   runProjectInitializers() {
     const config = this.registry.lookup("config:main");
     const initializersPath = config.initializers.dir;
-    const initializerModules = includeAll({
-      dirname: initializersPath,
-      filter: /(.+).js$/
-    });
-    const initializers = Object.keys(initializerModules);
+    let initializerModules;
 
-    return Promise.all(initializers.map(name =>
-      initializerModules[name].initialize(this, this.registry)
-    ));
+    /* eslint-disable no-empty */
+    try {
+      initializerModules = includeAll({
+        dirname: initializersPath,
+        filter: /(.+).js$/
+      });
+    } catch (err) {}
+    /* eslint-enable no-empty */
+
+    if (initializerModules) {
+      const initializers = Object.keys(initializerModules);
+
+      return Promise.all(initializers.map(name =>
+        initializerModules[name].initialize(this, this.registry)
+      ));
+    } else {
+      return Promise.resolve();
+    }
   }
 
   /**

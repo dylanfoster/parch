@@ -4,7 +4,6 @@ import errors from "restify-errors";
 import inflect from "inflect";
 
 import STATUS_CODES from "./utils/status_codes";
-import deprecate from "./utils/deprecate";
 import { setOwner } from "./containment";
 
 /**
@@ -28,154 +27,110 @@ class Controller {
   constructor(registry, options = {}) {
     setOwner(this, registry);
 
+    if (options.parent) {
+      Object.defineProperty(this, "isChild", {
+        enumerable: true,
+        configurable: false,
+        get() {
+          return true;
+        }
+      });
+
+      Object.defineProperty(this, "__parent", {
+        enumerable: true,
+        configurable: false,
+        get() {
+          return options.parent;
+        }
+      });
+    }
+
+    /**
+     * Restify errors map
+     * <a href="https://github.com/restify/errors">
+     * restify-errors
+     * </a>
+     *
+     * @property errors
+     * @type {Object}
+     */
     this.errors = errors;
+
+    /**
+     * Object containing all models registered
+     *
+     * @property models
+     * @type {Array}
+     */
     this.models = registry.lookup("service:model-manager").models;
-    this.modelName = options.model || this.name;
+
+    /**
+     * The name of the model that belongs to this controller. If one cannot be
+     * found this will be undefined
+     *
+     * @property modelName
+     * @type {String}
+     */
+    this.modelName = this.getModelName(options.model);
+
+    /**
+     * Pluralized version of modelName
+     *
+     * @property modelNameLookup
+     * @type {String}
+     */
     this.modelNameLookup = inflect.singularize(this.modelName).toLowerCase();
+
+    /**
+     * An object mapping of status codes and their corresponding value
+     *
+     * @property STATUS_CODES
+     * @type {Object}
+     */
     this.STATUS_CODES = STATUS_CODES;
 
+    /**
+     * Instance of {{#crossLink "Store"}}Store{{/crossLink}}
+     *
+     * @property store
+     * @type {Object}
+     */
     registry.inject(this, "service:store", "store");
-    registry.inject(this, `model:${this.modelNameLookup}`);
+
+    if (this.modelNameLookup) {
+      /**
+       * The model class that belongs to this controller. If none could be found
+       * this will be undefined.
+       *
+       * @property internalModel
+       * @type {Object}
+       */
+      registry.inject(this, `model:${this.modelNameLookup}`, "internalModel");
+    }
   }
 
   /**
-   * Builds, validates and saves a model instance.
+   * Returns the name of the model that is associated with this controller.
+   * If options.model is passed to controller it will take precedence, otherwise
+   * the controller will attempt to lookup a model matching the controller's name
    *
-   * @method createRecord
-   * @deprecated use controller.store instead
-   * @param {Object} data the model data to create the instance with
-   * @return {Promise}<ModelInstance, Error> the model instance
-   *
-   * @example
-   * ```javascript
-   * return this.createRecord({ firstname: 'bar' }).then(record => {
-   *
-   * });
-   * ```
+   * @method getModelName
+   * @param {String} model name of the model to use
+   * @returns {String} modelName
    */
-  createRecord(data) {
-    deprecate(this, "createRecord", "2.0.0");
+  getModelName(model) {
+    const isChild = this.isChild;
+    let modelName;
 
-    return this.store.createRecord(this.modelNameLookup, data);
-  }
+    if (isChild) {
+      const parent = this.__parent;
 
-  /**
-   * Destroy a model instance and remove it from the db
-   *
-   * @method destroyRecord
-   * @deprecated use controller.store instead
-   * @param {Number} id the id of the resource to destroy
-   * @return {Promise}<void, Error>
-   *
-   * @example
-   * ```javascript
-   * return this.destroyRecord(1).then(() => {
-   *
-   * });
-   * ```
-   */
-  destroyRecord(id) {
-    deprecate(this, "destroyRecord", "2.0.0");
+      modelName = model || inflect.camelize(parent);
+    } else {
+      modelName = model || this.name;
+    }
 
-    return this.store.destroyRecord(this.modelNameLookup, id);
-  }
-
-  /**
-   * Find all records.
-   *
-   * @method findAll
-   * @deprecated use controller.store instead
-   * @param {Object} where
-   *   <a href="http://docs.sequelizejs.com/en/v3/docs/querying/#where" target="_blank">
-   *     See Sequelize Where
-   *   </a>
-   * @param {Object} options
-   *   <a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
-   *     Sequelize finder options
-   *   </a>
-   * @return {Promise}<ModelInstance[], Error> an array of model instance
-   *
-   * @example
-   * ```javascript
-   * return this.findAll().then(records => {
-   *
-   * })
-   *
-   * // You can optionally pass in a where clause
-   *
-   * return this.findAll({ username: 'john' }).then(user => {
-   *
-   * });
-   *
-   * // As well as any finder options
-   *
-   * return this.findAll(null, {
-   *   attributes: ["title"],
-   *   include: [this.models.User]
-   * }).then(user => {
-   *
-   * });
-   * ```
-   */
-  findAll(where, options = {}) {
-    deprecate(this, "findAll", "2.0.0");
-
-    return this.store.findAll(this.modelNameLookup, where, options);
-  }
-
-  /**
-   * Find a single instance by id
-   *
-   * @method findOne
-   * @deprecated use controller.store instead
-   * @param {Number} id the id of the instance to search for
-   * @param {Object} options
-   *   <a href="http://docs.sequelizejs.com/en/v3/api/model/#findoneoptions-promiseinstance" target="_blank">
-   *     Sequelize finder options
-   *   </a>
-   * @return {Promise}<ModelInstance, Error>
-   *
-   * @example
-   * ```javascript
-   * return this.findOne(1).then(record => {
-   *
-   * });
-   *
-   * // The same options apply to findOne
-   *
-   * return this.findOne(1, {
-   *   attributes: ["firstName"]
-   * }).then(user => {
-   *
-   * });
-   * ```
-   */
-  findOne(id, options = {}) {
-    deprecate(this, "findOne", "2.0.0");
-
-    return this.store.findOne(this.modelNameLookup, id, options);
-  }
-
-  /**
-   * Update a single record
-   *
-   * @method updateRecord
-   * @deprecated use controller.store instead
-   * @param {Number} id the id of the record to update
-   * @param {Object} data the data to update on the record
-   * @return {Promise}<Model, Error>
-   *
-   * @example
-   * ```javascript
-   * return this.updateRecord(1, { firstName: 'foo' }).then(record => {
-   *
-   * });
-   * ```
-   */
-  updateRecord(id, data) {
-    deprecate(this, "updateRecord", "2.0.0");
-
-    return this.store.updateRecord(this.modelNameLookup, id, data);
+    return modelName;
   }
 }
 

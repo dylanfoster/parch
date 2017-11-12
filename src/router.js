@@ -10,18 +10,18 @@ const METHODS = {
   DELETE: "delete"
 };
 const restActionMapper = new Map([
-    ["index", "get"],
-    ["show", "get"],
-    ["create", "post"],
-    ["update", "put"],
-    ["destroy", "del"]
+  ["index", "get"],
+  ["show", "get"],
+  ["create", "post"],
+  ["update", "put"],
+  ["destroy", "del"]
 ]);
 const restPathMapper = new Map([
-    ["index", "/"],
-    ["show", "/:id"],
-    ["create", "/"],
-    ["update", "/:id"],
-    ["destroy", "/:id"]
+  ["index", "/"],
+  ["show", "/:id"],
+  ["create", "/"],
+  ["update", "/:id"],
+  ["destroy", "/:id"]
 ]);
 
 /**
@@ -37,11 +37,23 @@ class Router {
 
     const config = registry.lookup("config:main");
 
+    /**
+     * Contains the model and controller {{#crossLink "Loader"}}loaders{{/crossLink}}
+     *
+     * @property loader
+     * @type {Object}
+     */
     this.loader = {
       controllers: registry.lookup("loader:controller"),
       models: registry.lookup("service:model-manager").models
     };
 
+    /**
+     * An optional namespace to place before all routes (e.g. /v1)
+     *
+     * @property namespacePrefix
+     * @type {String}
+     */
     this.namespacePrefix = config.namespace || "";
     this._loadControllers();
   }
@@ -102,10 +114,31 @@ class Router {
    */
   resource(name, options = {}) {
     name = inflect.singularize(name);
-    const controller = getOwner(this).lookup(`controller:${name}`);
+    const registry = getOwner(this);
+    let controller;
+
+    try {
+      controller = registry.lookup(`controller:${name}`);
+    } catch (err) {
+      controller = {};
+
+      for (const [action] of restActionMapper) {
+        controller[action] = registry.lookup(`controller:${name}.${action}`);
+        controller.__children = true;
+      }
+    }
 
     for (const [action] of restActionMapper) {
-      this._mapControllerAction(name, controller, action, options);
+      let controllerInstance = controller;
+      let method = action;
+
+      if (controller.__children) {
+        controllerInstance = controller[action];
+        method = "model";
+        options.action = action;
+      }
+
+      this._mapControllerAction(name, controllerInstance, method, options);
     }
   }
 
@@ -158,7 +191,6 @@ class Router {
    * @method _generateControllerHandlers
    * @param {Object} controller
    * @param {String} action controller method
-   * @todo: move hooks to controller instance methods and just call them
    *
    * @return {Array} handlers
    */
@@ -168,15 +200,9 @@ class Router {
     const handlers = [controllerAction.bind(controller)];
 
     if (hooks) {
-      const actionHooks = hooks[action];
-
-      if (actionHooks && actionHooks.before) {
-        handlers.unshift(actionHooks.before.bind(controller));
-      }
-
-      if (actionHooks && actionHooks.after) {
-        handlers.push(actionHooks.after.bind(controller));
-      }
+      this._registerLegacyControllerHooks(controller, action, hooks, handlers);
+    } else if (controller.beforeModel || controller.afterModel) {
+      this._registerControllerHooks(controller, handlers);
     }
 
     return handlers;
@@ -212,19 +238,36 @@ class Router {
     const modelLoader = getOwner(this).lookup("loader:model");
     const { modules: controllers } = controllerLoader;
     const { modules: models } = modelLoader;
+    const registry = getOwner(this);
 
     Object.keys(controllers).forEach(controller => {
       const Klass = controllers[controller];
-      const instance = new Klass(getOwner(this));
-      const instanceName = inflect.singularize(instance.name);
-      const registry = getOwner(this);
 
-      registry.register(`controller:${instanceName}`, instance);
+      if (Object.keys(Klass).length) {
+        /* eslint-disable arrow-body-style */
+        const Klasses = Object.keys(Klass).map(action => ({
+          Klass: Klass[action],
+          name: action
+        }));
+        /* eslint-enable arrow-body-style */
+
+        Klasses.forEach(subClass => {
+          const instance = new subClass.Klass(getOwner(this), {
+            parent: controller
+          });
+
+          registry.register(`controller:${controller}.${subClass.name}`, instance);
+        });
+      } else {
+        const instance = new Klass(getOwner(this));
+        const instanceName = inflect.singularize(instance.name);
+
+        registry.register(`controller:${instanceName}`, instance);
+      }
     });
 
     Object.keys(models).forEach(model => {
       const instanceName = inflect.singularize(model);
-      const registry = getOwner(this);
       const serializer = this._lookupSerializer(instanceName);
 
       registry.register(`serializer:${instanceName}`, serializer);
@@ -272,13 +315,14 @@ class Router {
    * @param {Object} options mapping options
    */
   _mapControllerAction(resource, controller, action, options) {
+    const actionForPath = action === "model" ? options.action : action;
     const app = getOwner(this).lookup("service:server");
     const handlers = this._generateControllerHandlers(controller, action);
-    const method = restActionMapper.get(action);
+    const method = restActionMapper.get(actionForPath);
     const namespace = options.namespace || "";
     const singularResource = inflect.singularize(resource);
     const pluralResource = inflect.pluralize(singularResource);
-    const pathSegment = this._getPathSegment(singularResource, action);
+    const pathSegment = this._getPathSegment(singularResource, actionForPath);
     const resourcePath = this._buildRoute(
       this.namespacePrefix,
       namespace,
@@ -287,6 +331,45 @@ class Router {
     );
 
     app[method](resourcePath, handlers);
+  }
+
+  /**
+   * Registers controller beforeModel and afterModel hooks
+   *
+   * @method _registerControllerHooks
+   * @private
+   * @param {Object} controller {{#crossLink "Controller"}}controller{{/crossLink}}
+   * @param {Array} handlers restify request handlers
+   */
+  _registerControllerHooks(controller, handlers) {
+    if (controller.beforeModel) {
+      handlers.unshift(controller.beforeModel.bind(controller));
+    }
+
+    if (controller.afterModel) {
+      handlers.push(controller.afterModel.bind(controller));
+    }
+  }
+
+  /**
+   * Registers legacy controller before/after hooks
+   *
+   * @method _registerLegacyControllerHooks
+   * @private
+   * @param {Object} controller {{#crossLink "Controller"}}controller{{/crossLink}}
+   * @param {String} action controller action type (index, create, update, etc)
+   * @param {Array} handlers restify request handlers
+   */
+  _registerLegacyControllerHooks(controller, action, hooks, handlers) {
+    const actionHooks = hooks[action];
+
+    if (actionHooks && actionHooks.before) {
+      handlers.unshift(actionHooks.before.bind(controller));
+    }
+
+    if (actionHooks && actionHooks.after) {
+      handlers.push(actionHooks.after.bind(controller));
+    }
   }
 
   /**

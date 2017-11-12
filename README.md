@@ -6,15 +6,21 @@
 
 > [Restify](http://restify.com/) + [Sequelize](http://docs.sequelizejs.com/en/latest/)
 
-parch is a simple RESTful framework combining the power of restify for routing
-and sequelize ORM for dao access. Stop rewriting your server code and get parched.
-
-*If you'd like to contribute, take a look at the [roadmap](https://github.com/dylanfoster/parch/issues/1)*
+Parch combines restify and sequelize to bring you a powerful yet easy setup for
+your API
 
 ## Installation
 
+npm
+
 ```bash
 npm install --save parch
+```
+
+yarn
+
+```bash
+yarn add --save parch
 ```
 
 ## Usage
@@ -25,7 +31,9 @@ npm install --save parch
   - [#route](#route)
   - [#namespace](#namespace)
 - [Controller](#controller)
-  - [hooks](#controller-hooks)
+  - [lifecycle hooks](#controller-lifecycle)
+  - [hooks](#controller-hooks) **deprecated**
+  - [nested controllers](#nested-controllers)
 - [Model](#model)
 - [Serializers](#serializers)
 - [Associations](#associations-wip)
@@ -50,9 +58,11 @@ const parch = new parch.Application({
     secretKey: "ssshhh",
     unauthenticated: [/\/posts[\s\S]*/, "/users/resetPassword"]
   },
+
   controllers: {
     dir: path.resolve(__dirname, "controllers")
   },
+
   database: {
     connection: {
       username: "postgres",
@@ -62,21 +72,26 @@ const parch = new parch.Application({
       dialect: "postgres",
       logging: false
     },
+
     models: {
       dir: path.resolve(__dirname, "models")
     }
   },
+
   initializers: {
     dir: path.resolve(__dirname, "controllers")
   },
+
   logging: {
     dir: path.resolve(__dirname, 'logs'),
+    logger: Bunyan.createLogger(),
     serializers: {
       req(req) {
         return {
           url: req.url
         }
       },
+
       res(res) {
         return {
           statusCode: res.statusCode
@@ -84,7 +99,9 @@ const parch = new parch.Application({
       }
     }
   },
+
   namespace: "api",
+
   server: {
     name: "my-app",
     certificate: "/path/to/my.crt",
@@ -195,7 +212,7 @@ class UserController extends parch.Controller {
   }
 
   index(req, res, next) {
-    this.findAll(req.query).then(records => {
+    this.store.findAll(req.query).then(records => {
       /**
        * {
        *   users: [{
@@ -208,7 +225,7 @@ class UserController extends parch.Controller {
   }
 
   show(req, res, next) {
-    this.findOne(req.params.id).then(record => {
+    this.store.findOne(req.params.id).then(record => {
       /**
        * {
        *   user: {
@@ -221,7 +238,7 @@ class UserController extends parch.Controller {
   }
 
   create(req, res, next) {
-    this.createRecord(req.body.user).then(record => {
+    this.store.createRecord(req.body.user).then(record => {
       /**
        * {
        *   user: {
@@ -234,7 +251,7 @@ class UserController extends parch.Controller {
   }
 
   update(req, res, next) {
-    this.updateRecord(req.params.id, req.body).then(updatedRecord => {
+    this.store.updateRecord(req.params.id, req.body).then(updatedRecord => {
       /**
        * {
        *   user: {
@@ -247,13 +264,13 @@ class UserController extends parch.Controller {
   }
 
   destroy(req, res, next) {
-    this.destroyRecord(req.params.id).then(() => {
+    this.store.destroyRecord(req.params.id).then(() => {
       res.send(this.STATUS_CODES.NO_CONTENT);
     }).catch(next);
   }
 
   resetPassword(req, res, next) {
-    this.findOne(req.params.id).then(record => {
+    this.store.findOne(req.params.id).then(record => {
       record.password = req.body.password;
       return record.save();
     }).then(record => {
@@ -263,7 +280,9 @@ class UserController extends parch.Controller {
 }
 ```
 
-### Controller Hooks
+### Controller Hooks [Deprecated]
+
+**Controller hooks in this fashion are deprecated. Please use `beforeModel`, `model`, and `afterModel` structure instead. [see here for more](#controller-lifecycle)**
 
 Controller hooks allow for pre and post processing of requests. Both before and
 after hooks are supported as well as any additional methods added when using
@@ -297,10 +316,83 @@ class UserController extends parch.Controller {
 }
 ```
 
+### Nested Controllers
+
+Organizing your controllers into groups can make things more manageable. By storing
+each action in a separate class, you will have tighter control over your logic.
+
+```
+├── lib
+│   ├── controllers
+│   │   ├── post
+│   │   │   ├── create.js
+│   │   │   ├── destroy.js
+│   │   │   ├── index.js
+│   │   │   ├── show.js
+│   │   │   └── update.js
+│   │   └── users
+│   │       ├── create.js
+│   │       ├── destroy.js
+│   │       ├── index.js
+│   │       ├── show.js
+│   │       └── update.js
+```
+
+### Controller Lifecycle
+
+Controller lifecycle can be handled by three main hooks. Each of these hooks take
+the same arguments `(req, res, next)`
+
+#### `beforeModel`
+
+The `beforeModel` hook runs before the main model hook. In this method you have access to the request and response objects and it is assumed that the response
+lifecycle has not been completed.
+
+```javascript
+export default class UserListController {
+  beforeModel(req, res, next) {
+    return utils.permissions(req)
+      .then(() => next())
+      .catch(next);
+  }
+}
+```
+
+#### `model`
+
+The `model` hook is the main action of your controller class. This is where the
+response object is assumed to end. **Note: if you also define an `afterModel` hook
+you _must_ call next in the model hook.
+
+```javascript
+export default class UserListController {
+  model(req, res, next) {
+    this.store.findAll("user").then(users => {
+      res.send(this.STATUS_CODES.SUCCESS, users);
+
+      next();
+    }).catch(next);
+  }
+}
+```
+
+#### `afterModel`
+
+The `afterModel` is the last hook in the controller lifecycle. Here you can do
+things like metrics or audit logs
+
+```javascript
+export default class UserListController {
+  afterModel(req, res, next) {
+    req.log.debug("afterModel hook for user list");
+  }
+}
+```
+
 ### Model
 
-Models are defined following the [sequelize define](http://docs.sequelizejs.com/en/latest/docs/models-definition/)
-pattern. [Options](http://docs.sequelizejs.com/en/v3/docs/models-definition/#expansion-of-models) for the model definition can be passed to the constructor's `super` call
+Models are defined following the [sequelize define](http://docs.sequelizejs.com/manual/tutorial/models-definition.html)
+pattern. [Options](http://docs.sequelizejs.com/manual/tutorial/models-definition.html) for the model definition can be passed to the constructor's `super` call
 
 `lib/models/user.js`
 
@@ -430,7 +522,7 @@ curl http://my-server.com/protectedRoute -H 'Authorization: Bearer <token>'
 
 ## Application Initializers
 
-Initializers allow you to accmomplish many things during application boot.
+Initializers allow you to accomplish many things during application boot.
 Registering mixins, add custom application logic, and adding services can all be
 done in an initializer and attached to the application instance. Parch will run
 your initializers in alphanumeric order. This means that if you need to run them
@@ -512,7 +604,7 @@ show(req, res, next) {
     - `secretKey(String)`: A secret string used to sign JWT tokens
     - `unauthenticated(Array)`: an array of strings or regex patterns to skip authentication.
   - **controllers**
-    - `dir(String)`: The path to your controllers directory. **Default**: `_dirname/controllers`
+    - `dir(String)`: The path to your controllers directory. **Default**: `__dirname/controllers`
   - **database**
     - `connection(Object)` [Sequelize connection options](http://docs.sequelizejs.com/en/latest/docs/getting-started/)
     - `models`
@@ -521,10 +613,13 @@ show(req, res, next) {
     - `dir(String)`: The path to your initializers directory. **Default**: `__dirname/initializers`
   - **logging**
     - `dir(String)`: Path where logs should be saved
+    - `logger(Object)` **optional**: An optional logger instance
     - `serializers(Object)`:
       - `req(Function)`: your request serializer. takes the request as its only argument
       - `res(Function)`: your response serializer. takes the response as its only argument
   - **namespace**: Set the base namespace for all routes and resources (e.g. `api`)
+  - **serializers**
+    - `dir(String)`: The path to your serializers directory. **Default*: `__dirname/serializers`
   - **server** All options (*with the exception of `middlewares`*) are passed directly to [restify](http://restify.com/#creating-a-server)
     - `log`: defaults to parch's [bunyan instance](https://github.com/dylanfoster/parch/blob/master/src/logger.js) but can be overridden
     - `middlewares(Array)`: merged with parch's [default middlwares](https://github.com/dylanfoster/parch/blob/master/src/application.js#L24-L31)

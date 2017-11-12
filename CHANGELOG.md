@@ -1,3 +1,44 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/dylanfoster/parch/compare/1.3.2...2.0.0) (2017-11-12)
+
+
+### Bug Fixes
+
+* **handlers:** move afterModel hook to after model hook (#67) ([f6042bf](https://github.com/dylanfoster/parch/commit/f6042bf))
+
+
+### Features
+
+* **controllers:** add support for controller directories ([ee524b9](https://github.com/dylanfoster/parch/commit/ee524b9)), closes [#44](https://github.com/dylanfoster/parch/issues/44)
+* **logging:** move logger under logging options and remove log option ([b668427](https://github.com/dylanfoster/parch/commit/b668427)), closes [#42](https://github.com/dylanfoster/parch/issues/42)
+* **middleware:** remove info log from log middleware ([c500a73](https://github.com/dylanfoster/parch/commit/c500a73)), closes [#56](https://github.com/dylanfoster/parch/issues/56)
+* **orm:** update sequelize ([38c38c5](https://github.com/dylanfoster/parch/commit/38c38c5))
+* remove deprecations ([87adb2c](https://github.com/dylanfoster/parch/commit/87adb2c))
+
+
+### BREAKING CHANGES
+
+* `controller.model` has been moved to `controller.internalModel`
+* controller finders have been removed. users will
+need to use the store.
+* `application.modelManager` has been removed,
+* `application.app` has been moved to a getter
+* **logging:** Users will need to move their options.log to options.logging.logger
+* **orm:** updates the underlying sequelize orm. Users will need
+to follow the deprecation guide
+http://docs.sequelizejs.com/manual/tutorial/upgrade-to-v4.html
+
+
+<a name="1.3.2"></a>
+## [1.3.2](https://github.com/dylanfoster/parch/compare/1.3.1...1.3.2) (2017-11-12)
+
+
+### Bug Fixes
+
+* **application:** add guard for missing initializer directory ([0538c76](https://github.com/dylanfoster/parch/commit/0538c76))
+
+
+
 <a name="1.3.1"></a>
 ## [1.3.1](https://github.com/dylanfoster/parch/compare/1.3.0...1.3.1) (2017-10-25)
 

@@ -1,7 +1,8 @@
 "use strict";
 
 import _ from "lodash";
-import jwt from "restify-jwt";
+import cors from "restify-cors-middleware";
+import jwt from "restify-jwt-community";
 import restify from "restify";
 
 import context from "../middleware/context";
@@ -9,12 +10,17 @@ import logger from "../middleware/logger";
 
 const DEFAULT_JWT_SECRET = "secret";
 const DEFAULT_MIDDLEWARES = [
-  restify.gzipResponse(),
-  restify.CORS(),
-  restify.authorizationParser(),
-  restify.bodyParser(),
-  restify.fullResponse(),
-  restify.queryParser()
+  restify.plugins.gzipResponse(),
+  cors({
+    allowHeaders: [
+      "authorization"
+    ],
+    origins: ["*"]
+  }).actual,
+  restify.plugins.authorizationParser(),
+  restify.plugins.bodyParser(),
+  restify.plugins.fullResponse(),
+  restify.plugins.queryParser()
 ];
 
 module.exports = {
@@ -23,7 +29,7 @@ module.exports = {
     const middlewares = _.union(this.middleware, config.server.middlewares);
     const app = registry.lookup("service:server");
 
-    middlewares.unshift(restify.acceptParser(app.acceptable));
+    middlewares.unshift(restify.plugins.acceptParser(app.acceptable));
 
     if (config.authentication) {
       let secret, unless;
@@ -41,8 +47,13 @@ module.exports = {
 
     middlewares.unshift(logger({ log: application.logger }));
     middlewares.push(context(application));
+
     app.on("after", (req, res, route, err) => {
-      req.log.info({ req, res, err });
+      if (err) {
+        req.log.error({ req, res, err });
+      } else {
+        req.log.info({ req, res, err });
+      }
     });
     middlewares.forEach(middlware => { app.use(middlware); });
   },
