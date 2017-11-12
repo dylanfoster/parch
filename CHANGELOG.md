@@ -9,103 +9,24 @@
 
 ### Features
 
-* **controllers:** add support for controller directories ([ee524b9](https://github.com/dylanfoster/parch/commit/ee524b9)), closes [#44](https://github.com/dylanfoster/parch/issues/44) [#44](https://github.com/dylanfoster/parch/issues/44)
+* **controllers:** add support for controller directories ([ee524b9](https://github.com/dylanfoster/parch/commit/ee524b9)), closes [#44](https://github.com/dylanfoster/parch/issues/44)
 * **logging:** move logger under logging options and remove log option ([b668427](https://github.com/dylanfoster/parch/commit/b668427)), closes [#42](https://github.com/dylanfoster/parch/issues/42)
-* **middleware:** remove info log from log middleware ([c500a73](https://github.com/dylanfoster/parch/commit/c500a73)), closes [#56](https://github.com/dylanfoster/parch/issues/56) [#56](https://github.com/dylanfoster/parch/issues/56)
+* **middleware:** remove info log from log middleware ([c500a73](https://github.com/dylanfoster/parch/commit/c500a73)), closes [#56](https://github.com/dylanfoster/parch/issues/56)
 * **orm:** update sequelize ([38c38c5](https://github.com/dylanfoster/parch/commit/38c38c5))
 * remove deprecations ([87adb2c](https://github.com/dylanfoster/parch/commit/87adb2c))
 
 
 ### BREAKING CHANGES
 
-* controllers finders have been removed. users will
-need to use the store. application.modelManager has been removed,
-application.app has been moved to a getter
-
-commit 389e4b61ed09d88a3919a8832f56069eb8338dd6
-Author: Dylan Foster <dylan947@gmail.com>
-Date:   Sat Nov 11 20:24:34 2017 -0800
-
-    test: fix failing tests after deprecation removals
-
-commit d056cf25f4f85f25a620f29691928490b920dc60
-Author: Dylan Foster <dylan947@gmail.com>
-Date:   Sat Nov 11 20:15:37 2017 -0800
-
-    style: remove unused import
-
-commit 592f148fa0d6f995101b9e60040e509d8b0c3fd1
-Author: Dylan Foster <dylan947@gmail.com>
-Date:   Sat Nov 11 20:14:16 2017 -0800
-
-    feat(deprecations): remove controller finders
-
-commit 4b861b4ee288ab30715c5194a1b84aad0fec8e06
-Author: Dylan Foster <dylan947@gmail.com>
-Date:   Sat Nov 11 20:13:02 2017 -0800
-
-    feat(deprecations): remove Application#getApp and put behind a normal getter
-
-commit a3ea4bda9d3735f20967001fe0a4522a1076f302
-Author: Dylan Foster <dylan947@gmail.com>
-Date:   Sat Nov 11 20:11:53 2017 -0800
-
-    feat(deprecations): remove model manager and app
-* **logging:** Users will need to move their options.log to options.logging.logger
-
-commit 3230eda847cbdc13f6e980e25ac1127d0ad56d5e
-Author: Dylan Foster <dylan947@gmail.com>
-Date:   Sat Nov 11 19:48:04 2017 -0800
-
-    feat(logging): move logger under logging options and remove log option
+* `controller.model` has been moved to `controller.internalModel`
+* controller finders have been removed. users will
+need to use the store.
+* `application.modelManager` has been removed,
+* `application.app` has been moved to a getter
 * **logging:** Users will need to move their options.log to options.logging.logger
 * **orm:** updates the underlying sequelize orm. Users will need
 to follow the deprecation guide
 http://docs.sequelizejs.com/manual/tutorial/upgrade-to-v4.html
-
-commit d59e253f897fe63a095121dac8a5f01d89f39955
-Merge: ea977d4 65ad2a5
-Author: Dylan Foster <dylan947@gmail.com>
-Date:   Sat Nov 11 18:38:40 2017 -0800
-
-    Merge branch 'develop' into feature/update-sequelize
-
-commit ea977d4b15cb507b9057b6d564fe5dd91de328cb
-Author: Dylan Foster <dylan947@gmail.com>
-Date:   Sat Nov 11 15:06:31 2017 -0800
-
-    style(router): remove hook todo
-
-commit 3e69db0b1b4454a8ac25e9eba3f346b4eea6da69
-Author: Dylan Foster <dylan947@gmail.com>
-Date:   Sat Nov 11 15:02:38 2017 -0800
-
-    style: fix lint error
-
-commit 626ae5aa3e0e16d61c402d87556d8ae9f903667a
-Author: Dylan Foster <dylan947@gmail.com>
-Date:   Sat Nov 11 14:56:20 2017 -0800
-
-    docs(router): update yuidoc
-
-commit 7fc2c09c8be84429560f70c5ddfb2f6c101fc003
-Author: Dylan Foster <dylan947@gmail.com>
-Date:   Sat Nov 11 14:53:16 2017 -0800
-
-    docs(router): update yuidoc
-
-commit 938c8378b936770734f1c4888bebf4546d007f16
-Author: Dylan Foster <dylan947@gmail.com>
-Date:   Sat Nov 11 14:48:05 2017 -0800
-
-    style: fix lint errors
-
-commit 3b547e00f572b976f3e6e9146f6e7f6e31bb940a
-Author: Dylan Foster <dylan947@gmail.com>
-Date:   Sat Nov 11 14:23:22 2017 -0800
-
-    chore(deps): update sequelize
-
 
 
 <a name="1.3.2"></a>
