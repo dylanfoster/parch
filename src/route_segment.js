@@ -18,7 +18,19 @@
  */
 class RouteSegment {
   constructor(segment) {
+    /**
+     * Segment represents the original path segment that was passed in
+     *
+     * @property segment
+     * @type {String}
+     */
     this.segment = segment;
+
+    /**
+     * The normalized path segment after removing/adding slashes
+     * @property path
+     * @type {String}
+     */
     this.path = this._buildSegment();
   }
 

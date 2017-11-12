@@ -30,7 +30,8 @@ class Model {
      *   see http://docs.sequelizejs.com/en/v3/docs/models-definition/
      * </a>
      *
-     * @property {Object} options
+     * @property options
+     * @type {Object}
      */
     this.options = options;
   }
