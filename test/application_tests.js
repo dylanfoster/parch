@@ -6,6 +6,7 @@ import fs from "fs";
 import path from "path";
 
 import chai, { expect } from "chai";
+import chaiAsPromised from "chai-as-promised";
 import del from "del";
 import jwt from "jsonwebtoken";
 import restify from "restify";
@@ -14,6 +15,7 @@ import sinonChai from "sinon-chai";
 import stream from "stream";
 import supertest from "supertest";
 
+chai.use(chaiAsPromised);
 chai.use(sinonChai);
 
 import Application from "../src/application";
@@ -68,6 +70,26 @@ describe("Application", function () {
       return application.runProjectInitializers().then(() => {
         expect(application.foo.foo).to.eql("bar");
       });
+    });
+
+    it("doesn't throw for a missing initializers directory", function () {
+      application = new Application({
+        controllers: {
+          dir: path.resolve(__dirname, "fixtures", "controllers")
+        },
+        database: {
+          connection,
+          models: { dir: path.resolve(__dirname, "fixtures/models") }
+        },
+        initializers: {
+          dir: path.resolve(__dirname, "fixtures", "missing-initializers")
+        },
+        serializers: {
+          dir: path.resolve(__dirname, "fixtures", "serializers")
+        }
+      });
+
+      return expect(application.runProjectInitializers()).to.be.fulfilled;
     });
   });
 
