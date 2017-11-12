@@ -10,18 +10,18 @@ const METHODS = {
   DELETE: "delete"
 };
 const restActionMapper = new Map([
-    ["index", "get"],
-    ["show", "get"],
-    ["create", "post"],
-    ["update", "put"],
-    ["destroy", "del"]
+  ["index", "get"],
+  ["show", "get"],
+  ["create", "post"],
+  ["update", "put"],
+  ["destroy", "del"]
 ]);
 const restPathMapper = new Map([
-    ["index", "/"],
-    ["show", "/:id"],
-    ["create", "/"],
-    ["update", "/:id"],
-    ["destroy", "/:id"]
+  ["index", "/"],
+  ["show", "/:id"],
+  ["create", "/"],
+  ["update", "/:id"],
+  ["destroy", "/:id"]
 ]);
 
 /**
@@ -179,7 +179,6 @@ class Router {
    * @method _generateControllerHandlers
    * @param {Object} controller
    * @param {String} action controller method
-   * @todo: move hooks to controller instance methods and just call them
    *
    * @return {Array} handlers
    */
@@ -189,23 +188,9 @@ class Router {
     const handlers = [controllerAction.bind(controller)];
 
     if (hooks) {
-      const actionHooks = hooks[action];
-
-      if (actionHooks && actionHooks.before) {
-        handlers.unshift(actionHooks.before.bind(controller));
-      }
-
-      if (actionHooks && actionHooks.after) {
-        handlers.push(actionHooks.after.bind(controller));
-      }
+      this._registerLegacyControllerHooks(controller, action, hooks, handlers);
     } else if (controller.beforeModel || controller.afterModel) {
-      if (controller.beforeModel) {
-        handlers.unshift(controller.beforeModel.bind(controller));
-      }
-
-      if (controller.afterModel) {
-        handlers.push(controller.afterModel.bind(controller));
-      }
+      this._registerControllerHooks(controller, handlers);
     }
 
     return handlers;
@@ -247,10 +232,12 @@ class Router {
       const Klass = controllers[controller];
 
       if (Object.keys(Klass).length) {
+        /* eslint-disable arrow-body-style */
         const Klasses = Object.keys(Klass).map(action => ({
           Klass: Klass[action],
           name: action
         }));
+        /* eslint-enable arrow-body-style */
 
         Klasses.forEach(subClass => {
           const instance = new subClass.Klass(getOwner(this), {
@@ -332,6 +319,45 @@ class Router {
     );
 
     app[method](resourcePath, handlers);
+  }
+
+  /**
+   * Registers controller beforeModel and afterModel hooks
+   *
+   * @method _registerControllerHooks
+   * @private
+   * @param {Object} controller {{#crossLink "Controller"}}controller{{/crossLink}}
+   * @param {Array} handlers restify request handlers
+   */
+  _registerControllerHooks(controller, handlers) {
+    if (controller.beforeModel) {
+      handlers.unshift(controller.beforeModel.bind(controller));
+    }
+
+    if (controller.afterModel) {
+      handlers.push(controller.afterModel.bind(controller));
+    }
+  }
+
+  /**
+   * Registers legacy controller before/after hooks
+   *
+   * @method _registerLegacyControllerHooks
+   * @private
+   * @param {Object} controller {{#crossLink "Controller"}}controller{{/crossLink}}
+   * @param {String} action controller action type (index, create, update, etc)
+   * @param {Array} handlers restify request handlers
+   */
+  _registerLegacyControllerHooks(controller, action, hooks, handlers) {
+    const actionHooks = hooks[action];
+
+    if (actionHooks && actionHooks.before) {
+      handlers.unshift(actionHooks.before.bind(controller));
+    }
+
+    if (actionHooks && actionHooks.after) {
+      handlers.push(actionHooks.after.bind(controller));
+    }
   }
 
   /**

@@ -15,6 +15,7 @@ module.exports = {
     });
     let serializerLoader;
 
+    /* eslint-disable no-empty */
     try {
       serializerLoader = new Loader({
         filter: /(.*).js$/,
@@ -22,6 +23,7 @@ module.exports = {
         path: config.serializers.dir
       });
     } catch (err) {}
+    /* eslint-enable no-empty */
 
     registry.register("loader:controller", controllerLoader);
     registry.register("loader:model", modelLoader);

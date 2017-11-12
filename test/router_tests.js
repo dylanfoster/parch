@@ -121,7 +121,7 @@ describe("Router", function () {
               name: "baz"
             }]
           })
-        .end(done);
+          .end(done);
       });
 
       it("maps a resource to a controller's show method", function (done) {
@@ -132,7 +132,7 @@ describe("Router", function () {
               name: "bar"
             }
           })
-        .end(done);
+          .end(done);
       });
 
       it("maps a resource to a controller's create method", function (done) {

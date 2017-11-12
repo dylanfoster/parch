@@ -59,6 +59,15 @@ class Controller {
     }
   }
 
+  /**
+   * Returns the name of the model that is associated with this controller.
+   * If options.model is passed to controller it will take precedence, otherwise
+   * the controller will attempt to lookup a model matching the controller's name
+   *
+   * @method getModelName
+   * @param {String} model name of the model to use
+   * @returns {String} modelName
+   */
   getModelName(model) {
     const isChild = this.isChild;
     let modelName;
