@@ -85,15 +85,26 @@ class Application {
   runProjectInitializers() {
     const config = this.registry.lookup("config:main");
     const initializersPath = config.initializers.dir;
-    const initializerModules = includeAll({
-      dirname: initializersPath,
-      filter: /(.+).js$/
-    });
-    const initializers = Object.keys(initializerModules);
+    let initializerModules;
 
-    return Promise.all(initializers.map(name =>
-      initializerModules[name].initialize(this, this.registry)
-    ));
+    /* eslint-disable no-empty */
+    try {
+      initializerModules = includeAll({
+        dirname: initializersPath,
+        filter: /(.+).js$/
+      });
+    } catch (err) {}
+    /* eslint-enable no-empty */
+
+    if (initializerModules) {
+      const initializers = Object.keys(initializerModules);
+
+      return Promise.all(initializers.map(name =>
+        initializerModules[name].initialize(this, this.registry)
+      ));
+    } else {
+      return Promise.resolve();
+    }
   }
 
   /**
