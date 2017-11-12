@@ -63,16 +63,7 @@ class Application {
     this._initialize("application");
   }
 
-  /**
-   * Get the restify application instance
-   *
-   * @method getApp
-   * @deprecated use registry.lookup("service:server") instead
-   * @return {Object} restify application instance
-   */
-  getApp() {
-    deprecate(this, "getApp", "2.0.0");
-
+  get app() {
     return this.registry.lookup("service:server");
   }
 
