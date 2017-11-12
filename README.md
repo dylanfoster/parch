@@ -58,11 +58,11 @@ const parch = new parch.Application({
     secretKey: "ssshhh",
     unauthenticated: [/\/posts[\s\S]*/, "/users/resetPassword"]
   },
-  
+
   controllers: {
     dir: path.resolve(__dirname, "controllers")
   },
-  
+
   database: {
     connection: {
       username: "postgres",
@@ -72,16 +72,16 @@ const parch = new parch.Application({
       dialect: "postgres",
       logging: false
     },
-    
+
     models: {
       dir: path.resolve(__dirname, "models")
     }
   },
-  
+
   initializers: {
     dir: path.resolve(__dirname, "controllers")
   },
-  
+
   logging: {
     dir: path.resolve(__dirname, 'logs'),
     logger: Bunyan.createLogger(),
@@ -91,7 +91,7 @@ const parch = new parch.Application({
           url: req.url
         }
       },
-      
+
       res(res) {
         return {
           statusCode: res.statusCode
@@ -99,9 +99,9 @@ const parch = new parch.Application({
       }
     }
   },
-  
+
   namespace: "api",
-  
+
   server: {
     name: "my-app",
     certificate: "/path/to/my.crt",
