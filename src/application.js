@@ -62,6 +62,10 @@ class Application {
     this._initialize("application");
   }
 
+  /**
+   * @property app
+   * @type {Object} Restify service
+   */
   get app() {
     return this.registry.lookup("service:server");
   }
