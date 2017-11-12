@@ -47,8 +47,13 @@ module.exports = {
 
     middlewares.unshift(logger({ log: application.logger }));
     middlewares.push(context(application));
+
     app.on("after", (req, res, route, err) => {
-      req.log.info({ req, res, err });
+      if (err) {
+        req.log.error({ req, res, err });
+      } else {
+        req.log.info({ req, res, err });
+      }
     });
     middlewares.forEach(middlware => { app.use(middlware); });
   },
