@@ -12,12 +12,9 @@ import initializer from "../../src/initializers/logger";
 describe("initializer | logger", function () {
   let registry;
 
-  beforeEach(function () {
-    registry = application.registry;
-  });
-
   describe("#initialize", function () {
     it("registers the logger injections", function () {
+      registry = application.registry;
       initializer.initialize(application, registry);
 
       const logger = registry.lookup("service:logger");
@@ -43,11 +40,15 @@ describe("initializer | logger", function () {
         controllers: {
           dir: path.resolve(__dirname, "../fixtures/controllers")
         },
-        log: Bunyan.createLogger({ name: "user", streams: [] }),
+        logging: {
+          logger: Bunyan.createLogger({ name: "user", streams: [] }),
+        },
         serializers: {
           dir: path.resolve(__dirname, "../fixtures", "serializers")
         }
       });
+
+      registry = app.registry;
 
       initializer.initialize(app, registry);
 
@@ -55,6 +56,7 @@ describe("initializer | logger", function () {
 
       expect(logger).to.be.ok;
       expect(logger.info).to.be.ok;
+      expect(logger.fields.name).to.eql("user");
     });
   });
 });
