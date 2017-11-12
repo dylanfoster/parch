@@ -63,6 +63,8 @@ class Application {
   }
 
   /**
+   * Restify application instance
+   *
    * @property app
    * @type {Object} Restify service
    */
