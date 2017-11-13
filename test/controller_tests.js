@@ -26,6 +26,14 @@ describe("Controller", function () {
     expect(controller.internalModel.name).to.eql("User");
   });
 
+  it("loads without a model", function () {
+    class SomeController extends Controller {}
+
+    expect(function () {
+      new SomeController(registry);
+    }).to.not.throw;
+  });
+
   it("overrides model when provided", function () {
     class UserController extends Controller {}
 
