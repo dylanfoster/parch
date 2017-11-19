@@ -12,8 +12,9 @@ cache:
 before_install:
 - yarn config set spin false
 script: yarn cover
-after_script: cat coverage/lcov.info | node_modules/coveralls/bin/coveralls.js
-after_success: bash scripts/deploy
+after_script:
+  - cat coverage/lcov.info | node_modules/coveralls/bin/coveralls.js
+  - yarn docs
 deploy:
 - provider: npm
   email: dylan947@gmail.com
@@ -21,7 +22,12 @@ deploy:
     secure: Y7mnpEAfhjICTKIjfAyCMz11irbNQYGA+0gZ768uBadtn2A8IEuVSc6SUOQwcssCGlpWNzLw9h28uOl209HeVruH8u4jqhtATBQMH38StpCCaUZWD64bQblgu2tzBhSrrChag3bAmRuiKKyhmebpV59Ag6koaqR9WRtYeeCQRdmChcyhwLVlTiP8TNz4uJMeBAVWDqAXkNBWsWOQpRfK77XIPC8P8H8nOigGVVWt4zjKX2qVbFc45Yn8JTtbofKpx2CU5IYspk/eMKuRHwbcx1zXJ4DMRi4/iLDcsqkl0WoyIGkSfxkpbvfJtUrrg9N2JLtka+JvLpL7c27qxY2RSyPK3L3On0tFRGIAHPmur93zXALaaztiN8SIrw2MoGYoRjqzhRf2RHHNwbxS7HW+xr98ymfNXfJfSgZHsS4wOnpm8cm8TLFVJQatu9Cn4pgo/QEEJvdY77zF1tRVrHQzl+CP9zDzPFM0ntqgO1sbmccxxL6pI4TMB4IrWHje2Y9s5lrWRWRSUGZ+evnDkoOGjoaCS5UW03Qf7s4H1ACZDV5ib9/IHw/9hxGyLfP6IrGY4RT1vg51Eqe3uoRHfJpeeAn3socTcuMH9oio7PWXHZ5uyGtGFyu+Z9sSQRibDd2TxenTRZn0tPbhwREionvY9Hf0gFexvtP34IR62GQywrI=
   on:
     tags: true
-    repo: dylanfoster/parch
-env:
-  global:
-  - GH_REF: github.com/parch-js/docs
+    repo: parch-js/parch
+- provider: pages
+  github_token: $GITHUB_TOKEN
+  local_dir: docs
+  repo: parch-js/docs
+  target_branch: master
+  skip_cleanup: true
+  on:
+    branch: master
