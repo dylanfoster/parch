@@ -12,9 +12,8 @@ cache:
 before_install:
 - yarn config set spin false
 script: yarn cover
-after_script:
-  - cat coverage/lcov.info | node_modules/coveralls/bin/coveralls.js
-  - yarn docs
+after_script: cat coverage/lcov.info | node_modules/coveralls/bin/coveralls.js
+before_deploy: yarn docs
 deploy:
 - provider: npm
   email: dylan947@gmail.com
