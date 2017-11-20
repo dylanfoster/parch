@@ -1,3 +1,13 @@
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/dylanfoster/parch/compare/2.1.0...2.1.1) (2017-11-20)
+
+
+### Bug Fixes
+
+* **controller:** guard against empty model ([032f57a](https://github.com/dylanfoster/parch/commit/032f57a))
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/dylanfoster/parch/compare/2.0.0...2.1.0) (2017-11-12)
 
