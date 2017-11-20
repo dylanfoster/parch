@@ -97,7 +97,7 @@ class Controller {
      */
     registry.inject(this, "service:store", "store");
 
-    if (this.modelNameLookup) {
+    try {
       /**
        * The model class that belongs to this controller. If none could be found
        * this will be undefined.
@@ -106,6 +106,11 @@ class Controller {
        * @type {Object}
        */
       registry.inject(this, `model:${this.modelNameLookup}`, "internalModel");
+    } catch (err) {
+      registry.lookup("service:logger").debug({
+        error: err,
+        controller: this.name
+      }, "failed to load model");
     }
   }
 
