@@ -9,6 +9,11 @@
 Parch combines restify and sequelize to bring you a powerful yet easy setup for
 your API
 
+****
+**REPO MOVED TO [parch-js/parch](https://github.com/parch-js/parch)**
+****
+
+
 ## Installation
 
 npm
