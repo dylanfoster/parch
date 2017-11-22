@@ -1,6 +1,6 @@
 {
   "name": "Parch",
-  "url": "https://github.com/dylanfoster/parch",
+  "url": "https://github.com/parch-js/parch",
   "version": "1.1.1",
   "options": {
     "exclude": "lib",
