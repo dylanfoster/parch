@@ -3,7 +3,7 @@
   "version": "2.1.1",
   "description": "Restify + Sequelize",
   "main": "index.js",
-  "repository": "dylanfoster/parch",
+  "repository": "parch-js/parch",
   "author": "Dylan Foster",
   "license": "MIT",
   "keywords": [
