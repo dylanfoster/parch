@@ -1,8 +1,8 @@
 # parch
 
-[![Build Status](https://travis-ci.org/dylanfoster/parch.svg?branch=master)](https://travis-ci.org/dylanfoster/parch)
-[![Coverage Status](https://coveralls.io/repos/github/dylanfoster/parch/badge.svg?branch=develop)](https://coveralls.io/github/dylanfoster/parch?branch=develop)
-[![bitHound Overall Score](https://www.bithound.io/github/dylanfoster/parch/badges/score.svg)](https://www.bithound.io/github/dylanfoster/parch)
+[![Build Status](https://travis-ci.org/parch-js/parch.svg?branch=master)](https://travis-ci.org/parch-js/parch)
+[![Coverage Status](https://coveralls.io/repos/github/parch-js/parch/badge.svg?branch=develop)](https://coveralls.io/github/parch-js/parch?branch=develop)
+[![bitHound Overall Score](https://www.bithound.io/github/parch-js/parch/badges/score.svg)](https://www.bithound.io/github/parch-js/parch)
 
 > [Restify](http://restify.com/) + [Sequelize](http://docs.sequelizejs.com/en/latest/)
 
@@ -550,7 +550,7 @@ module.exports = {
 ## Logging
 
 Logging is handled automatically for you. All requests and responses will be logged
-using a custom [Bunyan instance](https://github.com/dylanfoster/parch/blob/master/src/logger.js).
+using a custom [Bunyan instance](https://github.com/parch-js/parch/blob/master/src/logger.js).
 
 ## Error handling and responses
 
@@ -589,7 +589,7 @@ Need to handle your own errors? `controller.errors` contains all of [restify-err
 
 ### Responses
 
-Parch also helps you standardize on your response statuses. Using [controller.STATUS_CODES](https://github.com/dylanfoster/parch/blob/develop/src/utils/status_codes.js)
+Parch also helps you standardize on your response statuses. Using [controller.STATUS_CODES](https://github.com/parch-js/parch/blob/develop/src/utils/status_codes.js)
 you'll never have to worry about which status to send.
 
 ```javascript
@@ -621,5 +621,5 @@ show(req, res, next) {
   - **serializers**
     - `dir(String)`: The path to your serializers directory. **Default*: `__dirname/serializers`
   - **server** All options (*with the exception of `middlewares`*) are passed directly to [restify](http://restify.com/#creating-a-server)
-    - `log`: defaults to parch's [bunyan instance](https://github.com/dylanfoster/parch/blob/master/src/logger.js) but can be overridden
-    - `middlewares(Array)`: merged with parch's [default middlwares](https://github.com/dylanfoster/parch/blob/master/src/application.js#L24-L31)
+    - `log`: defaults to parch's [bunyan instance](https://github.com/parch-js/parch/blob/master/src/logger.js) but can be overridden
+    - `middlewares(Array)`: merged with parch's [default middlwares](https://github.com/parch-js/parch/blob/master/src/application.js#L24-L31)
