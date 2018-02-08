@@ -1,7 +1,7 @@
 {
   "name": "Parch",
   "url": "https://github.com/parch-js/parch",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "options": {
     "exclude": "lib",
     "helpers": ["node_modules/yuidoc-lucid-theme/helpers/helpers.js"],
