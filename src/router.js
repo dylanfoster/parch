@@ -65,7 +65,7 @@ class Router {
    *
    * @method namespace
    * @param {String} namespace the namespace to bind to, with or without leading slash
-   * @param {Array[Object]} routes array of routes to bind to the namespace
+   * @param {Object[]} routes array of routes to bind to the namespace
    * @since 0.9.0
    *
    * @example

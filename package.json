@@ -39,6 +39,7 @@
     "del": "^3.0.0",
     "eslint": "^4.11.0",
     "eslint-config-unstandard": "^1.4.0",
+    "jsdoc-to-markdown": "^3.0.2",
     "jsonwebtoken": "^8.1.0",
     "mocha": "^4.0.1",
     "nyc": "^11.2.1",
