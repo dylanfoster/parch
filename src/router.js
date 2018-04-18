@@ -45,8 +45,11 @@ class Router {
      */
     this.loader = {
       controllers: registry.lookup("loader:controller"),
-      models: registry.lookup("service:model-manager").models
     };
+
+    if (config.database) {
+      this.loader.models = registry.lookup("service:model-manager").models;
+    }
 
     /**
      * An optional namespace to place before all routes (e.g. /v1)
