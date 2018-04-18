@@ -9,10 +9,18 @@ module.exports = {
       type: "controller",
       path: config.controllers.dir
     });
-    const modelLoader = new Loader({
-      type: "model",
-      path: config.database.models.dir
-    });
+
+    registry.register("loader:controller", controllerLoader);
+
+    if (config.database) {
+      const modelLoader = new Loader({
+        type: "model",
+        path: config.database.models.dir
+      });
+
+      registry.register("loader:model", modelLoader);
+    }
+
     let serializerLoader;
 
     /* eslint-disable no-empty */
@@ -25,8 +33,6 @@ module.exports = {
     } catch (err) {}
     /* eslint-enable no-empty */
 
-    registry.register("loader:controller", controllerLoader);
-    registry.register("loader:model", modelLoader);
     registry.register("loader:serializer", serializerLoader);
   },
 
