@@ -1,3 +1,13 @@
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/parch-js/parch/compare/2.1.2...2.2.0) (2018-04-23)
+
+
+### Features
+
+* **application:** make data layer optional ([8f9a2dc](https://github.com/parch-js/parch/commit/8f9a2dc)), closes [#76](https://github.com/parch-js/parch/issues/76)
+
+
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/parch-js/parch/compare/2.1.0...2.1.1) (2017-11-20)
 
