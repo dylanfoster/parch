@@ -2,6 +2,10 @@
 
 module.exports = {
   initialize(applicaiton, registry) {
+    const config = registry.lookup("config:main");
+
+    if (!config.database) { return; }
+
     const modelManager = registry.lookup("service:model-manager");
     const modelLoader = registry.lookup("loader:model");
     const modelClasses = Object.keys(modelLoader.modules).map(model => modelLoader.modules[model]);

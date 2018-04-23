@@ -31,7 +31,7 @@ const DEFAULT_LISTEN_PORT = 3000;
  */
 class Application {
   /* eslint-disable complexity */
-  constructor(options) {
+  constructor(options = {}) {
     const projectDirectory = this._getProjectDirectory();
     const registry = this.registry = new Registry();
 
@@ -54,11 +54,18 @@ class Application {
     this._initialize("logger");
     this._initialize("server");
     this._initialize("loaders");
-    this._initialize("model-manager");
-    this._initialize("models");
+
+    if (options.database) {
+      this._initialize("model-manager");
+      this._initialize("models");
+    }
+
     this._initialize("middleware");
     this._initialize("router");
-    this._initialize("store");
+
+    if (options.database) {
+      this._initialize("store");
+    }
     this._initialize("application");
   }
 
@@ -147,10 +154,13 @@ class Application {
   _configure(config) {
     config.controllers = config.controllers || {};
     config.controllers.dir = config.controllers.dir || this.DEFAULT_CONTROLLER_LOOKUP_PATH;
-    config.database = config.database || {};
-    config.database.connection = config.database.connection || DEFAULT_CONNECTION_SETTINGS;
-    config.database.models = config.database.models || {};
-    config.database.models.dir = config.database.models.dir || this.DEFAULT_MODEL_LOOKUP_PATH;
+
+    if (config.database) {
+      config.database.connection = config.database.connection || DEFAULT_CONNECTION_SETTINGS;
+      config.database.models = config.database.models || {};
+      config.database.models.dir = config.database.models.dir || this.DEFAULT_MODEL_LOOKUP_PATH;
+    }
+
     config.initializers = config.initializers || {};
     config.initializers.dir = config.initializers.dir || this.DEFAULT_INITIALIZERS_LOOKUP_PATH;
     config.logging = config.logging || {};
@@ -188,8 +198,6 @@ class Application {
       dirname: __dirname
     }).initializers;
     const logger = this.logger;
-
-    // TODO: throw an error if the initializer is missing
     const [initializer] = Object.keys(initializers).filter(
       init => initializers[init].name === name
     );

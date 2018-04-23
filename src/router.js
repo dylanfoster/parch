@@ -45,8 +45,11 @@ class Router {
      */
     this.loader = {
       controllers: registry.lookup("loader:controller"),
-      models: registry.lookup("service:model-manager").models
     };
+
+    if (config.database) {
+      this.loader.models = registry.lookup("service:model-manager").models;
+    }
 
     /**
      * An optional namespace to place before all routes (e.g. /v1)
@@ -244,10 +247,9 @@ class Router {
    */
   _loadControllers() {
     const controllerLoader = getOwner(this).lookup("loader:controller");
-    const modelLoader = getOwner(this).lookup("loader:model");
     const { modules: controllers } = controllerLoader;
-    const { modules: models } = modelLoader;
     const registry = getOwner(this);
+    const config = registry.lookup("config:main");
 
     Object.keys(controllers).forEach(controller => {
       const Klass = controllers[controller];
@@ -275,12 +277,17 @@ class Router {
       }
     });
 
-    Object.keys(models).forEach(model => {
-      const instanceName = inflect.singularize(model);
-      const serializer = this._lookupSerializer(instanceName);
+    if (config.database) {
+      const modelLoader = getOwner(this).lookup("loader:model");
+      const { modules: models } = modelLoader;
 
-      registry.register(`serializer:${instanceName}`, serializer);
-    });
+      Object.keys(models).forEach(model => {
+        const instanceName = inflect.singularize(model);
+        const serializer = this._lookupSerializer(instanceName);
+
+        registry.register(`serializer:${instanceName}`, serializer);
+      });
+    }
   }
 
   /**

@@ -3,7 +3,7 @@
 require("events").EventEmitter.defaultMaxListeners = Infinity;
 
 import fs from "fs";
-import path from "path";
+import { resolve } from "path";
 
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -29,17 +29,13 @@ describe("Application", function () {
     it("returns the current project directory", function () {
       application = new Application({
         controllers: {
-          dir: path.resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: path.resolve(__dirname, "fixtures/models") }
+          dir: resolve(__dirname, "fixtures", "controllers")
         },
         initializers: {
-          dir: path.resolve(__dirname, "fixtures", "initializers")
+          dir: resolve(__dirname, "fixtures", "initializers")
         },
         serializers: {
-          dir: path.resolve(__dirname, "fixtures", "serializers")
+          dir: resolve(__dirname, "fixtures", "serializers")
         }
       });
 
@@ -51,17 +47,13 @@ describe("Application", function () {
     beforeEach(function () {
       application = new Application({
         controllers: {
-          dir: path.resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: path.resolve(__dirname, "fixtures/models") }
+          dir: resolve(__dirname, "fixtures", "controllers")
         },
         initializers: {
-          dir: path.resolve(__dirname, "fixtures", "initializers")
+          dir: resolve(__dirname, "fixtures", "initializers")
         },
         serializers: {
-          dir: path.resolve(__dirname, "fixtures", "serializers")
+          dir: resolve(__dirname, "fixtures", "serializers")
         }
       });
     });
@@ -75,17 +67,13 @@ describe("Application", function () {
     it("doesn't throw for a missing initializers directory", function () {
       application = new Application({
         controllers: {
-          dir: path.resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: path.resolve(__dirname, "fixtures/models") }
+          dir: resolve(__dirname, "fixtures", "controllers")
         },
         initializers: {
-          dir: path.resolve(__dirname, "fixtures", "missing-initializers")
+          dir: resolve(__dirname, "fixtures", "missing-initializers")
         },
         serializers: {
-          dir: path.resolve(__dirname, "fixtures", "serializers")
+          dir: resolve(__dirname, "fixtures", "serializers")
         }
       });
 
@@ -97,14 +85,10 @@ describe("Application", function () {
     beforeEach(function () {
       application = new Application({
         controllers: {
-          dir: path.resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: path.resolve(__dirname, "fixtures/models") }
+          dir: resolve(__dirname, "fixtures", "controllers")
         },
         serializers: {
-          dir: path.resolve(__dirname, "fixtures", "serializers")
+          dir: resolve(__dirname, "fixtures", "serializers")
         }
       });
     });
@@ -136,19 +120,13 @@ describe("Application", function () {
       application = new Application({
         app: mockRestify,
         controllers: {
-          dir: path.resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: {
-            dir: path.resolve(__dirname, "fixtures/models")
-          }
+          dir: resolve(__dirname, "fixtures", "controllers")
         },
         initializers: {
-          dir: path.resolve(__dirname, "fixtures", "initializers")
+          dir: resolve(__dirname, "fixtures", "initializers")
         },
         serializers: {
-          dir: path.resolve(__dirname, "fixtures", "serializers")
+          dir: resolve(__dirname, "fixtures", "serializers")
         }
       });
       sinon.spy(application, "runProjectInitializers");
@@ -173,14 +151,10 @@ describe("Application", function () {
           unauthenticated: [/\/resetPassword/]
         },
         controllers: {
-          dir: path.resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: path.resolve(__dirname, "fixtures/models") }
+          dir: resolve(__dirname, "fixtures", "controllers")
         },
         serializers: {
-          dir: path.resolve(__dirname, "fixtures", "serializers")
+          dir: resolve(__dirname, "fixtures", "serializers")
         }
       });
 
@@ -212,14 +186,10 @@ describe("Application", function () {
     it("disables auth if not set by the user", function (done) {
       application = new Application({
         controllers: {
-          dir: path.resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: path.resolve(__dirname, "fixtures/models") }
+          dir: resolve(__dirname, "fixtures", "controllers")
         },
         serializers: {
-          dir: path.resolve(__dirname, "fixtures", "serializers")
+          dir: resolve(__dirname, "fixtures", "serializers")
         }
       });
       application.map(function () {
@@ -236,14 +206,10 @@ describe("Application", function () {
       application = new Application({
         authentication: true,
         controllers: {
-          dir: path.resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: path.resolve(__dirname, "fixtures/models") }
+          dir: resolve(__dirname, "fixtures", "controllers")
         },
         serializers: {
-          dir: path.resolve(__dirname, "fixtures", "serializers")
+          dir: resolve(__dirname, "fixtures", "serializers")
         }
       });
       application.map(function () {
@@ -260,11 +226,7 @@ describe("Application", function () {
     it("uses JSONSerializer by default", function () {
       application = new Application({
         controllers: {
-          dir: path.resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: path.resolve(__dirname, "fixtures/models") }
+          dir: resolve(__dirname, "fixtures", "controllers")
         },
         logging: {
           serializers: {
@@ -279,4 +241,26 @@ describe("Application", function () {
       });
     });
   });
+
+  it("supports optional data layer", function (done) {
+    application = new Application({
+      controllers: {
+        dir: resolve(__dirname, "fixtures", "application", "controllers")
+      }
+    });
+    application.map(function () {
+      this.resource("foo");
+    });
+
+    supertest(application.app)
+      .get("/foos")
+      .expect(200)
+      .end(done);
+  });
 });
+
+function stubDirectory(application) {
+  sinon.stub(application, "_getProjectDirectory").callsFake(function () {
+    return resolve(__dirname, "./fixtures/application");
+  });
+}
