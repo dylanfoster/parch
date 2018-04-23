@@ -31,10 +31,6 @@ describe("Application", function () {
         controllers: {
           dir: resolve(__dirname, "fixtures", "controllers")
         },
-        database: {
-          connection,
-          models: { dir: resolve(__dirname, "fixtures/models") }
-        },
         initializers: {
           dir: resolve(__dirname, "fixtures", "initializers")
         },
@@ -52,10 +48,6 @@ describe("Application", function () {
       application = new Application({
         controllers: {
           dir: resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: resolve(__dirname, "fixtures/models") }
         },
         initializers: {
           dir: resolve(__dirname, "fixtures", "initializers")
@@ -77,10 +69,6 @@ describe("Application", function () {
         controllers: {
           dir: resolve(__dirname, "fixtures", "controllers")
         },
-        database: {
-          connection,
-          models: { dir: resolve(__dirname, "fixtures/models") }
-        },
         initializers: {
           dir: resolve(__dirname, "fixtures", "missing-initializers")
         },
@@ -98,10 +86,6 @@ describe("Application", function () {
       application = new Application({
         controllers: {
           dir: resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: resolve(__dirname, "fixtures/models") }
         },
         serializers: {
           dir: resolve(__dirname, "fixtures", "serializers")
@@ -138,12 +122,6 @@ describe("Application", function () {
         controllers: {
           dir: resolve(__dirname, "fixtures", "controllers")
         },
-        database: {
-          connection,
-          models: {
-            dir: resolve(__dirname, "fixtures/models")
-          }
-        },
         initializers: {
           dir: resolve(__dirname, "fixtures", "initializers")
         },
@@ -174,10 +152,6 @@ describe("Application", function () {
         },
         controllers: {
           dir: resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: resolve(__dirname, "fixtures/models") }
         },
         serializers: {
           dir: resolve(__dirname, "fixtures", "serializers")
@@ -214,10 +188,6 @@ describe("Application", function () {
         controllers: {
           dir: resolve(__dirname, "fixtures", "controllers")
         },
-        database: {
-          connection,
-          models: { dir: resolve(__dirname, "fixtures/models") }
-        },
         serializers: {
           dir: resolve(__dirname, "fixtures", "serializers")
         }
@@ -237,10 +207,6 @@ describe("Application", function () {
         authentication: true,
         controllers: {
           dir: resolve(__dirname, "fixtures", "controllers")
-        },
-        database: {
-          connection,
-          models: { dir: resolve(__dirname, "fixtures/models") }
         },
         serializers: {
           dir: resolve(__dirname, "fixtures", "serializers")
@@ -262,10 +228,6 @@ describe("Application", function () {
         controllers: {
           dir: resolve(__dirname, "fixtures", "controllers")
         },
-        database: {
-          connection,
-          models: { dir: resolve(__dirname, "fixtures/models") }
-        },
         logging: {
           serializers: {
             res(res) {
@@ -280,10 +242,20 @@ describe("Application", function () {
     });
   });
 
-  it("supports optional data layer", function () {
-    expect(function () {
-      new Application();
-    }).to.not.throw;
+  it("supports optional data layer", function (done) {
+    application = new Application({
+      controllers: {
+        dir: resolve(__dirname, "fixtures", "application", "controllers")
+      }
+    });
+    application.map(function () {
+      this.resource("foo");
+    });
+
+    supertest(application.app)
+      .get("/foos")
+      .expect(200)
+      .end(done);
   });
 });
 
