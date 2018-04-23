@@ -56,6 +56,51 @@ class Controller {
      */
     this.errors = errors;
 
+    this.registerDataLayer(registry, options);
+
+    /**
+     * An object mapping of status codes and their corresponding value
+     *
+     * @property STATUS_CODES
+     * @type {Object}
+     */
+    this.STATUS_CODES = STATUS_CODES;
+  }
+
+  /**
+   * Returns the name of the model that is associated with this controller.
+   * If options.model is passed to controller it will take precedence, otherwise
+   * the controller will attempt to lookup a model matching the controller's name
+   *
+   * @method getModelName
+   * @param {String} model name of the model to use
+   * @returns {String} modelName
+   */
+  getModelName(model) {
+    const isChild = this.isChild;
+    let modelName;
+
+    if (isChild) {
+      const parent = this.__parent;
+
+      modelName = model || inflect.camelize(parent);
+    } else {
+      modelName = model || this.name;
+    }
+
+    return modelName;
+  }
+
+  /**
+   * @method registerDataLayer
+   * @param {Object} registry module registry
+   * @param {Object} options configuration options
+   */
+  registerDataLayer(registry, options) {
+    const config = registry.lookup("config:main");
+
+    if (!config.database) { return; }
+
     /**
      * Object containing all models registered
      *
@@ -82,14 +127,6 @@ class Controller {
     this.modelNameLookup = inflect.singularize(this.modelName).toLowerCase();
 
     /**
-     * An object mapping of status codes and their corresponding value
-     *
-     * @property STATUS_CODES
-     * @type {Object}
-     */
-    this.STATUS_CODES = STATUS_CODES;
-
-    /**
      * Instance of {{#crossLink "Store"}}Store{{/crossLink}}
      *
      * @property store
@@ -112,30 +149,6 @@ class Controller {
         controller: this.name
       }, "failed to load model");
     }
-  }
-
-  /**
-   * Returns the name of the model that is associated with this controller.
-   * If options.model is passed to controller it will take precedence, otherwise
-   * the controller will attempt to lookup a model matching the controller's name
-   *
-   * @method getModelName
-   * @param {String} model name of the model to use
-   * @returns {String} modelName
-   */
-  getModelName(model) {
-    const isChild = this.isChild;
-    let modelName;
-
-    if (isChild) {
-      const parent = this.__parent;
-
-      modelName = model || inflect.camelize(parent);
-    } else {
-      modelName = model || this.name;
-    }
-
-    return modelName;
   }
 }
 

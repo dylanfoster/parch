@@ -21,7 +21,7 @@
     "prepare-release": "curl -sL https://gist.githubusercontent.com/dylanfoster/35b06db9aaa9237da77eff4a8eec0a22/raw/83ec714ec64f7ec36c5004588aa259354fc87b51/prepare-release.sh | bash -s",
     "prepublish": "yarn build",
     "pretest": "yarn build",
-    "test": "NO_DEPRECATION=parch NODE_ENV=test mocha --recursive --require babel-register --timeout 12000 --exit",
+    "test": "NO_DEPRECATION=parch,sequelize NODE_ENV=test mocha --recursive --require babel-register --timeout 12000 --exit",
     "watch:test": "chokidar 'src/**' 'test/**/*.js' -c 'yarn test' --initial",
     "watch:build": "chokidar 'src/**' 'test/**/*.js' -c 'yarn build' --initial",
     "watch:cover": "chokidar 'src/**' 'test/**/*.js' -c 'yarn cover' --initial"
@@ -45,7 +45,7 @@
     "nyc": "^11.2.1",
     "sinon": "^4.1.2",
     "sinon-chai": "^2.8.0",
-    "sqlite3": "^3.1.4",
+    "sqlite3": "^4.0.0",
     "stream": "0.0.2",
     "supertest": "^3.0.0",
     "yuidoc-lucid-theme": "^0.1.2",
@@ -67,7 +67,7 @@
     "restify-cors-middleware": "^1.0.1",
     "restify-errors": "^5.0.0",
     "restify-jwt-community": "^0.5.4",
-    "sequelize": "^4.22.6"
+    "sequelize": "^4.37.6"
   },
   "eslintConfig": {
     "extends": "unstandard",

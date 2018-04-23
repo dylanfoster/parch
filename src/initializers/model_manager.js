@@ -5,9 +5,12 @@ module.exports = {
 
   initialize(application, registry) {
     const ModelManager = registry.lookup("module:model-manager");
+    const config = registry.lookup("config:main");
 
-    return registry.register("service:model-manager", ModelManager, {
-      instantiate: true
-    });
+    if (config.database) {
+      return registry.register("service:model-manager", ModelManager, {
+        instantiate: true
+      });
+    }
   }
 };
