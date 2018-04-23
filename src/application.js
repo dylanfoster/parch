@@ -31,7 +31,7 @@ const DEFAULT_LISTEN_PORT = 3000;
  */
 class Application {
   /* eslint-disable complexity */
-  constructor(options) {
+  constructor(options = {}) {
     const projectDirectory = this._getProjectDirectory();
     const registry = this.registry = new Registry();
 
@@ -54,19 +54,11 @@ class Application {
     this._initialize("logger");
     this._initialize("server");
     this._initialize("loaders");
-
-    if (options.database) {
-      this._initialize("model-manager");
-      this._initialize("models");
-    }
-
+    this._initialize("model-manager");
+    this._initialize("models");
     this._initialize("middleware");
     this._initialize("router");
-
-    if (options.database) {
-      this._initialize("store");
-    }
-
+    this._initialize("store");
     this._initialize("application");
   }
 
@@ -199,8 +191,6 @@ class Application {
       dirname: __dirname
     }).initializers;
     const logger = this.logger;
-
-    // TODO: throw an error if the initializer is missing
     const [initializer] = Object.keys(initializers).filter(
       init => initializers[init].name === name
     );

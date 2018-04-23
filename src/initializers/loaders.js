@@ -12,7 +12,6 @@ module.exports = {
 
     registry.register("loader:controller", controllerLoader);
 
-    console.log(config);
     if (config.database) {
       const modelLoader = new Loader({
         type: "model",
