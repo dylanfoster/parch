@@ -53,7 +53,7 @@ For a full list of available options [see below](#options)
 const parch = require("parch");
 
 // define your app
-const parch = new parch.Application({
+const app = new parch.Application({
   authentication: {
     secretKey: "ssshhh",
     unauthenticated: [/\/posts[\s\S]*/, "/users/resetPassword"]
@@ -116,7 +116,7 @@ const parch = new parch.Application({
 });
 
 // wire up your routes
-parch.map(function () {
+app.map(function () {
   this.resource("user");
   this.route("user/resetPassword", {
     using: "users:resetPassword", // controller:method
@@ -124,7 +124,7 @@ parch.map(function () {
   });
 });
 
-parch.start(3000).then(() => {
+app.start(3000).then(() => {
   console.log("App listening.")
 });
 ```
