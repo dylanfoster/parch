@@ -1,3 +1,8 @@
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/dylanfoster/parch/compare/2.2.0...2.2.1) (2018-08-30)
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/dylanfoster/parch/compare/2.1.2...2.2.0) (2018-04-23)
 
